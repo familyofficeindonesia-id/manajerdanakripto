@@ -1,0 +1,13 @@
+{# Tombol berbagi — WhatsApp dan Telegram diutamakan untuk pembaca Indonesia #}
+<div class="berbagi">
+  <span class="berbagi__label">Bagikan</span>
+  <a href="https://wa.me/?text={{ (a.judul ~ ' — ' ~ base_url ~ a.url) | urlencode }}"
+     target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://t.me/share/url?url={{ (base_url ~ a.url) | urlencode }}&text={{ a.judul | urlencode }}"
+     target="_blank" rel="noopener">Telegram</a>
+  <a href="https://twitter.com/intent/tweet?url={{ (base_url ~ a.url) | urlencode }}&text={{ a.judul | urlencode }}"
+     target="_blank" rel="noopener">X</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ (base_url ~ a.url) | urlencode }}"
+     target="_blank" rel="noopener">LinkedIn</a>
+  <button type="button" data-salin-tautan="{{ base_url }}{{ a.url }}">Salin tautan</button>
+</div>
