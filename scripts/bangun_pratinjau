@@ -1,0 +1,403 @@
+"""Bangun pratinjau satu berkas dari situs yang sudah dibangun di dist/.
+
+Menggabungkan sejumlah halaman kunci menjadi SATU berkas HTML mandiri:
+  · CSS disisipkan langsung (tanpa permintaan jaringan)
+  · Setiap halaman disimpan sebagai <div data-halaman="/url/">
+  · Perute kecil menukar halaman saat tautan internal diklik
+  · Indeks pencarian disisipkan sehingga fitur cari tetap berfungsi
+
+Berguna untuk mengirim pratinjau lewat surel, WhatsApp, atau lampiran rapat
+tanpa perlu menyalakan server.
+
+KETERBATASAN
+Karena beberapa halaman digabung ke dalam satu dokumen, sejumlah id (misalnya
+#saring-tokoh pada halaman direktori dan turunan kategorinya) muncul lebih dari
+sekali. Seluruh penanganan peristiwa karena itu dicakup ke halaman yang sedang
+tampil. Situs produksi di dist/ tidak memiliki masalah ini — tiap halaman berdiri
+sendiri sebagai dokumen terpisah.
+
+Jalankan:  python scripts/bangun_pratinjau.py
+Keluaran:  dist-pratinjau/manajerdanakripto-pratinjau.html
+"""
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+AKAR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(AKAR / "src"))
+
+DIST = AKAR / "dist"
+KELUAR = AKAR / "dist-pratinjau"
+
+# Halaman yang disertakan. Urutan menentukan halaman mana yang tampil pertama.
+HALAMAN = [
+    "/",
+    "/rubrik/etf-dan-arus-dana/",
+    "/rubrik/syariah-dan-halal/",
+    "/rubrik/treasury-korporasi/",
+    "/rubrik/regulasi/",
+    "/rubrik/analisis-pasar/",
+    "/rubrik/edukasi/",
+    "/rubrik/pendanaan-dan-ventura/",
+    "/rubrik/berita-utama/",
+    "/tokoh/",
+    "/tokoh/kategori/manajer-aset/",
+    "/tokoh/kategori/treasury/",
+    "/tokoh/kategori/hedge-fund/",
+    "/tokoh/kategori/ventura/",
+    "/tokoh/kategori/makro/",
+    "/tokoh/kategori/bursa/",
+    "/perusahaan/",
+    "/glosarium/",
+    "/cari/",
+    "/tentang/",
+    "/disclaimer/",
+    "/pedoman/",
+    "/kontak/",
+]
+
+# Semua artikel dan sejumlah profil populer ditambahkan secara otomatis.
+MAKS_PROFIL_TOKOH = 64
+MAKS_PROFIL_ORG = 58
+
+
+def _baca(jalur_url: str) -> str | None:
+    berkas = DIST / jalur_url.strip("/") / "index.html" if jalur_url != "/" else DIST / "index.html"
+    return berkas.read_text(encoding="utf-8") if berkas.exists() else None
+
+
+def _isi_utama(html: str) -> str:
+    """Ambil hanya <main>…</main>.
+
+    Masthead, pita, dan kaki halaman identik di seluruh halaman, sehingga cukup
+    disertakan satu kali sebagai kerangka bersama. Tanpa langkah ini berkas
+    pratinjau membengkak hingga tiga kali lipat.
+    """
+    m = re.search(r"<main[^>]*>(.*)</main>", html, re.S | re.I)
+    isi = m.group(1) if m else html
+    return re.sub(r"<script[^>]*src=[\"'][^\"']*[\"'][^>]*>\s*</script>", "", isi, flags=re.I).strip()
+
+
+def _kerangka(html: str) -> tuple[str, str]:
+    """Pisahkan kepala (masthead + pita) dan kaki halaman dari satu halaman contoh."""
+    kepala = ""
+    m = re.search(r"(<div class=\"spanduk-demo\">.*?)<main", html, re.S | re.I)
+    if not m:                       # situs produksi tanpa spanduk demo
+        m = re.search(r"(<header class=\"masthead\".*?)<main", html, re.S | re.I)
+    if m:
+        kepala = m.group(1).strip()
+    kaki = ""
+    m = re.search(r"(<footer class=\"kaki\".*?</footer>)", html, re.S | re.I)
+    if m:
+        kaki = m.group(1).strip()
+    return kepala, kaki
+
+
+def _judul(html: str) -> str:
+    m = re.search(r"<title>(.*?)</title>", html, re.S | re.I)
+    return re.sub(r"\s+", " ", m.group(1)).strip() if m else "ManajerDanaKripto"
+
+
+PERUTE = """
+/* ----------------------------------------------------------------------------
+   Perute pratinjau — menukar halaman tanpa memuat ulang berkas.
+   Hanya dipakai pada berkas pratinjau; situs sungguhan memakai URL biasa.
+---------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+
+  var halaman = {};
+  document.querySelectorAll('[data-halaman]').forEach(function (el) {
+    halaman[el.getAttribute('data-halaman')] = el;
+  });
+
+  var aktif = null;
+  var pemberitahuan = document.getElementById('mdk-pemberitahuan');
+
+  function tampilkan(jalur, dorongRiwayat) {
+    var el = halaman[jalur] || halaman[jalur + '/'] || halaman['/'];
+    if (!el) return;
+    if (aktif) aktif.hidden = true;
+    el.hidden = false;
+    aktif = el;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    if (dorongRiwayat) history.pushState({ jalur: jalur }, '', '#' + jalur);
+    siapkanHalaman(el);
+  }
+
+  function beriTahu(pesan) {
+    if (!pemberitahuan) return;
+    pemberitahuan.textContent = pesan;
+    pemberitahuan.hidden = false;
+    clearTimeout(pemberitahuan._t);
+    pemberitahuan._t = setTimeout(function () { pemberitahuan.hidden = true; }, 3200);
+  }
+
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (!href.startsWith('/') || href.startsWith('//')) return;   // tautan luar: biarkan
+    ev.preventDefault();
+    if (halaman[href] || halaman[href + '/']) {
+      tampilkan(href, true);
+    } else {
+      beriTahu('Halaman ' + href + ' ada di situs penuh, tetapi tidak disertakan dalam berkas pratinjau ini.');
+    }
+  });
+
+  window.addEventListener('popstate', function (e) {
+    tampilkan((e.state && e.state.jalur) || location.hash.slice(1) || '/', false);
+  });
+
+  /* --- ganti tema (didelegasikan agar tetap bekerja setelah tukar halaman) --- */
+  document.addEventListener('click', function (ev) {
+    if (!ev.target.closest('#ganti-tema')) return;
+    var akar = document.documentElement;
+    var baru = akar.getAttribute('data-tema') === 'gelap' ? 'terang' : 'gelap';
+    akar.setAttribute('data-tema', baru);
+    try { localStorage.setItem('mdk-tema', baru); } catch (e) {}
+  });
+
+  /* --- salin tautan --- */
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest('[data-salin-tautan]');
+    if (!t) return;
+    var asli = t.textContent;
+    var selesai = function () {
+      t.textContent = 'Tautan disalin';
+      setTimeout(function () { t.textContent = asli; }, 1800);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t.getAttribute('data-salin-tautan')).then(selesai, selesai);
+    } else { selesai(); }
+  });
+
+  /* --- penyaring daftar (direktori tokoh, perusahaan, glosarium) --- */
+  document.addEventListener('input', function (ev) {
+    var input = ev.target.closest('[data-saring]');
+    if (!input) return;
+    var lingkup = input.closest('[data-halaman]') || document;
+    var kunci = input.value.trim().toLowerCase();
+    var terlihat = 0;
+    lingkup.querySelectorAll(input.getAttribute('data-saring')).forEach(function (el) {
+      var teks = (el.getAttribute('data-cari') || el.textContent).toLowerCase();
+      var cocok = !kunci || teks.indexOf(kunci) !== -1;
+      el.hidden = !cocok;
+      if (cocok) terlihat++;
+    });
+    var kosong = lingkup.querySelector('#tokoh-kosong');
+    if (kosong) kosong.hidden = terlihat !== 0;
+  });
+
+  /* --- pencarian arsip (indeks disisipkan langsung) --- */
+  var rubrikAktif = '';
+
+  function amankan(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function cari(kueri) {
+    var kata = kueri.toLowerCase().split(/\\s+/).filter(Boolean);
+    if (!kata.length) return [];
+    return (window.MDK_INDEKS || []).filter(function (a) {
+      return !rubrikAktif || a.rubrik === rubrikAktif;
+    }).map(function (a) {
+      var n = 0;
+      kata.forEach(function (k) {
+        if (a.judul.toLowerCase().indexOf(k) !== -1) n += 10;
+        if ((a.teks || '').toLowerCase().indexOf(k) !== -1) n += 3;
+        if ((a.tokoh || '').toLowerCase().indexOf(k) !== -1) n += 6;
+        if ((a.tag || '').toLowerCase().indexOf(k) !== -1) n += 4;
+      });
+      return { a: a, s: n };
+    }).filter(function (x) { return x.s > 0; })
+      .sort(function (x, y) { return y.s - x.s; })
+      .slice(0, 36).map(function (x) { return x.a; });
+  }
+
+  function jalankanCari() {
+    var lingkup = document.querySelector('[data-halaman]:not([hidden])') || document;
+    var kotak = lingkup.querySelector('#kotak-cari');
+    var wadah = lingkup.querySelector('#hasil-cari');
+    var pesan = lingkup.querySelector('#pesan-cari');
+    var jumlah = lingkup.querySelector('#jumlah-hasil');
+    if (!kotak || !wadah) return;
+    var kueri = kotak.value.trim();
+    if (!kueri) {
+      wadah.innerHTML = '';
+      pesan.hidden = false;
+      pesan.textContent = 'Ketik kata kunci untuk mulai mencari.';
+      if (jumlah) jumlah.textContent = (window.MDK_INDEKS || []).length + ' artikel dalam arsip';
+      return;
+    }
+    var hasil = cari(kueri);
+    wadah.innerHTML = hasil.map(function (a) {
+      return '<article class="kartu">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem">' +
+        '<span class="lencana-rubrik" data-rubrik="' + amankan(a.rubrik) + '">' + amankan(a.rubrik_label) + '</span>' +
+        '<span class="sinyal" data-sinyal="' + amankan(a.sinyal) + '">' + amankan(a.sinyal_tanda) + '</span></div>' +
+        '<h3 class="kartu__judul"><a href="' + amankan(a.url) + '">' + amankan(a.judul) + '</a></h3>' +
+        '<p class="kartu__dek">' + amankan(a.dek || '') + '</p>' +
+        '<div class="kartu__kaki"><span class="meta">' + amankan(a.tanggal) + '</span>' +
+        '<span class="meta">' + amankan(a.tokoh || '') + '</span></div></article>';
+    }).join('');
+    pesan.hidden = hasil.length > 0;
+    if (!hasil.length) pesan.textContent = 'Tidak ada artikel yang cocok dengan \\u201c' + kueri + '\\u201d.';
+    if (jumlah) jumlah.textContent = hasil.length + ' hasil ditemukan';
+  }
+
+  var tunda;
+  document.addEventListener('input', function (ev) {
+    if (ev.target.id !== 'kotak-cari') return;
+    clearTimeout(tunda);
+    tunda = setTimeout(jalankanCari, 130);
+  });
+
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button[data-rubrik]');
+    if (!b) return;
+    (b.closest('[data-halaman]') || document).querySelectorAll('button[data-rubrik]').forEach(function (x) {
+      x.setAttribute('aria-pressed', 'false');
+    });
+    b.setAttribute('aria-pressed', 'true');
+    rubrikAktif = b.getAttribute('data-rubrik');
+    jalankanCari();
+  });
+
+  /* --- formulir buletin: tidak ada peladen pada pratinjau --- */
+  document.addEventListener('submit', function (ev) {
+    var f = ev.target.closest('#form-buletin');
+    if (!f) return;
+    ev.preventDefault();
+    var tombol = f.querySelector('button');
+    tombol.textContent = 'Segera hadir';
+    tombol.disabled = true;
+  });
+
+  function siapkanHalaman(el) {
+    var jumlah = el.querySelector('#jumlah-hasil');
+    if (jumlah && !jumlah.textContent) {
+      jumlah.textContent = (window.MDK_INDEKS || []).length + ' artikel dalam arsip';
+    }
+  }
+
+  /* --- papan pasar: pratinjau tidak memanggil jaringan --- */
+  document.querySelectorAll('#papan-pasar [data-nilai]').forEach(function (el) {
+    el.textContent = '—';
+  });
+
+  tampilkan(location.hash.slice(1) || '/', false);
+})();
+"""
+
+GAYA_PRATINJAU = """
+[data-halaman][hidden] { display: none !important; }
+#mdk-pemberitahuan {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+  z-index: 999; max-width: min(90vw, 520px);
+  background: #0E1626; color: #E8EDF6; border-radius: 8px;
+  padding: 12px 18px; font: 13px/1.5 "Archivo", system-ui, sans-serif;
+  box-shadow: 0 12px 40px -12px rgba(0,0,0,.55);
+}
+#mdk-label {
+  position: fixed; right: 14px; bottom: 14px; z-index: 998;
+  background: rgba(14,22,38,.9); color: #E8EDF6; border-radius: 999px;
+  padding: 7px 14px; font: 600 11px/1 "IBM Plex Mono", monospace;
+  letter-spacing: .06em; pointer-events: none;
+}
+"""
+
+
+def main() -> int:
+    if not DIST.exists():
+        print("✗ dist/ belum ada. Jalankan `python -m mdk demo` lebih dahulu.")
+        return 1
+
+    css = (DIST / "static" / "css" / "style.css").read_text(encoding="utf-8")
+    indeks = json.loads((DIST / "indeks-cari.json").read_text(encoding="utf-8"))["artikel"]
+
+    # Kumpulkan daftar halaman: statis + seluruh artikel + profil.
+    daftar = list(HALAMAN)
+    daftar += [a["url"] for a in indeks]
+    daftar += sorted(f"/tokoh/{d.name}/" for d in (DIST / "tokoh").iterdir()
+                     if d.is_dir() and d.name != "kategori")[:MAKS_PROFIL_TOKOH]
+    daftar += sorted(f"/perusahaan/{d.name}/" for d in (DIST / "perusahaan").iterdir()
+                     if d.is_dir())[:MAKS_PROFIL_ORG]
+
+    beranda_html = _baca("/") or ""
+    kepala, kaki = _kerangka(beranda_html)
+
+    blok, dimuat, hilang = [], 0, []
+    for jalur in dict.fromkeys(daftar):
+        html = _baca(jalur)
+        if not html:
+            hilang.append(jalur)
+            continue
+        blok.append(f'<div data-halaman="{jalur}"{"" if dimuat == 0 else " hidden"}>\n'
+                    f"{_isi_utama(html)}\n</div>")
+        dimuat += 1
+
+    judul_beranda = _judul(beranda_html)
+
+    keluaran = f"""<!DOCTYPE html>
+<html lang="id" data-tema="terang">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{judul_beranda}</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+{css}
+{GAYA_PRATINJAU}
+</style>
+<script>
+(function () {{
+  try {{
+    var t = localStorage.getItem('mdk-tema');
+    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'gelap' : 'terang';
+    document.documentElement.setAttribute('data-tema', t);
+  }} catch (e) {{}}
+}})();
+</script>
+</head>
+<body>
+{kepala}
+
+<main id="konten">
+{chr(10).join(blok)}
+</main>
+
+{kaki}
+
+<div id="mdk-pemberitahuan" hidden role="status"></div>
+<div id="mdk-label">PRATINJAU · {dimuat} HALAMAN</div>
+
+<script>window.MDK_INDEKS = {json.dumps(indeks, ensure_ascii=False)};</script>
+<script>{PERUTE}</script>
+</body>
+</html>
+"""
+
+    KELUAR.mkdir(parents=True, exist_ok=True)
+    berkas = KELUAR / "manajerdanakripto-pratinjau.html"
+    berkas.write_text(keluaran, encoding="utf-8")
+
+    print(f"✓ {dimuat} halaman digabung menjadi satu berkas")
+    if hilang:
+        print(f"  ({len(hilang)} halaman dilewati: {', '.join(hilang[:4])})")
+    print(f"  Ukuran : {berkas.stat().st_size / 1024:.0f} KB")
+    print(f"  Berkas : {berkas}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
