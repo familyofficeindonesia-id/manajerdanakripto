@@ -1,0 +1,8 @@
+# ManajerDanaKripto.com — dependensi produksi
+feedparser==6.0.11        # pembacaan umpan RSS/Atom
+Jinja2==3.1.4             # mesin templat situs statis
+PyYAML==6.0.2             # pemuat konfigurasi
+python-dateutil==2.9.0    # penguraian tanggal umpan
+rapidfuzz==3.10.1         # deduplikasi berbasis kemiripan judul
+requests==2.32.3          # pemanggilan Anthropic Messages API
+Pillow==11.0.0            # pembangkit gambar Open Graph (opsional)
