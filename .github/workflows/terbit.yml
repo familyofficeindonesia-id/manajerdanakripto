@@ -1,0 +1,109 @@
+name: Ambil berita dan terbitkan situs
+
+# Jadwal dinyatakan dalam UTC. WIB = UTC+7.
+#   23:00 UTC = 06.00 WIB  (edisi pagi, menangkap penutupan pasar AS)
+#   05:00 UTC = 12.00 WIB  (edisi siang)
+#   11:00 UTC = 18.00 WIB  (edisi sore, pembukaan pasar AS)
+on:
+  schedule:
+    - cron: "0 23 * * *"
+    - cron: "0 5 * * *"
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      batas:
+        description: "Jumlah maksimum artikel yang ditulis pada jalannya ini"
+        required: false
+        default: "25"
+
+permissions:
+  contents: write     # untuk menyimpan kembali basis data artikel
+  pages: write
+  id-token: write
+
+concurrency:
+  group: terbit
+  cancel-in-progress: false
+
+jobs:
+  terbitkan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Ambil repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Pasang dependensi
+        run: pip install -r requirements.txt
+
+      - name: Pulihkan basis data artikel
+        uses: actions/cache/restore@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+          restore-keys: mdk-db-
+
+      - name: Uji kesehatan konfigurasi
+        env:
+          PYTHONPATH: src
+        run: python -m mdk periksa
+
+      - name: Ambil umpan berita
+        env:
+          PYTHONPATH: src
+        run: python -m mdk ambil
+
+      - name: Tulis ulang menjadi artikel Bahasa Indonesia
+        continue-on-error: true      # situs tetap terbit walau langkah ini gagal
+        env:
+          PYTHONPATH: src
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m mdk tulis --batas ${{ github.event.inputs.batas || 25 }}
+
+      - name: Bangun situs statis
+        env:
+          PYTHONPATH: src
+        run: python -m mdk bangun
+
+      - name: Tulis berkas CNAME (domain kustom)
+        run: echo "manajerdanakripto.com" > dist/CNAME
+
+      - name: Simpan basis data artikel
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+
+      - name: Siapkan GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Unggah artefak situs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Terbitkan ke GitHub Pages
+        id: penerbitan
+        uses: actions/deploy-pages@v4
+
+      - name: Ringkasan jalannya alur
+        env:
+          PYTHONPATH: src
+        run: |
+          {
+            echo "### Ringkasan penerbitan"
+            echo ""
+            echo "- URL: ${{ steps.penerbitan.outputs.page_url }}"
+            echo ""
+            echo '```'
+            python -m mdk status
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

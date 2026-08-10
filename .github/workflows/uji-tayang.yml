@@ -1,0 +1,73 @@
+name: Uji tayang (mode demo, tanpa kunci API)
+
+# Alur kerja ini HANYA dijalankan manual.
+# Gunanya: membuktikan bahwa GitHub Pages, domain kustom, dan HTTPS sudah benar,
+# tanpa memerlukan ANTHROPIC_API_KEY dan tanpa biaya apa pun.
+#
+# Situs yang dihasilkan menampilkan spanduk "MODE DEMO".
+# Setelah domain terbukti hidup, jalankan alur "Ambil berita dan terbitkan situs".
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: terbit
+  cancel-in-progress: false
+
+jobs:
+  uji:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Ambil repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Pasang dependensi
+        run: pip install -r requirements.txt
+
+      - name: Uji kesehatan konfigurasi
+        env:
+          PYTHONPATH: src
+        run: python -m mdk periksa
+
+      - name: Bangun situs contoh
+        env:
+          PYTHONPATH: src
+        run: python -m mdk demo
+
+      - name: Tulis berkas CNAME (domain kustom)
+        run: echo "manajerdanakripto.com" > dist/CNAME
+
+      - name: Siapkan GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Unggah artefak situs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Terbitkan ke GitHub Pages
+        id: penerbitan
+        uses: actions/deploy-pages@v4
+
+      - name: Ringkasan
+        run: |
+          {
+            echo "### Uji tayang selesai"
+            echo ""
+            echo "- URL: ${{ steps.penerbitan.outputs.page_url }}"
+            echo "- Situs ini memakai DATA CONTOH. Spanduk MODE DEMO akan terlihat."
+            echo "- Setelah domain terbukti hidup, jalankan alur *Ambil berita dan terbitkan situs*."
+          } >> "$GITHUB_STEP_SUMMARY"
