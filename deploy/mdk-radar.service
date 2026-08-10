@@ -1,0 +1,38 @@
+# Unit systemd — radar berjalan terus-menerus sebagai layanan.
+#
+# Pasang:
+#   sudo cp deploy/mdk-radar.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now mdk-radar
+#   journalctl -u mdk-radar -f          # pantau log
+#
+# Sesuaikan User, WorkingDirectory, dan jalur Python sesuai server Anda.
+
+[Unit]
+Description=Radar ManajerDanaKripto — pemantauan berita manajer dana kripto
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mdk
+Group=mdk
+WorkingDirectory=/opt/manajerdanakripto
+EnvironmentFile=/opt/manajerdanakripto/.env
+Environment=PYTHONPATH=/opt/manajerdanakripto/src
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/manajerdanakripto/.venv/bin/python -m mdk radar jaga --interval 20 --teruskan
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+# Pengetatan keamanan
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/manajerdanakripto/data /opt/manajerdanakripto/dist /opt/manajerdanakripto/config
+
+[Install]
+WantedBy=multi-user.target
