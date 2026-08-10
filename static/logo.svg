@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 48" width="260" height="48" role="img" aria-label="ManajerDanaKripto">
+  <rect width="44" height="44" x="2" y="2" rx="5" fill="#0E1626"/>
+  <text x="24" y="30.5" font-family="'IBM Plex Mono',monospace" font-size="14" font-weight="700"
+        fill="#EEF1F6" text-anchor="middle" letter-spacing="-0.5">MDK</text>
+  <text x="56" y="30" font-family="Newsreader,Georgia,serif" font-size="20" font-weight="700" fill="#0E1626">
+    Manajer<tspan fill="#0B6E4F">Dana</tspan>Kripto
+  </text>
+</svg>
