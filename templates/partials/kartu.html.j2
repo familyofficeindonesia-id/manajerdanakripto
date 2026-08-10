@@ -1,0 +1,26 @@
+{# Kartu artikel standar untuk kisi berita #}
+<article class="kartu">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)">
+    <span class="lencana-rubrik" data-rubrik="{{ a.rubrik }}">{{ label_rubrik(a.rubrik) }}</span>
+    <span class="sinyal" data-sinyal="{{ a.sinyal }}">{{ tanda_sinyal(a.sinyal) }} {{ a.label_sinyal }}</span>
+  </div>
+
+  <h3 class="kartu__judul"><a href="{{ a.url }}">{{ a.judul }}</a></h3>
+  {%- if a.dek %}<p class="kartu__dek">{{ a.dek | potong(120) }}</p>{% endif %}
+
+  {%- if a.entitas %}
+  <div class="keping-set">
+    {%- for slug in a.entitas[:2] %}{% set t = tokoh(slug) %}{% if t %}
+    <a class="keping" href="{{ t.url }}">
+      <span class="keping__inisial" aria-hidden="true">{{ t.inisial }}</span>{{ t.nama }}
+    </a>
+    {%- endif %}{% endfor %}
+    {%- if a.entitas | length > 2 %}<span class="keping" style="padding-left:9px">+{{ a.entitas | length - 2 }}</span>{% endif %}
+  </div>
+  {%- endif %}
+
+  <div class="kartu__kaki">
+    <span class="meta">{{ a.terbit_pada | relatif }}</span>
+    <span class="meta">{{ a.menit_baca }} mnt baca</span>
+  </div>
+</article>

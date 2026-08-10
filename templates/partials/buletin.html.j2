@@ -1,0 +1,21 @@
+{# Ajakan berlangganan buletin harian #}
+<section class="bagian">
+  <div class="bungkus">
+    <div class="buletin">
+      <div>
+        <h2>Rangkuman Manajer, setiap pagi pukul 07.00 WIB</h2>
+        <p>Satu surel berisi keputusan penting para manajer dana kripto dunia semalam,
+           lengkap dengan konteks pasar Indonesia. Berhenti berlangganan kapan saja.</p>
+      </div>
+      <div>
+        <form class="buletin__kotak" id="form-buletin" action="{{ url_buletin | default('#') }}" method="post">
+          <label class="sr-only" for="surel-buletin">Alamat surel</label>
+          <input class="buletin__input" id="surel-buletin" name="email" type="email"
+                 required placeholder="nama@surel.com" autocomplete="email">
+          <button class="tombol" type="submit">Berlangganan</button>
+        </form>
+        <p class="buletin__catatan">Kami tidak membagikan alamat surel Anda kepada pihak ketiga.</p>
+      </div>
+    </div>
+  </div>
+</section>
