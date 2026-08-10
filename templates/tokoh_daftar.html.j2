@@ -1,0 +1,40 @@
+{% extends "base.html.j2" %}
+{% block konten %}
+<section class="bagian">
+  <div class="bungkus">
+    <header style="max-width:64ch;margin-bottom:var(--sp-6)">
+      <span class="eyebrow">Direktori</span>
+      <h1 style="font-size:var(--t-h1);margin-block:var(--sp-3)">{{ halaman.judul }}</h1>
+      <p style="font-family:var(--serif);font-size:1.125rem;color:var(--tinta-lembut)">{{ halaman.deskripsi }}</p>
+      <p class="meta">{{ daftar | length }} tokoh dipantau</p>
+    </header>
+
+    <div class="pencarian" style="margin-bottom:var(--sp-5)">
+      <label class="sr-only" for="saring-tokoh">Saring nama tokoh atau perusahaan</label>
+      <input class="saring__input" id="saring-tokoh" type="search" data-saring="#kisi-tokoh .kartu-tokoh"
+             placeholder="Saring nama tokoh atau perusahaan…" autocomplete="off">
+    </div>
+
+    <div class="saring" role="group" aria-label="Saring berdasarkan kategori">
+      <a class="saring__tombol" href="/tokoh/" {% if not kategori_aktif %}aria-pressed="true"{% endif %}>Semua</a>
+      {%- for k, v in kategori.items() %}
+      <a class="saring__tombol" href="/tokoh/kategori/{{ k }}/" {% if kategori_aktif == k %}aria-pressed="true"{% endif %}>{{ v.label }}</a>
+      {%- endfor %}
+    </div>
+
+    <div class="direktori" id="kisi-tokoh">
+      {%- for t in daftar %}
+      <a class="kartu-tokoh" href="{{ t.url }}" data-cari="{{ t.nama | lower }} {{ t.organisasi | lower }}">
+        <span class="kartu-tokoh__avatar" aria-hidden="true">{{ t.inisial }}</span>
+        <span>
+          <span class="kartu-tokoh__nama">{{ t.nama }}</span>
+          <span class="kartu-tokoh__org">{{ t.organisasi }}</span>
+        </span>
+        <span class="kartu-tokoh__jumlah">{{ jumlah_artikel(t.slug) }} artikel</span>
+      </a>
+      {%- endfor %}
+    </div>
+    <p class="hasil-kosong" id="tokoh-kosong" hidden>Tidak ada tokoh yang cocok dengan kata kunci tersebut.</p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "base.html.j2" %}
+{% block judul_tab %}{{ situs.nama }} — Berita Manajer Dana Kripto Dunia dalam Bahasa Indonesia{% endblock %}
+
+{% block konten %}
+
+{%- if utama %}
+<div class="bungkus">
+  <div class="hero">
+    <article class="utama">
+      <span class="eyebrow">{{ label_rubrik(utama.rubrik) }}</span>
+      <h1 class="utama__judul"><a href="{{ utama.url }}">{{ utama.judul }}</a></h1>
+      {%- if utama.dek %}<p class="utama__dek">{{ utama.dek }}</p>{% endif %}
+
+      {%- if utama.ringkasan %}
+      <ul class="kilat">
+        {%- for poin in utama.ringkasan %}<li>{{ poin }}</li>{% endfor %}
+      </ul>
+      {%- endif %}
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-4)">
+        <span class="meta">{{ utama.terbit_pada | relatif }}</span>
+        <span class="sinyal" data-sinyal="{{ utama.sinyal }}">{{ tanda_sinyal(utama.sinyal) }} {{ utama.label_sinyal }}</span>
+        {%- if utama.entitas %}
+        <div class="keping-set">
+          {%- for slug in utama.entitas[:3] %}{% set t = tokoh(slug) %}{% if t %}
+          <a class="keping" href="{{ t.url }}"><span class="keping__inisial" aria-hidden="true">{{ t.inisial }}</span>{{ t.nama }}</a>
+          {%- endif %}{% endfor %}
+        </div>
+        {%- endif %}
+      </div>
+    </article>
+
+    <aside class="sorotan" aria-labelledby="judul-sorotan">
+      <h2 class="sorotan__judul" id="judul-sorotan">Sorotan Hari Ini</h2>
+      <ol class="sorotan__daftar">
+        {%- for a in sorotan %}
+        <li class="sorotan__butir">
+          <span class="eyebrow">{{ label_rubrik(a.rubrik) }}</span>
+          <h3><a href="{{ a.url }}">{{ a.judul }}</a></h3>
+          <span class="meta">{{ a.terbit_pada | relatif }}
+            <span class="pemisah">·</span>
+            <span class="sinyal" data-sinyal="{{ a.sinyal }}">{{ tanda_sinyal(a.sinyal) }}</span>
+          </span>
+        </li>
+        {%- endfor %}
+      </ol>
+    </aside>
+  </div>
+</div>
+{%- endif %}
+
+{%- if terbaru %}
+<section class="bagian">
+  <div class="bungkus">
+    <div class="kepala-bagian">
+      <h2>Terbaru</h2>
+      <a class="tautan-lanjut" href="/rubrik/berita-utama/">Semua berita →</a>
+    </div>
+    <div class="kisi kisi--3">
+      {%- for a in terbaru %}{% include "partials/kartu.html.j2" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if radar %}
+<section class="bagian">
+  <div class="bungkus">
+    <div class="kepala-bagian">
+      <h2>Radar Manajer</h2>
+      <a class="tautan-lanjut" href="/tokoh/">Direktori lengkap →</a>
+    </div>
+    <p style="max-width:60ch;color:var(--tinta-lembut);font-size:var(--t-kecil);margin-bottom:var(--sp-5)">
+      Arah pemberitaan tiap kelompok manajer dalam tujuh hari terakhir. Sinyal dihitung
+      dari kecenderungan artikel yang terbit, bukan dari posisi portofolio yang dilaporkan resmi.
+    </p>
+
+    <div class="kisi kisi--3">
+      {%- for k in radar %}
+      <article class="kartu">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)">
+          <span class="eyebrow">{{ k.label }}</span>
+          <span class="meta">{{ k.jumlah }} artikel</span>
+        </div>
+        <div style="display:flex;gap:var(--sp-4);font-family:var(--mono);font-size:var(--t-kecil)">
+          <span class="naik">▲ {{ k.akumulasi }}</span>
+          <span style="color:var(--netral)">▬ {{ k.netral }}</span>
+          <span class="turun">▼ {{ k.distribusi }}</span>
+        </div>
+        {%- if k.artikel %}
+        <ul style="list-style:none;margin:0;padding:0;display:grid;gap:var(--sp-2)">
+          {%- for a in k.artikel %}
+          <li style="font-size:var(--t-kecil);line-height:1.4;padding-bottom:var(--sp-2);border-bottom:1px solid var(--garis)">
+            <a href="{{ a.url }}">{{ a.judul | potong(84) }}</a>
+          </li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+        <div class="kartu__kaki">
+          <a class="tautan-lanjut" href="/tokoh/kategori/{{ k.slug }}/">Lihat {{ k.label | lower }} →</a>
+        </div>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if paling_disorot %}
+<section class="bagian">
+  <div class="bungkus">
+    <div class="kepala-bagian">
+      <h2>Paling Banyak Diberitakan</h2>
+      <a class="tautan-lanjut" href="/tokoh/">Semua tokoh →</a>
+    </div>
+    <div class="direktori">
+      {%- for t in paling_disorot %}
+      <a class="kartu-tokoh" href="{{ t.url }}">
+        <span class="kartu-tokoh__avatar" aria-hidden="true">{{ t.inisial }}</span>
+        <span>
+          <span class="kartu-tokoh__nama">{{ t.nama }}</span>
+          <span class="kartu-tokoh__org">{{ t.organisasi }}</span>
+        </span>
+        <span class="kartu-tokoh__jumlah">{{ t.jumlah }} artikel</span>
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{% include "partials/buletin.html.j2" %}
+
+<section class="bagian">
+  <div class="bungkus">
+    <div class="catatan">
+      <strong>Cara membaca situs ini.</strong>
+      Setiap artikel adalah laporan orisinal redaksi dalam Bahasa Indonesia yang disusun
+      berdasarkan pemberitaan media internasional, disertai tautan ke sumber aslinya.
+      Label <em>Akumulasi</em>, <em>Netral</em>, dan <em>Distribusi</em> merupakan
+      pembacaan redaksi atas nada pemberitaan — bukan konfirmasi posisi portofolio dan
+      bukan rekomendasi investasi.
+    </div>
+  </div>
+</section>
+
+{% endblock %}

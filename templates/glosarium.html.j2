@@ -1,0 +1,39 @@
+{% extends "base.html.j2" %}
+{% block jsonld %}
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"DefinedTermSet","name":"Glosarium Investasi Aset Digital",
+  "inLanguage":"id-ID","hasDefinedTerm":[
+  {%- for i in istilah %}
+  { "@type":"DefinedTerm","name": {{ i.istilah | tojson }},"description": {{ i.definisi | tojson }} }{{ "," if not loop.last }}
+  {%- endfor %}] }
+</script>
+{% endblock %}
+{% block konten %}
+<section class="bagian">
+  <div class="bungkus">
+    <header style="max-width:62ch;margin-bottom:var(--sp-6)">
+      <span class="eyebrow">Edukasi Investor</span>
+      <h1 style="font-size:var(--t-h1);margin-block:var(--sp-3)">Glosarium</h1>
+      <p style="font-family:var(--serif);font-size:1.125rem;color:var(--tinta-lembut)">
+        Istilah pengelolaan dana dan aset digital yang sering muncul dalam pemberitaan,
+        dijelaskan dengan padanan Bahasa Indonesia.
+      </p>
+    </header>
+
+    <div class="pencarian" style="margin-bottom:var(--sp-5)">
+      <label class="sr-only" for="saring-istilah">Saring istilah</label>
+      <input class="saring__input" id="saring-istilah" type="search" data-saring="#kisi-istilah .istilah"
+             placeholder="Saring istilah…" autocomplete="off">
+    </div>
+
+    <dl class="glosarium" id="kisi-istilah">
+      {%- for i in istilah %}
+      <div class="istilah" id="{{ i.slug }}" data-cari="{{ i.istilah | lower }} {{ i.definisi | lower }}">
+        <dt>{{ i.istilah }}{% if i.asing %} <span class="meta" style="display:inline">({{ i.asing }})</span>{% endif %}</dt>
+        <dd>{{ i.definisi }}</dd>
+      </div>
+      {%- endfor %}
+    </dl>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html.j2" %}
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": {{ t.nama | tojson }},
+    "jobTitle": {{ t.jabatan | tojson }},
+    "description": {{ t.bio | tojson }},
+    "worksFor": { "@type": "Organization", "name": {{ t.organisasi | tojson }} },
+    "url": {{ (base_url ~ t.url) | tojson }}
+    {%- if t.x %}, "sameAs": [{{ ('https://x.com/' ~ t.x) | tojson }}]{% endif %}
+  }
+}
+</script>
+{% endblock %}
+
+{% block konten %}
+<div class="bungkus">
+  <section class="profil">
+    <div class="profil__avatar" aria-hidden="true">{{ t.inisial }}</div>
+    <div>
+      <span class="eyebrow">{{ label_kategori(t.kategori) }}</span>
+      <h1 class="profil__nama">{{ t.nama }}</h1>
+      <p class="profil__jabatan">{{ t.jabatan }} · <a href="{{ t.url_organisasi }}">{{ t.organisasi }}</a></p>
+      <p class="profil__bio">{{ t.bio }}</p>
+
+      <div class="profil__fakta">
+        <div><span class="fakta__label">Basis</span><span class="fakta__nilai">{{ t.negara }}</span></div>
+        <div><span class="fakta__label">Artikel dipantau</span><span class="fakta__nilai">{{ artikel | length }}</span></div>
+        <div><span class="fakta__label">Sinyal 30 hari</span>
+          <span class="fakta__nilai sinyal" data-sinyal="{{ sinyal }}">{{ tanda_sinyal(sinyal) }} {{ label_sinyal }}</span></div>
+        {%- if t.x %}
+        <div><span class="fakta__label">X (Twitter)</span>
+          <span class="fakta__nilai"><a href="https://x.com/{{ t.x }}" rel="noopener nofollow" target="_blank">@{{ t.x }}</a></span></div>
+        {%- endif %}
+      </div>
+
+      {%- if not t.terverifikasi %}
+      <p class="meta" style="margin-top:var(--sp-4)">Jabatan dan afiliasi menunggu verifikasi berkala redaksi.</p>
+      {%- endif %}
+    </div>
+  </section>
+
+  <section class="bagian" style="border-top:0">
+    <div class="kepala-bagian"><h2>Pemberitaan Terbaru</h2></div>
+    {%- if artikel %}
+    <div class="kisi kisi--3">
+      {%- for a in artikel %}{% include "partials/kartu.html.j2" %}{% endfor %}
+    </div>
+    {%- else %}
+    <p class="hasil-kosong">Belum ada pemberitaan yang terekam untuk {{ t.nama }} dalam periode pemantauan.</p>
+    {%- endif %}
+  </section>
+
+  {%- if rekan %}
+  <section class="bagian">
+    <div class="kepala-bagian"><h2>Tokoh Lain di {{ label_kategori(t.kategori) }}</h2></div>
+    <div class="direktori">
+      {%- for r in rekan %}
+      <a class="kartu-tokoh" href="{{ r.url }}">
+        <span class="kartu-tokoh__avatar" aria-hidden="true">{{ r.inisial }}</span>
+        <span><span class="kartu-tokoh__nama">{{ r.nama }}</span>
+              <span class="kartu-tokoh__org">{{ r.organisasi }}</span></span>
+      </a>
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endif %}
+</div>
+{% endblock %}

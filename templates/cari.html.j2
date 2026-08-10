@@ -1,0 +1,32 @@
+{% extends "base.html.j2" %}
+{% block konten %}
+<section class="bagian">
+  <div class="bungkus">
+    <header style="max-width:60ch;margin-bottom:var(--sp-5)">
+      <span class="eyebrow">Pencarian</span>
+      <h1 style="font-size:var(--t-h1);margin-block:var(--sp-3)">Cari Berita</h1>
+      <p style="color:var(--tinta-lembut)">Telusuri seluruh arsip berdasarkan judul, tokoh, organisasi, atau tag.</p>
+    </header>
+
+    <div class="pencarian">
+      <div class="pencarian__kotak">
+        <label class="sr-only" for="kotak-cari">Kata kunci pencarian</label>
+        <input class="pencarian__input" id="kotak-cari" type="search"
+               placeholder="Contoh: ETF Bitcoin, Cathie Wood, arus dana…" autocomplete="off" autofocus>
+      </div>
+      <p class="meta" id="jumlah-hasil" style="margin-top:var(--sp-3)"></p>
+    </div>
+
+    <div class="saring" role="group" aria-label="Saring berdasarkan rubrik">
+      <button class="saring__tombol" data-rubrik="" aria-pressed="true">Semua rubrik</button>
+      {%- for r in rubrik %}
+      <button class="saring__tombol" data-rubrik="{{ r.slug }}" aria-pressed="false">{{ r.label }}</button>
+      {%- endfor %}
+    </div>
+
+    <div class="kisi kisi--3" id="hasil-cari"></div>
+    <p class="hasil-kosong" id="pesan-cari">Ketik kata kunci untuk mulai mencari.</p>
+  </div>
+</section>
+{% endblock %}
+{% block skrip %}<script src="/static/js/cari.js" defer></script>{% endblock %}

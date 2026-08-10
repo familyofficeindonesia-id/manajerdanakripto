@@ -1,0 +1,32 @@
+{% extends "base.html.j2" %}
+{% block konten %}
+<section class="bagian">
+  <div class="bungkus">
+    <header style="max-width:64ch;margin-bottom:var(--sp-6)">
+      <span class="eyebrow">Direktori</span>
+      <h1 style="font-size:var(--t-h1);margin-block:var(--sp-3)">{{ halaman.judul }}</h1>
+      <p style="font-family:var(--serif);font-size:1.125rem;color:var(--tinta-lembut)">{{ halaman.deskripsi }}</p>
+      <p class="meta">{{ daftar | length }} organisasi dipantau</p>
+    </header>
+
+    <div class="pencarian" style="margin-bottom:var(--sp-5)">
+      <label class="sr-only" for="saring-org">Saring nama organisasi</label>
+      <input class="saring__input" id="saring-org" type="search" data-saring="#kisi-org .kartu-tokoh"
+             placeholder="Saring nama organisasi…" autocomplete="off">
+    </div>
+
+    <div class="direktori" id="kisi-org">
+      {%- for o in daftar %}
+      <a class="kartu-tokoh" href="{{ o.url }}" data-cari="{{ o.nama | lower }}">
+        <span class="kartu-tokoh__avatar" aria-hidden="true">{{ o.nama[:2] | upper }}</span>
+        <span>
+          <span class="kartu-tokoh__nama">{{ o.nama }}</span>
+          <span class="kartu-tokoh__org">{{ o.tokoh | length }} tokoh · {{ o.negara }}</span>
+        </span>
+        <span class="kartu-tokoh__jumlah">{{ jumlah_artikel_org(o.slug) }} artikel</span>
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

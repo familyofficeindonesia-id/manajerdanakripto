@@ -1,0 +1,137 @@
+{% extends "base.html.j2" %}
+{% block judul_tab %}{{ a.judul }} — {{ situs.nama }}{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": {{ a.judul | tojson }},
+  "description": {{ a.dek | tojson }},
+  "inLanguage": "id-ID",
+  "datePublished": {{ a.terbit_pada | tojson }},
+  "dateModified": {{ a.terbit_pada | tojson }},
+  "articleSection": {{ label_rubrik(a.rubrik) | tojson }},
+  "wordCount": {{ a.jumlah_kata }},
+  "keywords": {{ (a.tag + a.entitas) | join(', ') | tojson }},
+  "author": { "@type": "Organization", "name": {{ a.penulis | tojson }} },
+  "publisher": {
+    "@type": "NewsMediaOrganization",
+    "name": {{ situs.nama | tojson }},
+    "logo": { "@type": "ImageObject", "url": {{ (base_url ~ '/static/img/logo.svg') | tojson }} }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": {{ (base_url ~ a.url) | tojson }} },
+  "isBasedOn": {{ a.sumber_url | tojson }},
+  "about": [
+    {%- for slug in a.entitas %}{% set t = tokoh(slug) %}{% if t %}
+    { "@type": "Person", "name": {{ t.nama | tojson }}, "jobTitle": {{ t.jabatan | tojson }},
+      "worksFor": { "@type": "Organization", "name": {{ t.organisasi | tojson }} } }{{ "," if not loop.last }}
+    {%- endif %}{% endfor %}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Beranda", "item": {{ base_url | tojson }} },
+    { "@type": "ListItem", "position": 2, "name": {{ label_rubrik(a.rubrik) | tojson }},
+      "item": {{ (base_url ~ '/rubrik/' ~ a.rubrik ~ '/') | tojson }} },
+    { "@type": "ListItem", "position": 3, "name": {{ a.judul | tojson }} }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block konten %}
+<article class="artikel">
+  <div class="bungkus">
+
+    <header class="artikel__kepala">
+      <nav class="meta" aria-label="Remah roti" style="margin-bottom:var(--sp-3)">
+        <a href="/">Beranda</a><span class="pemisah">/</span>
+        <a href="/rubrik/{{ a.rubrik }}/">{{ label_rubrik(a.rubrik) }}</a>
+      </nav>
+
+      <h1 class="artikel__judul">{{ a.judul }}</h1>
+      {%- if a.dek %}<p class="artikel__dek">{{ a.dek }}</p>{% endif %}
+
+      <div class="artikel__meta">
+        <span>{{ a.penulis }}</span><span class="pemisah">·</span>
+        <time datetime="{{ a.terbit_pada }}">{{ a.terbit_pada | tanggal }}</time><span class="pemisah">·</span>
+        <span>{{ a.menit_baca }} menit baca</span><span class="pemisah">·</span>
+        <span class="sinyal" data-sinyal="{{ a.sinyal }}">{{ tanda_sinyal(a.sinyal) }} {{ a.label_sinyal }}</span>
+      </div>
+
+      {%- if a.entitas %}
+      <div class="keping-set" style="margin-top:var(--sp-4)">
+        {%- for slug in a.entitas %}{% set t = tokoh(slug) %}{% if t %}
+        <a class="keping" href="{{ t.url }}"><span class="keping__inisial" aria-hidden="true">{{ t.inisial }}</span>{{ t.nama }}</a>
+        {%- endif %}{% endfor %}
+      </div>
+      {%- endif %}
+    </header>
+
+    <div class="isi">
+      {%- if a.ringkasan %}
+      <ul class="kilat" style="margin-top:var(--sp-5)">
+        {%- for poin in a.ringkasan %}<li>{{ poin }}</li>{% endfor %}
+      </ul>
+      {%- endif %}
+
+      {%- for p in a.paragraf %}
+      <p>{{ p }}</p>
+      {%- if loop.index == 2 and a.kutipan_teks %}
+      <blockquote class="kutipan">
+        <p>“{{ a.kutipan_teks }}”</p>
+        {%- if a.kutipan_oleh %}<cite>— {{ a.kutipan_oleh }}, dikutip dari {{ a.sumber_nama }}</cite>{% endif %}
+      </blockquote>
+      {%- endif %}
+      {%- endfor %}
+
+      {%- if a.konteks_indonesia %}
+      <aside class="konteks">
+        <div class="konteks__kepala">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 21s-7-5.2-7-11a7 7 0 1114 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+          Konteks Indonesia
+        </div>
+        <p>{{ a.konteks_indonesia }}</p>
+      </aside>
+      {%- endif %}
+
+      <div class="sumber">
+        <span class="sumber__label">Sumber &amp; atribusi</span>
+        Laporan ini ditulis ulang oleh redaksi {{ situs.nama }} berdasarkan pemberitaan
+        <strong>{{ a.sumber_nama }}</strong>{% if a.sumber_terbit %}, terbit {{ a.sumber_terbit | tanggal(false) }}{% endif %}.
+        Baca laporan aslinya di <a href="{{ a.sumber_url }}" target="_blank" rel="noopener nofollow">{{ a.sumber_url | potong(70) }}</a>.
+      </div>
+
+      {% include "partials/berbagi.html.j2" %}
+
+      {%- if a.tag %}
+      <div class="keping-set" style="margin-block:var(--sp-5)">
+        {%- for t in a.tag %}<a class="keping" style="padding-left:9px" href="/tag/{{ t }}/">#{{ t }}</a>{% endfor %}
+      </div>
+      {%- endif %}
+
+      <div class="catatan">
+        <strong>Sanggahan.</strong> {{ disclaimer }}
+      </div>
+    </div>
+  </div>
+</article>
+
+{%- if terkait %}
+<section class="bagian">
+  <div class="bungkus">
+    <div class="kepala-bagian"><h2>Berita Terkait</h2></div>
+    <div class="kisi kisi--3">
+      {%- for a in terkait %}{% include "partials/kartu.html.j2" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{% include "partials/buletin.html.j2" %}
+{% endblock %}

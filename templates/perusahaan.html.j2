@@ -1,0 +1,41 @@
+{% extends "base.html.j2" %}
+{% block jsonld %}
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"Organization",
+  "name": {{ o.nama | tojson }}, "url": {{ (base_url ~ o.url) | tojson }},
+  "employee": [
+    {%- for slug in o.tokoh %}{% set t = tokoh(slug) %}
+    { "@type":"Person","name": {{ t.nama | tojson }},"jobTitle": {{ t.jabatan | tojson }} }{{ "," if not loop.last }}
+    {%- endfor %}
+  ] }
+</script>
+{% endblock %}
+
+{% block konten %}
+<div class="bungkus">
+  <section class="profil">
+    <div class="profil__avatar" aria-hidden="true">{{ o.nama[:2] | upper }}</div>
+    <div>
+      <span class="eyebrow">Organisasi</span>
+      <h1 class="profil__nama">{{ o.nama }}</h1>
+      <p class="profil__jabatan">{{ o.negara }} · {{ o.tokoh | length }} tokoh dipantau</p>
+      <div class="keping-set" style="margin-top:var(--sp-3)">
+        {%- for slug in o.tokoh %}{% set t = tokoh(slug) %}
+        <a class="keping" href="{{ t.url }}"><span class="keping__inisial" aria-hidden="true">{{ t.inisial }}</span>{{ t.nama }}</a>
+        {%- endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="bagian" style="border-top:0">
+    <div class="kepala-bagian"><h2>Pemberitaan Terbaru</h2></div>
+    {%- if artikel %}
+    <div class="kisi kisi--3">
+      {%- for a in artikel %}{% include "partials/kartu.html.j2" %}{% endfor %}
+    </div>
+    {%- else %}
+    <p class="hasil-kosong">Belum ada pemberitaan yang terekam untuk {{ o.nama }}.</p>
+    {%- endif %}
+  </section>
+</div>
+{% endblock %}

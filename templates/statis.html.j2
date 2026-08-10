@@ -1,0 +1,14 @@
+{% extends "base.html.j2" %}
+{% block konten %}
+<article class="artikel">
+  <div class="bungkus">
+    <header class="artikel__kepala">
+      <span class="eyebrow">{{ eyebrow | default('Redaksi') }}</span>
+      <h1 class="artikel__judul" style="font-size:clamp(1.8rem,3.2vw,2.5rem)">{{ halaman.judul }}</h1>
+      {%- if halaman.deskripsi %}<p class="artikel__dek">{{ halaman.deskripsi }}</p>{% endif %}
+    </header>
+    {# `isi` berasal dari berkas content/halaman/*.yaml milik repositori sendiri (tepercaya). #}
+    <div class="isi">{{ isi | safe }}</div>
+  </div>
+</article>
+{% endblock %}

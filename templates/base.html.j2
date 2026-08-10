@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id" data-tema="terang">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block judul_tab %}{{ halaman.judul }} — {{ situs.nama }}{% endblock %}</title>
+<meta name="description" content="{{ halaman.deskripsi | default(situs.deskripsi) | e }}">
+<link rel="canonical" href="{{ base_url }}{{ halaman.url | default('/') }}">
+<meta name="robots" content="{{ halaman.robots | default('index, follow, max-image-preview:large, max-snippet:-1') }}">
+<meta name="language" content="id-ID">
+<meta name="author" content="{{ situs.penerbit }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="{{ halaman.tipe_og | default('website') }}">
+<meta property="og:site_name" content="{{ situs.nama }}">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="{{ halaman.judul | e }}">
+<meta property="og:description" content="{{ halaman.deskripsi | default(situs.deskripsi) | e }}">
+<meta property="og:url" content="{{ base_url }}{{ halaman.url | default('/') }}">
+<meta property="og:image" content="{{ base_url }}/static/img/og-default.png">
+{%- if halaman.terbit_pada %}
+<meta property="article:published_time" content="{{ halaman.terbit_pada }}">
+<meta property="article:section" content="{{ halaman.rubrik_label | default('Berita') }}">
+{%- endif %}
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ halaman.judul | e }}">
+<meta name="twitter:description" content="{{ halaman.deskripsi | default(situs.deskripsi) | e }}">
+{%- if situs.media_sosial.x %}<meta name="twitter:site" content="@{{ situs.media_sosial.x }}">{% endif %}
+
+<!-- Umpan & ikon -->
+<link rel="alternate" type="application/rss+xml" title="{{ situs.nama }} — RSS" href="{{ base_url }}/rss.xml">
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+
+<!-- Tipografi -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+
+{%- block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsMediaOrganization",
+  "name": {{ situs.nama | tojson }},
+  "url": {{ base_url | tojson }},
+  "logo": {{ (base_url ~ '/static/img/logo.svg') | tojson }},
+  "description": {{ situs.deskripsi | tojson }},
+  "inLanguage": "id-ID"
+}
+</script>
+{%- endblock %}
+
+<script>
+/* Terapkan tema sebelum render untuk mencegah kedipan. */
+(function () {
+  try {
+    var t = localStorage.getItem('mdk-tema');
+    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'gelap' : 'terang';
+    document.documentElement.setAttribute('data-tema', t);
+  } catch (e) {}
+})();
+</script>
+{%- if analytics_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','{{ analytics_id }}');</script>
+{%- endif %}
+</head>
+
+<body>
+<a class="lompat-konten" href="#konten">Lompat ke konten utama</a>
+
+{%- if mode_demo %}
+<div class="spanduk-demo">MODE DEMO — isi halaman ini adalah data contoh, bukan berita nyata. Jalankan <code>mdk jalankan</code> untuk mengisi berita sungguhan.</div>
+{%- endif %}
+
+<header class="masthead">
+  <div class="bungkus">
+    <div class="masthead__atas">
+      <a class="wordmark" href="/">
+        <span class="wordmark__tanda" aria-hidden="true">MDK</span>
+        <span>
+          <span class="wordmark__teks">Manajer<span>Dana</span>Kripto</span>
+          <span class="wordmark__sub">Pemantau Manajer Dana Aset Digital</span>
+        </span>
+      </a>
+
+      <div class="pasar" id="papan-pasar" aria-label="Ringkasan pasar">
+        <div class="pasar__butir pasar__butir--tanggal">
+          <span class="pasar__label">TANGGAL</span>
+          <span class="pasar__nilai">{{ tanggal_hari_ini }}</span>
+        </div>
+        <div class="pasar__butir" data-pasar="btc">
+          <span class="pasar__label">BTC/USD</span>
+          <span class="pasar__nilai" data-nilai>—</span>
+        </div>
+        <div class="pasar__butir" data-pasar="usdidr">
+          <span class="pasar__label">USD/IDR</span>
+          <span class="pasar__nilai" data-nilai>—</span>
+        </div>
+      </div>
+
+      <div class="aksi-kepala">
+        <a class="tombol-ikon" href="/cari/" aria-label="Cari berita" title="Cari">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        </a>
+        <button class="tombol-ikon" id="ganti-tema" aria-label="Ganti mode terang atau gelap" title="Ganti tema">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navigasi" aria-label="Navigasi utama">
+    <div class="bungkus">
+      <ul class="navigasi__daftar">
+        <li><a href="/" {% if halaman.url == '/' %}aria-current="page"{% endif %}>Beranda</a></li>
+        {%- for r in rubrik %}
+        <li><a href="/rubrik/{{ r.slug }}/" {% if halaman.url == '/rubrik/' ~ r.slug ~ '/' %}aria-current="page"{% endif %}>{{ r.label }}</a></li>
+        {%- endfor %}
+        <li><a href="/tokoh/" {% if halaman.url == '/tokoh/' %}aria-current="page"{% endif %}>Tokoh</a></li>
+        <li><a href="/perusahaan/" {% if halaman.url == '/perusahaan/' %}aria-current="page"{% endif %}>Perusahaan</a></li>
+        <li><a href="/glosarium/">Glosarium</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+{%- if pita %}
+<div class="pita" role="region" aria-label="Pita Manajer: sinyal posisi terkini">
+  <span class="pita__label" aria-hidden="true">Pita Manajer</span>
+  <div class="pita__jalur">
+    {%- for putaran in [1, 2] %}
+      {%- for c in pita %}
+      <a class="pita__chip" href="{{ c.url }}" {% if putaran == 2 %}aria-hidden="true" tabindex="-1"{% endif %}>
+        <span class="pita__nama">{{ c.nama_pendek }}</span>
+        <span class="pita__org">{{ c.organisasi }}</span>
+        <span class="pita__sinyal" data-sinyal="{{ c.sinyal }}">{{ c.tanda }} {{ c.label }}</span>
+      </a>
+      {%- endfor %}
+    {%- endfor %}
+  </div>
+</div>
+{%- endif %}
+
+<main id="konten">
+{% block konten %}{% endblock %}
+</main>
+
+<footer class="kaki">
+  <div class="bungkus">
+    <div class="kaki__kisi">
+      <div>
+        <div class="wordmark" style="margin-bottom:var(--sp-3)">
+          <span class="wordmark__tanda" aria-hidden="true">MDK</span>
+          <span class="wordmark__teks kaki__wordmark">Manajer<span style="color:var(--rupiah)">Dana</span>Kripto</span>
+        </div>
+        <p class="kaki__tagline">{{ situs.tagline }}</p>
+      </div>
+      <div>
+        <div class="kaki__judul">Rubrik</div>
+        <ul class="kaki__daftar">
+          {%- for r in rubrik %}<li><a href="/rubrik/{{ r.slug }}/">{{ r.label }}</a></li>{% endfor %}
+        </ul>
+      </div>
+      <div>
+        <div class="kaki__judul">Jelajah</div>
+        <ul class="kaki__daftar">
+          <li><a href="/tokoh/">Direktori Tokoh</a></li>
+          <li><a href="/perusahaan/">Direktori Perusahaan</a></li>
+          <li><a href="/glosarium/">Glosarium Investasi</a></li>
+          <li><a href="/cari/">Pencarian</a></li>
+          <li><a href="/rss.xml">Umpan RSS</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="kaki__judul">Redaksi</div>
+        <ul class="kaki__daftar">
+          <li><a href="/tentang/">Tentang Kami</a></li>
+          <li><a href="/pedoman/">Pedoman Media Siber</a></li>
+          <li><a href="/disclaimer/">Sanggahan &amp; Risiko</a></li>
+          <li><a href="/kontak/">Kontak &amp; Hak Jawab</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="kaki__disclaimer">{{ disclaimer }}</p>
+    <p class="kaki__hakcipta">
+      © {{ tahun }} {{ situs.penerbit }}. Seluruh artikel merupakan tulisan orisinal redaksi.
+      Kutipan dan rujukan tetap menjadi milik penerbit aslinya.
+    </p>
+  </div>
+</footer>
+
+<script src="/static/js/app.js" defer></script>
+{% block skrip %}{% endblock %}
+</body>
+</html>
