@@ -1,0 +1,129 @@
+# =============================================================================
+# ManajerDanaKripto.com — Registri Sumber Berita
+# -----------------------------------------------------------------------------
+# Dua jenis sumber:
+#   A. umpan_umum  : RSS tetap dari media yang meliput pasar aset digital.
+#   B. kueri_entitas: template pencarian Google News yang dibangkitkan otomatis
+#                     untuk setiap alias di config/entities.yaml.
+#
+# CATATAN HAK CIPTA
+# Pipeline hanya menyimpan metadata (judul, tautan, ringkasan pendek, waktu,
+# nama penerbit) untuk keperluan pemrosesan. Teks penuh TIDAK PERNAH
+# dipublikasikan ulang. Setiap artikel yang tayang adalah tulisan orisinal
+# berbahasa Indonesia yang selalu menautkan sumber aslinya.
+# =============================================================================
+
+pengaturan_pengambilan:
+  user_agent: "ManajerDanaKripto/1.0 (+https://manajerdanakripto.com/tentang)"
+  timeout_detik: 20
+  jeda_antar_umpan_detik: 1.2
+  percobaan_ulang: 2
+  maks_item_per_umpan: 40
+  hormati_robots_txt: true
+
+# --- A. Umpan RSS umum --------------------------------------------------------
+umpan_umum:
+  - nama: "CoinDesk"
+    url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+    bahasa: en
+    bobot: 1.0
+  - nama: "Cointelegraph"
+    url: "https://cointelegraph.com/rss"
+    bahasa: en
+    bobot: 0.9
+  - nama: "Decrypt"
+    url: "https://decrypt.co/feed"
+    bahasa: en
+    bobot: 0.85
+  - nama: "The Block"
+    url: "https://www.theblock.co/rss.xml"
+    bahasa: en
+    bobot: 1.0
+  - nama: "Bitcoin Magazine"
+    url: "https://bitcoinmagazine.com/feed"
+    bahasa: en
+    bobot: 0.8
+  - nama: "CryptoSlate"
+    url: "https://cryptoslate.com/feed/"
+    bahasa: en
+    bobot: 0.7
+  - nama: "Blockworks"
+    url: "https://blockworks.co/feed"
+    bahasa: en
+    bobot: 0.95
+  - nama: "Yahoo Finance — Crypto"
+    url: "https://finance.yahoo.com/news/rssindex"
+    bahasa: en
+    bobot: 0.7
+  - nama: "CNBC — Finance"
+    url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss25&id=10000664"
+    bahasa: en
+    bobot: 0.8
+  - nama: "Reuters via Google News"
+    url: "https://news.google.com/rss/search?q=crypto+fund+OR+bitcoin+ETF+site:reuters.com&hl=en-US&gl=US&ceid=US:en"
+    bahasa: en
+    bobot: 1.0
+  # Media Indonesia — dipakai untuk konteks lokal dan pembanding
+  - nama: "Kontan — Investasi"
+    url: "https://www.kontan.co.id/rss/investasi"
+    bahasa: id
+    bobot: 0.9
+  - nama: "Bisnis Indonesia — Market"
+    url: "https://market.bisnis.com/rss"
+    bahasa: id
+    bobot: 0.9
+  - nama: "CNBC Indonesia — Market"
+    url: "https://www.cnbcindonesia.com/market/rss"
+    bahasa: id
+    bobot: 0.85
+
+# --- B. Template kueri per entitas -------------------------------------------
+# {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
+kueri_entitas:
+  aktif: true
+  template:
+    - nama: "Google News — nama tokoh"
+      url: "https://news.google.com/rss/search?q=%22{q}%22&hl=en-US&gl=US&ceid=US:en"
+      bobot: 0.9
+    - nama: "Google News — tokoh + kripto"
+      url: "https://news.google.com/rss/search?q=%22{q}%22+(crypto+OR+bitcoin+OR+ETF+OR+fund)&hl=en-US&gl=US&ceid=US:en"
+      bobot: 1.0
+  # Batasi jumlah alias yang dipakai per tokoh agar kuota permintaan terkendali.
+  maks_alias_per_tokoh: 2
+  # Hanya alias pertama (nama lengkap) yang dipakai bila mode hemat diaktifkan.
+  mode_hemat: false
+
+# --- Kata kunci tema (penambah skor relevansi) -------------------------------
+kata_kunci_tema:
+  - "bitcoin"
+  - "ethereum"
+  - "crypto"
+  - "digital asset"
+  - "ETF"
+  - "ETP"
+  - "fund"
+  - "AUM"
+  - "custody"
+  - "tokenization"
+  - "stablecoin"
+  - "allocation"
+  - "institutional"
+  - "treasury"
+  - "SEC"
+  - "portfolio"
+
+# --- Daftar tolak (menekan positif palsu) ------------------------------------
+kata_kunci_tolak:
+  - "horoscope"
+  - "recipe"
+  - "sports betting odds"
+  - "celebrity gossip"
+  - "giveaway"
+  - "airdrop scam"
+  - "sponsored post"
+  - "press release distribution"
+
+# Penerbit yang tidak pernah diambil (konten berbayar penuh / paywall keras /
+# agregator berkualitas rendah).
+penerbit_diblokir:
+  - "example-content-farm.com"

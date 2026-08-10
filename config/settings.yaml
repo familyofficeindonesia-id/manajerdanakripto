@@ -1,0 +1,139 @@
+# =============================================================================
+# ManajerDanaKripto.com — Pengaturan Situs
+# =============================================================================
+
+situs:
+  nama: "ManajerDanaKripto"
+  domain: "manajerdanakripto.com"
+  base_url: "https://manajerdanakripto.com"
+  tagline: "Lensa Indonesia atas pergerakan manajer dana kripto dunia"
+  deskripsi: >-
+    Portal berita berbahasa Indonesia yang memantau keputusan, pernyataan, dan
+    posisi para manajer dana serta investor institusional aset kripto global —
+    lengkap dengan konteks regulasi dan pasar Indonesia.
+  bahasa: "id-ID"
+  zona_waktu: "Asia/Jakarta"
+  email_redaksi: "redaksi@manajerdanakripto.com"
+  penerbit: "ManajerDanaKripto"
+  logo: "/static/img/logo.svg"
+  media_sosial:
+    x: "manajerdanakripto"
+    telegram: "manajerdanakripto"
+    youtube: ""
+    instagram: "manajerdanakripto"
+
+# --- Rubrik (kanal editorial) -------------------------------------------------
+# `kunci` dipakai oleh model AI saat mengklasifikasikan artikel.
+rubrik:
+  - slug: berita-utama
+    label: "Berita Utama"
+    deskripsi: "Peristiwa terpenting hari ini dari para manajer dana kripto global."
+    kunci: ["headline", "breaking", "major announcement"]
+  - slug: etf-dan-arus-dana
+    label: "ETF & Arus Dana"
+    deskripsi: "Aliran masuk dan keluar ETF, ETP, serta produk investasi terregulasi."
+    kunci: ["ETF", "fund flows", "inflow", "outflow", "AUM", "ETP"]
+  - slug: treasury-korporasi
+    label: "Treasury Korporasi"
+    deskripsi: "Perusahaan terbuka yang membeli, menjual, atau mendanai kepemilikan kripto."
+    kunci: ["corporate treasury", "balance sheet", "convertible notes", "DAT"]
+  - slug: regulasi
+    label: "Regulasi & Kebijakan"
+    deskripsi: "Kebijakan otoritas pasar modal, bank sentral, dan legislator lintas negara."
+    kunci: ["SEC", "regulation", "policy", "OJK", "custody rules", "MiCA"]
+  - slug: analisis-pasar
+    label: "Analisis Pasar"
+    deskripsi: "Pandangan makro, target harga, dan tesis alokasi dari manajer dana."
+    kunci: ["price target", "macro", "outlook", "forecast", "allocation"]
+  - slug: pendanaan-dan-ventura
+    label: "Pendanaan & Ventura"
+    deskripsi: "Penggalangan dana, akuisisi, dan investasi tahap awal."
+    kunci: ["funding round", "raise", "acquisition", "venture", "Series A"]
+  - slug: syariah-dan-halal
+    label: "Syariah & Halal"
+    deskripsi: "Produk investasi kripto yang tunduk pada prinsip syariah."
+    kunci: ["sharia", "halal", "islamic finance", "shariah compliant"]
+  - slug: edukasi
+    label: "Edukasi Investor"
+    deskripsi: "Penjelasan istilah, mekanisme produk, dan kerangka analisis."
+    kunci: ["explainer", "how it works", "guide", "education"]
+
+# --- Kebijakan editorial & kepatuhan -----------------------------------------
+editorial:
+  # Semua artikel ditulis ulang secara orisinal. Angka di bawah adalah pagar
+  # keamanan hak cipta yang dipaksakan oleh kode, bukan sekadar imbauan.
+  maks_kata_kutipan: 14          # kutipan langsung maksimum 14 kata
+  maks_kutipan_per_sumber: 1     # satu kutipan per sumber, selebihnya parafrase
+  min_kata_artikel: 280
+  maks_kata_artikel: 480
+  wajib_tautan_sumber: true
+  wajib_konteks_indonesia: true
+  wajib_disclaimer: true
+  disclaimer: >-
+    Seluruh isi ManajerDanaKripto.com disusun untuk tujuan informasi dan edukasi.
+    Materi ini bukan nasihat investasi, ajakan membeli atau menjual aset apa pun,
+    maupun rekomendasi produk keuangan tertentu. Aset kripto merupakan instrumen
+    berisiko tinggi dengan volatilitas harga yang ekstrem; nilai investasi Anda
+    dapat berkurang secara signifikan. Lakukan penelitian mandiri dan
+    pertimbangkan konsultasi dengan penasihat keuangan berizin sebelum mengambil
+    keputusan.
+
+# --- Ambang relevansi ---------------------------------------------------------
+relevansi:
+  skor_minimum: 40               # artikel di bawah ambang ini dibuang
+  bobot_entitas_di_judul: 45
+  bobot_entitas_di_ringkasan: 25
+  bobot_organisasi: 15
+  bobot_kata_kunci_tema: 10
+  usia_maksimum_jam: 96          # jangan proses berita lebih tua dari ini
+
+# --- Model AI penulis ulang ---------------------------------------------------
+ai:
+  model: "claude-sonnet-4-6"
+  maks_token: 2000
+  suhu: 0.3
+  batas_artikel_per_jalankan: 40
+  jeda_antar_permintaan_detik: 1.0
+
+# --- Pembuatan situs ----------------------------------------------------------
+build:
+  direktori_keluaran: "dist"
+  artikel_per_halaman: 12
+  jumlah_sorotan: 5
+  jumlah_terbaru_beranda: 18
+  aktifkan_pencarian: true
+  aktifkan_rss: true
+  aktifkan_sitemap: true
+  aktifkan_amp: false
+  google_analytics_id: ""        # contoh: "G-XXXXXXXXXX"
+  google_news_publication_id: ""
+
+# --- Radar: pemantauan sumber berita ------------------------------------------
+radar:
+  # Kanal notifikasi aktif. Kredensial dibaca dari variabel lingkungan (.env),
+  # bukan dari berkas ini. Pilihan: konsol, berkas, rss, telegram, webhook,
+  # surel, whatsapp.
+  kanal: ["konsol", "berkas", "rss"]
+
+  # Penjajakan
+  user_agent: "ManajerDanaKriptoRadar/1.0 (+https://manajerdanakripto.com/tentang)"
+  timeout_detik: 25
+  maks_serentak: 8              # permintaan paralel maksimum
+  jeda_per_domain_detik: 1.0    # jeda minimum antar permintaan ke domain sama
+  maks_item_per_umpan: 30
+  usia_maksimum_jam: 72         # abaikan berita lebih tua dari ini
+  batas_nonaktif: 6             # nonaktifkan sumber setelah N gagal beruntun
+
+  # Penyaringan dan pengelompokan
+  skor_minimum: 35              # ambang agar sebuah item dicatat
+  skor_minimum_notifikasi: 45   # ambang agar sebuah klaster dikirim ke kanal
+  skor_minimum_terjemah: 55     # ambang agar diteruskan ke pipeline terjemahan
+  ambang_klaster: 80            # kemiripan judul (0-100) untuk dianggap satu peristiwa
+
+  # Pembangunan daftar sumber
+  edisi_indonesia: true         # sertakan Google News edisi Indonesia
+  bing: true                    # sertakan Bing News
+  reddit: false                 # sinyal dini, kualitas beragam
+  edgar: true                   # pantau arsip SEC (13F-HR, 8-K)
+  nitter: ""                    # isi domain instans Nitter bila ingin memantau X
+  kanal_youtube: {}             # slug_tokoh: ID_kanal_youtube

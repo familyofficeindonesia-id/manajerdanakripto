@@ -1,0 +1,855 @@
+# =============================================================================
+# ManajerDanaKripto.com — Registri Organisasi (Radar)
+# -----------------------------------------------------------------------------
+# Perusahaan dipantau sebagai entitas mandiri, terpisah dari tokohnya. Sebuah
+# berita dapat menyebut perusahaan tanpa menyebut eksekutifnya, dan sebaliknya.
+#
+# KOLOM
+#   slug          : pengenal URL
+#   nama          : nama tampilan
+#   nama_resmi    : nama badan hukum (dipakai untuk pencarian arsip SEC)
+#   jenis         : manajer-aset | hedge-fund | ventura | treasury | riset | bursa | media
+#   negara        : basis operasi
+#   situs_web     : domain tanpa skema. Dipakai penemu umpan otomatis.
+#                   KOSONG = jalankan `mdk radar temukan` lalu isi manual.
+#   ticker        : kode saham bila terbuka (untuk pemantauan arsip & rilis)
+#   edgar         : true = pantau pengajuan SEC (13F-HR, 8-K, S-1)
+#   generik       : true = nama terlalu umum untuk dicari sendirian.
+#                   Pembangun kueri akan SELALU menambahkan kata pembatas.
+#   alias         : kata kunci pencarian tambahan
+#   tokoh         : slug tokoh terkait pada config/entities.yaml
+#   terverifikasi : false = domain & umpan belum dikonfirmasi mesin
+#
+# CATATAN PENTING
+# Seluruh entri disetel terverifikasi=false. Domain di bawah ini adalah dugaan
+# terbaik dan WAJIB dikonfirmasi dengan menjalankan:
+#     python -m mdk radar temukan      (menemukan umpan RSS resmi otomatis)
+#     python -m mdk radar periksa      (menguji setiap URL, menonaktifkan yang mati)
+# Kedua perintah menulis hasilnya kembali ke config/watchlist.yaml.
+# =============================================================================
+
+organisasi:
+  # ------------------------------------------------------------- treasury ---
+  - slug: strategy
+    nama: Strategy
+    nama_resmi: Strategy Inc (sebelumnya MicroStrategy Incorporated)
+    jenis: treasury
+    negara: Amerika Serikat
+    situs_web: strategy.com
+    ticker: MSTR
+    edgar: true
+    generik: true
+    alias: ["MicroStrategy", "Strategy Inc", "MSTR"]
+    tokoh: [michael-saylor]
+    terverifikasi: false
+
+  - slug: procap
+    nama: Professional Capital Management / ProCap
+    nama_resmi: Professional Capital Management LLC
+    jenis: treasury
+    negara: Amerika Serikat
+    situs_web: pomp.com
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["ProCap BTC", "Professional Capital Management", "ProCap Financial"]
+    tokoh: [anthony-pompliano]
+    terverifikasi: false
+
+  - slug: fundstrat
+    nama: Fundstrat / Fundstrat Capital
+    nama_resmi: Fundstrat Global Advisors LLC
+    jenis: riset
+    negara: Amerika Serikat
+    situs_web: fundstrat.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Fundstrat Global Advisors", "Fundstrat Capital", "FS Crypto"]
+    tokoh: [tom-lee]
+    terverifikasi: false
+
+  # -------------------------------------------------------- manajer aset ----
+  - slug: ark-invest
+    nama: ARK Invest
+    nama_resmi: ARK Investment Management LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: ark-invest.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["ARK Investment Management", "ARKK", "ARKB", "ARK 21Shares"]
+    tokoh: [cathie-wood]
+    terverifikasi: false
+
+  - slug: blackrock
+    nama: BlackRock
+    nama_resmi: BlackRock Inc
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: blackrock.com
+    ticker: BLK
+    edgar: true
+    generik: false
+    alias: ["iShares Bitcoin Trust", "IBIT", "iShares Ethereum", "ETHA"]
+    tokoh: [larry-fink]
+    terverifikasi: false
+
+  - slug: bitwise
+    nama: Bitwise
+    nama_resmi: Bitwise Asset Management Inc
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: bitwiseinvestments.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Bitwise Asset Management", "BITB", "Bitwise 10 Crypto Index"]
+    tokoh: [hunter-horsley, matt-hougan]
+    terverifikasi: false
+
+  - slug: vaneck
+    nama: VanEck
+    nama_resmi: Van Eck Associates Corporation
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: vaneck.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Van Eck Associates", "HODL ETF", "VanEck Bitcoin Trust"]
+    tokoh: [jan-van-eck, matthew-sigel]
+    terverifikasi: false
+
+  - slug: grayscale
+    nama: Grayscale Investments
+    nama_resmi: Grayscale Investments LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: grayscale.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Grayscale Bitcoin Trust", "GBTC", "Grayscale Ethereum Trust", "ETHE"]
+    tokoh: [peter-mintzberg]
+    terverifikasi: false
+
+  - slug: franklin-templeton
+    nama: Franklin Templeton
+    nama_resmi: Franklin Resources Inc
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: franklintempleton.com
+    ticker: BEN
+    edgar: true
+    generik: false
+    alias: ["Franklin Resources", "EZBC", "Benji Investments", "Franklin OnChain"]
+    tokoh: [jenny-johnson]
+    terverifikasi: false
+
+  - slug: fidelity
+    nama: Fidelity Investments
+    nama_resmi: FMR LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: fidelity.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Fidelity Digital Assets", "FBTC", "Fidelity Wise Origin"]
+    tokoh: [abigail-johnson]
+    terverifikasi: false
+
+  - slug: coinshares
+    nama: CoinShares
+    nama_resmi: CoinShares International Limited
+    jenis: manajer-aset
+    negara: Britania Raya
+    situs_web: coinshares.com
+    ticker: CS
+    edgar: false
+    generik: false
+    alias: ["CoinShares International", "XBT Provider", "CoinShares Physical"]
+    tokoh: [james-butterfill, jean-marie-mognetti]
+    terverifikasi: false
+
+  - slug: 21shares
+    nama: 21Shares
+    nama_resmi: 21Shares AG
+    jenis: manajer-aset
+    negara: Swiss
+    situs_web: 21shares.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["21Shares AG", "ARK 21Shares", "21Shares Bitcoin ETP"]
+    tokoh: [russell-barlow]
+    terverifikasi: false
+
+  - slug: hashdex
+    nama: Hashdex
+    nama_resmi: Hashdex Asset Management Ltd
+    jenis: manajer-aset
+    negara: Brasil
+    situs_web: hashdex.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Hashdex Asset Management", "DEFI ETF", "Hashdex Nasdaq Crypto Index"]
+    tokoh: [marcelo-sampaio, samir-kerbage]
+    terverifikasi: false
+
+  - slug: monochrome
+    nama: Monochrome Asset Management
+    nama_resmi: Monochrome Asset Management Pty Ltd
+    jenis: manajer-aset
+    negara: Australia
+    situs_web: monochrome.au
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Monochrome Bitcoin ETF", "IBTC ASX", "Monochrome Ethereum"]
+    tokoh: [jeff-yew]
+    terverifikasi: false
+
+  - slug: virtune
+    nama: Virtune
+    nama_resmi: Virtune AB
+    jenis: manajer-aset
+    negara: Swedia
+    situs_web: virtune.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Virtune AB", "Virtune Bitcoin ETP", "Virtune Crypto"]
+    tokoh: [christopher-kock]
+    terverifikasi: false
+
+  - slug: 3iq
+    nama: 3iQ Digital Asset Management
+    nama_resmi: 3iQ Corp
+    jenis: manajer-aset
+    negara: Kanada
+    situs_web: 3iq.ca
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["3iQ Corp", "3iQ Bitcoin Fund", "QBTC"]
+    tokoh: [pascal-st-jean]
+    terverifikasi: false
+
+  - slug: coincheck
+    nama: Coincheck Group
+    nama_resmi: Coincheck Group NV
+    jenis: bursa
+    negara: Jepang
+    situs_web: coincheck.com
+    ticker: CNCK
+    edgar: true
+    generik: false
+    alias: ["Coincheck Group", "Coincheck exchange"]
+    tokoh: [pascal-st-jean]
+    terverifikasi: false
+
+  - slug: halogen-capital
+    nama: Halogen Capital
+    nama_resmi: Halogen Capital Sdn Bhd
+    jenis: manajer-aset
+    negara: Malaysia
+    situs_web: halogen.my
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Halogen Capital", "Halogen Shariah Bitcoin"]
+    tokoh: [hann-liew]
+    terverifikasi: false
+
+  - slug: nobi
+    nama: NOBI
+    nama_resmi: PT Bursa Kripto Prima / NOBI
+    jenis: manajer-aset
+    negara: Indonesia
+    situs_web: nobi.id
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["NOBI crypto", "NOBI Indonesia", "aplikasi NOBI"]
+    tokoh: [lawrence-samantha]
+    terverifikasi: false
+
+  - slug: wahed
+    nama: Wahed
+    nama_resmi: Wahed Inc
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: wahed.com
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["Wahed Invest", "Wahed halal investing"]
+    tokoh: [junaid-wahedna]
+    terverifikasi: false
+
+  - slug: morgan-creek
+    nama: Morgan Creek Capital Management
+    nama_resmi: Morgan Creek Capital Management LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: morgancreekcap.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Morgan Creek Digital", "Morgan Creek Capital"]
+    tokoh: [mark-yusko]
+    terverifikasi: false
+
+  - slug: miller-value
+    nama: Miller Value Partners
+    nama_resmi: Miller Value Partners LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: millervalue.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Miller Opportunity Trust", "Miller Value Partners"]
+    tokoh: [bill-miller]
+    terverifikasi: false
+
+  - slug: skybridge-capital
+    nama: SkyBridge Capital
+    nama_resmi: SkyBridge Capital II LLC
+    jenis: manajer-aset
+    negara: Amerika Serikat
+    situs_web: skybridge.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["SkyBridge Capital", "SALT conference"]
+    tokoh: [anthony-scaramucci]
+    terverifikasi: false
+
+  - slug: dacfp
+    nama: Digital Assets Council of Financial Professionals
+    nama_resmi: Digital Assets Council of Financial Professionals LLC
+    jenis: riset
+    negara: Amerika Serikat
+    situs_web: dacfp.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["DACFP", "Digital Assets Council"]
+    tokoh: [ric-edelman]
+    terverifikasi: false
+
+  # ---------------------------------------------------------- hedge fund ----
+  - slug: galaxy
+    nama: Galaxy
+    nama_resmi: Galaxy Digital Inc
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: galaxy.com
+    ticker: GLXY
+    edgar: true
+    generik: true
+    alias: ["Galaxy Digital", "Galaxy Asset Management", "Galaxy Research"]
+    tokoh: [mike-novogratz]
+    terverifikasi: false
+
+  - slug: maelstrom
+    nama: Maelstrom
+    nama_resmi: Maelstrom Fund
+    jenis: hedge-fund
+    negara: Hong Kong
+    situs_web: maelstrom.fund
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Maelstrom Fund", "Maelstrom family office"]
+    tokoh: [arthur-hayes]
+    terverifikasi: false
+
+  - slug: pantera-capital
+    nama: Pantera Capital
+    nama_resmi: Pantera Capital Management LP
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: panteracapital.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Pantera Bitcoin Fund", "Pantera Capital Management"]
+    tokoh: [dan-morehead]
+    terverifikasi: false
+
+  - slug: bridgewater
+    nama: Bridgewater Associates
+    nama_resmi: Bridgewater Associates LP
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: bridgewater.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Bridgewater Associates", "Pure Alpha fund"]
+    tokoh: [ray-dalio]
+    terverifikasi: false
+
+  - slug: tudor-investment
+    nama: Tudor Investment Corporation
+    nama_resmi: Tudor Investment Corporation
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: tudor.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Tudor Investment Corporation", "Tudor BVI Global"]
+    tokoh: [paul-tudor-jones]
+    terverifikasi: false
+
+  - slug: brevan-howard
+    nama: Brevan Howard
+    nama_resmi: Brevan Howard Asset Management LLP
+    jenis: hedge-fund
+    negara: Britania Raya
+    situs_web: brevanhoward.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Brevan Howard Digital", "BH Digital"]
+    tokoh: [alan-howard]
+    terverifikasi: false
+
+  - slug: point72
+    nama: Point72
+    nama_resmi: Point72 Asset Management LP
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: point72.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Point72 Asset Management", "Point72 Ventures"]
+    tokoh: [steve-cohen]
+    terverifikasi: false
+
+  - slug: parafi-capital
+    nama: ParaFi Capital
+    nama_resmi: ParaFi Capital LP
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: parafi.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["ParaFi Capital", "ParaFi Technologies"]
+    tokoh: [jeffrey-park]
+    terverifikasi: false
+
+  - slug: blocktower
+    nama: BlockTower Capital
+    nama_resmi: BlockTower Capital Advisors LP
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: blocktower.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["BlockTower Capital", "BlockTower Credit"]
+    tokoh: [ari-paul]
+    terverifikasi: false
+
+  - slug: arca
+    nama: Arca
+    nama_resmi: Arca Capital Management LLC
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: ar.ca
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["Arca Capital Management", "Arca Labs", "Arca digital assets"]
+    tokoh: [ari-paul]
+    terverifikasi: false
+
+  - slug: nine-blocks
+    nama: Nine Blocks Capital Management
+    nama_resmi: Nine Blocks Capital Management Ltd
+    jenis: hedge-fund
+    negara: Uni Emirat Arab
+    situs_web: nineblocks.capital
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Nine Blocks Capital", "Nine Blocks Dubai"]
+    tokoh: [henri-arslanian]
+    terverifikasi: false
+
+  - slug: nickel-digital
+    nama: Nickel Digital Asset Management
+    nama_resmi: Nickel Digital Asset Management Ltd
+    jenis: hedge-fund
+    negara: Britania Raya
+    situs_web: nickel.digital
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Nickel Digital", "Nickel Asset Management"]
+    tokoh: [anatoly-crachilov]
+    terverifikasi: false
+
+  - slug: pythagoras
+    nama: Pythagoras Investments
+    nama_resmi: Pythagoras Investment Management LLC
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: pythagoras-investments.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Pythagoras Investment Management", "Pythagoras crypto fund"]
+    tokoh: [mitchell-dong]
+    terverifikasi: false
+
+  - slug: bkcm
+    nama: BKCM
+    nama_resmi: BKCM LLC
+    jenis: hedge-fund
+    negara: Amerika Serikat
+    situs_web: bkcm.com
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["BKCM LLC", "BKCM Digital Asset Fund"]
+    tokoh: [brian-kelly]
+    terverifikasi: false
+
+  # ------------------------------------------------------------- ventura ----
+  - slug: a16z
+    nama: Andreessen Horowitz
+    nama_resmi: AH Capital Management LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: a16z.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Andreessen Horowitz", "a16z", "AH Capital Management"]
+    tokoh: [marc-andreessen, chris-dixon]
+    terverifikasi: false
+
+  - slug: a16z-crypto
+    nama: a16z crypto
+    nama_resmi: a16z crypto
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: a16zcrypto.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["a16z crypto", "a16z Crypto Startup School", "State of Crypto report"]
+    tokoh: [chris-dixon]
+    terverifikasi: false
+
+  - slug: founders-fund
+    nama: Founders Fund
+    nama_resmi: Founders Fund Management LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: foundersfund.com
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["Founders Fund", "Thiel Capital"]
+    tokoh: [peter-thiel]
+    terverifikasi: false
+
+  - slug: angellist
+    nama: AngelList
+    nama_resmi: AngelList Advisors LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: angellist.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["AngelList Venture", "AngelList Advisors"]
+    tokoh: [naval-ravikant]
+    terverifikasi: false
+
+  - slug: draper-associates
+    nama: Draper Associates
+    nama_resmi: Draper Associates
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: draper.vc
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Draper Associates", "Draper Fisher Jurvetson", "Draper Goren"]
+    tokoh: [tim-draper]
+    terverifikasi: false
+
+  - slug: oleary-ventures
+    nama: "O'Leary Ventures"
+    nama_resmi: "O'Leary Ventures LLC"
+    jenis: ventura
+    negara: Kanada
+    situs_web: olearyventures.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["O'Leary Ventures", "OLeary Ventures", "Mr Wonderful crypto"]
+    tokoh: [kevin-oleary]
+    terverifikasi: false
+
+  - slug: social-capital
+    nama: Social Capital
+    nama_resmi: Social Capital LP
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: socialcapital.com
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["Social Capital LP", "Social Capital Hedosophia"]
+    tokoh: [chamath-palihapitiya]
+    terverifikasi: false
+
+  - slug: mark-cuban-companies
+    nama: Mark Cuban Companies
+    nama_resmi: Mark Cuban Companies
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: markcubancompanies.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Mark Cuban Companies", "Cost Plus Drugs"]
+    tokoh: [mark-cuban]
+    terverifikasi: false
+
+  - slug: union-square-ventures
+    nama: Union Square Ventures
+    nama_resmi: Union Square Ventures LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: usv.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Union Square Ventures", "USV crypto fund"]
+    tokoh: [fred-wilson]
+    terverifikasi: false
+
+  - slug: castle-island
+    nama: Castle Island Ventures
+    nama_resmi: Castle Island Ventures LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: castleisland.vc
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Castle Island Ventures", "Castle Island VC"]
+    tokoh: [nic-carter]
+    terverifikasi: false
+
+  - slug: crucible-capital
+    nama: Crucible Capital
+    nama_resmi: Crucible Capital Group
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: crucible.vc
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Crucible Capital", "Crucible Ventures"]
+    tokoh: [meltem-demirors]
+    terverifikasi: false
+
+  - slug: placeholder-vc
+    nama: Placeholder
+    nama_resmi: Placeholder Management LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: placeholder.vc
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["Placeholder VC", "Placeholder Management"]
+    tokoh: [chris-burniske]
+    terverifikasi: false
+
+  - slug: haun-ventures
+    nama: Haun Ventures
+    nama_resmi: Haun Ventures Management LP
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: haun.co
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Haun Ventures", "Haun Ventures Management"]
+    tokoh: [katie-haun]
+    terverifikasi: false
+
+  - slug: 50t
+    nama: 50T
+    nama_resmi: 50T Holdings / 1RoundTable Partners
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: 50t.com
+    ticker: ""
+    edgar: true
+    generik: true
+    alias: ["50T Holdings", "10T Holdings", "1RoundTable Partners"]
+    tokoh: [dan-tapiero]
+    terverifikasi: false
+
+  - slug: animoca-brands
+    nama: Animoca Brands
+    nama_resmi: Animoca Brands Corporation Ltd
+    jenis: ventura
+    negara: Hong Kong
+    situs_web: animocabrands.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Animoca Brands", "Animoca", "Mocaverse"]
+    tokoh: [yat-siu]
+    terverifikasi: false
+
+  - slug: thoma-bravo
+    nama: Thoma Bravo
+    nama_resmi: Thoma Bravo LP
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: thomabravo.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Thoma Bravo", "Thoma Bravo Advantage"]
+    tokoh: [orlando-bravo]
+    terverifikasi: false
+
+  # ---------------------------------------------------- riset & media ------
+  - slug: real-vision
+    nama: Real Vision
+    nama_resmi: Real Vision Group
+    jenis: media
+    negara: Kepulauan Cayman
+    situs_web: realvision.com
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Real Vision Finance", "Real Vision Crypto"]
+    tokoh: [raoul-pal]
+    terverifikasi: false
+
+  - slug: global-macro-investor
+    nama: Global Macro Investor
+    nama_resmi: Global Macro Investor Ltd
+    jenis: riset
+    negara: Kepulauan Cayman
+    situs_web: globalmacroinvestor.com
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Global Macro Investor", "GMI report", "Everything Code"]
+    tokoh: [raoul-pal]
+    terverifikasi: false
+
+  - slug: lyn-alden-strategy
+    nama: Lyn Alden Investment Strategy
+    nama_resmi: Lyn Alden Investment Strategy LLC
+    jenis: riset
+    negara: Amerika Serikat
+    situs_web: lynalden.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Lyn Alden Investment Strategy", "Lyn Alden newsletter"]
+    tokoh: [lyn-alden]
+    terverifikasi: false
+
+  - slug: bianco-research
+    nama: Bianco Research
+    nama_resmi: Bianco Research LLC
+    jenis: riset
+    negara: Amerika Serikat
+    situs_web: biancoresearch.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Bianco Research", "Bianco Advisors"]
+    tokoh: [jim-bianco]
+    terverifikasi: false
+
+  - slug: 22v-research
+    nama: 22V Research
+    nama_resmi: 22V Research LLC
+    jenis: riset
+    negara: Amerika Serikat
+    situs_web: 22vresearch.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["22V Research", "22V macro"]
+    tokoh: [jordi-visser]
+    terverifikasi: false
+
+  - slug: rich-dad
+    nama: Rich Dad
+    nama_resmi: Rich Dad Company LLC
+    jenis: media
+    negara: Amerika Serikat
+    situs_web: richdad.com
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Rich Dad Poor Dad", "Rich Dad Company", "Rich Dad Radio"]
+    tokoh: [robert-kiyosaki]
+    terverifikasi: false
+
+  - slug: cnbc
+    nama: CNBC
+    nama_resmi: CNBC LLC
+    jenis: media
+    negara: Amerika Serikat
+    situs_web: cnbc.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["CNBC Fast Money", "CNBC Crypto World"]
+    tokoh: [brian-kelly]
+    terverifikasi: false
+
+  # --------------------------------------------------------------- bursa ----
+  - slug: gemini
+    nama: Gemini
+    nama_resmi: Gemini Trust Company LLC
+    jenis: bursa
+    negara: Amerika Serikat
+    situs_web: gemini.com
+    ticker: GEMI
+    edgar: true
+    generik: true
+    alias: ["Gemini Trust Company", "Gemini exchange", "Gemini Earn"]
+    tokoh: [cameron-winklevoss, tyler-winklevoss]
+    terverifikasi: false
+
+  - slug: winklevoss-capital
+    nama: Winklevoss Capital
+    nama_resmi: Winklevoss Capital Management LLC
+    jenis: ventura
+    negara: Amerika Serikat
+    situs_web: winklevosscapital.com
+    ticker: ""
+    edgar: true
+    generik: false
+    alias: ["Winklevoss Capital Management", "Winklevoss Capital"]
+    tokoh: [cameron-winklevoss, tyler-winklevoss]
+    terverifikasi: false

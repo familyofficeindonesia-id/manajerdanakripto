@@ -1,0 +1,5392 @@
+dibangkitkan_pada: '2026-08-07T12:55:20.288325+07:00'
+catatan: Dibangkitkan oleh `mdk radar bangun`. Aman disunting manual; jalankan `mdk radar periksa` setelahnya.
+ringkasan:
+  total: 489
+  aktif: 489
+  terverifikasi: 445
+  per_jenis:
+    google_news_en: 191
+    google_news_id: 127
+    bing_news: 127
+    sec_edgar: 44
+  entitas: 127
+sumber:
+- id: abigail-johnson::google_news_en::1
+  entitas: abigail-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Abigail+Johnson%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Abigail Johnson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: abigail-johnson::google_news_en::2
+  entitas: abigail-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Abigail+Johnson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Abigail Johnson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: abigail-johnson::google_news_id::1
+  entitas: abigail-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Abigail+Johnson%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Abigail Johnson
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: abigail-johnson::bing_news::1
+  entitas: abigail-johnson
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Abigail+Johnson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Abigail Johnson
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: alan-howard::google_news_en::1
+  entitas: alan-howard
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Alan+Howard%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Alan Howard
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: alan-howard::google_news_en::2
+  entitas: alan-howard
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Alan+Howard%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Alan Howard
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: alan-howard::google_news_id::1
+  entitas: alan-howard
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Alan+Howard%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Alan Howard
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: alan-howard::bing_news::1
+  entitas: alan-howard
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Alan+Howard%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Alan Howard
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anatoly-crachilov::google_news_en::1
+  entitas: anatoly-crachilov
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anatoly+Crachilov%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Anatoly Crachilov
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anatoly-crachilov::google_news_en::2
+  entitas: anatoly-crachilov
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anatoly+Crachilov%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Anatoly Crachilov
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anatoly-crachilov::google_news_id::1
+  entitas: anatoly-crachilov
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Anatoly+Crachilov%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Anatoly Crachilov
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anatoly-crachilov::bing_news::1
+  entitas: anatoly-crachilov
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Anatoly+Crachilov%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Anatoly Crachilov
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-pompliano::google_news_en::1
+  entitas: anthony-pompliano
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anthony+Pompliano%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Anthony Pompliano
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-pompliano::google_news_en::2
+  entitas: anthony-pompliano
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anthony+Pompliano%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Anthony Pompliano
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-pompliano::google_news_id::1
+  entitas: anthony-pompliano
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Anthony+Pompliano%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Anthony Pompliano
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-pompliano::bing_news::1
+  entitas: anthony-pompliano
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Anthony+Pompliano%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Anthony Pompliano
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-scaramucci::google_news_en::1
+  entitas: anthony-scaramucci
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anthony+Scaramucci%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Anthony Scaramucci
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-scaramucci::google_news_en::2
+  entitas: anthony-scaramucci
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Anthony+Scaramucci%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Anthony Scaramucci
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-scaramucci::google_news_id::1
+  entitas: anthony-scaramucci
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Anthony+Scaramucci%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Anthony Scaramucci
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: anthony-scaramucci::bing_news::1
+  entitas: anthony-scaramucci
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Anthony+Scaramucci%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Anthony Scaramucci
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ari-paul::google_news_en::1
+  entitas: ari-paul
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ari+Paul%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Ari Paul
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ari-paul::google_news_en::2
+  entitas: ari-paul
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ari+Paul%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Ari Paul
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ari-paul::google_news_id::1
+  entitas: ari-paul
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Ari+Paul%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Ari Paul
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ari-paul::bing_news::1
+  entitas: ari-paul
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Ari+Paul%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Ari Paul
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arthur-hayes::google_news_en::1
+  entitas: arthur-hayes
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Arthur+Hayes%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Arthur Hayes
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arthur-hayes::google_news_en::2
+  entitas: arthur-hayes
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Arthur+Hayes%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Arthur Hayes
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arthur-hayes::google_news_id::1
+  entitas: arthur-hayes
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Arthur+Hayes%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Arthur Hayes
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arthur-hayes::bing_news::1
+  entitas: arthur-hayes
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Arthur+Hayes%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Arthur Hayes
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: balaji-srinivasan::google_news_en::1
+  entitas: balaji-srinivasan
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Balaji+Srinivasan%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Balaji Srinivasan
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: balaji-srinivasan::google_news_en::2
+  entitas: balaji-srinivasan
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Balaji+Srinivasan%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Balaji Srinivasan
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: balaji-srinivasan::google_news_id::1
+  entitas: balaji-srinivasan
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Balaji+Srinivasan%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Balaji Srinivasan
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: balaji-srinivasan::bing_news::1
+  entitas: balaji-srinivasan
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Balaji+Srinivasan%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Balaji Srinivasan
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bill-miller::google_news_en::1
+  entitas: bill-miller
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Bill+Miller%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Bill Miller
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bill-miller::google_news_en::2
+  entitas: bill-miller
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Bill+Miller%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Bill Miller
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bill-miller::google_news_id::1
+  entitas: bill-miller
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Bill+Miller%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Bill Miller
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bill-miller::bing_news::1
+  entitas: bill-miller
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Bill+Miller%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Bill Miller
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brian-kelly::google_news_en::1
+  entitas: brian-kelly
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Brian+Kelly%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Brian Kelly
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brian-kelly::google_news_en::2
+  entitas: brian-kelly
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Brian+Kelly%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Brian Kelly
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brian-kelly::google_news_id::1
+  entitas: brian-kelly
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Brian+Kelly%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Brian Kelly
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brian-kelly::bing_news::1
+  entitas: brian-kelly
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Brian+Kelly%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Brian Kelly
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cameron-winklevoss::google_news_en::1
+  entitas: cameron-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Cameron+Winklevoss%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Cameron Winklevoss
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cameron-winklevoss::google_news_en::2
+  entitas: cameron-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Cameron+Winklevoss%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Cameron Winklevoss
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cameron-winklevoss::google_news_id::1
+  entitas: cameron-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Cameron+Winklevoss%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Cameron Winklevoss
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cameron-winklevoss::bing_news::1
+  entitas: cameron-winklevoss
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Cameron+Winklevoss%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Cameron Winklevoss
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cathie-wood::google_news_en::1
+  entitas: cathie-wood
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Cathie+Wood%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Cathie Wood
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cathie-wood::google_news_en::2
+  entitas: cathie-wood
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Cathie+Wood%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Cathie Wood
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cathie-wood::google_news_id::1
+  entitas: cathie-wood
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Cathie+Wood%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Cathie Wood
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cathie-wood::bing_news::1
+  entitas: cathie-wood
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Cathie+Wood%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Cathie Wood
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chamath-palihapitiya::google_news_en::1
+  entitas: chamath-palihapitiya
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chamath+Palihapitiya%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Chamath Palihapitiya
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chamath-palihapitiya::google_news_en::2
+  entitas: chamath-palihapitiya
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chamath+Palihapitiya%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Chamath Palihapitiya
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chamath-palihapitiya::google_news_id::1
+  entitas: chamath-palihapitiya
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Chamath+Palihapitiya%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Chamath Palihapitiya
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chamath-palihapitiya::bing_news::1
+  entitas: chamath-palihapitiya
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Chamath+Palihapitiya%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Chamath Palihapitiya
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-burniske::google_news_en::1
+  entitas: chris-burniske
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chris+Burniske%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Chris Burniske
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-burniske::google_news_en::2
+  entitas: chris-burniske
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chris+Burniske%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Chris Burniske
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-burniske::google_news_id::1
+  entitas: chris-burniske
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Chris+Burniske%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Chris Burniske
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-burniske::bing_news::1
+  entitas: chris-burniske
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Chris+Burniske%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Chris Burniske
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-dixon::google_news_en::1
+  entitas: chris-dixon
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chris+Dixon%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Chris Dixon
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-dixon::google_news_en::2
+  entitas: chris-dixon
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Chris+Dixon%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Chris Dixon
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-dixon::google_news_id::1
+  entitas: chris-dixon
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Chris+Dixon%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Chris Dixon
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: chris-dixon::bing_news::1
+  entitas: chris-dixon
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Chris+Dixon%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Chris Dixon
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: christopher-kock::google_news_en::1
+  entitas: christopher-kock
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Christopher+Kock%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Christopher Kock
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: christopher-kock::google_news_en::2
+  entitas: christopher-kock
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Christopher+Kock%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Christopher Kock
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: christopher-kock::google_news_id::1
+  entitas: christopher-kock
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Christopher+Kock%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Christopher Kock
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: christopher-kock::bing_news::1
+  entitas: christopher-kock
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Christopher+Kock%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Christopher Kock
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-morehead::google_news_en::1
+  entitas: dan-morehead
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Dan+Morehead%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Dan Morehead
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-morehead::google_news_en::2
+  entitas: dan-morehead
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Dan+Morehead%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Dan Morehead
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-morehead::google_news_id::1
+  entitas: dan-morehead
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Dan+Morehead%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Dan Morehead
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-morehead::bing_news::1
+  entitas: dan-morehead
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Dan+Morehead%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Dan Morehead
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-tapiero::google_news_en::1
+  entitas: dan-tapiero
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Dan+Tapiero%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Dan Tapiero
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-tapiero::google_news_en::2
+  entitas: dan-tapiero
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Dan+Tapiero%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Dan Tapiero
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-tapiero::google_news_id::1
+  entitas: dan-tapiero
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Dan+Tapiero%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Dan Tapiero
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dan-tapiero::bing_news::1
+  entitas: dan-tapiero
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Dan+Tapiero%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Dan Tapiero
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fred-wilson::google_news_en::1
+  entitas: fred-wilson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Fred+Wilson%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Fred Wilson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fred-wilson::google_news_en::2
+  entitas: fred-wilson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Fred+Wilson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Fred Wilson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fred-wilson::google_news_id::1
+  entitas: fred-wilson
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Fred+Wilson%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Fred Wilson
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fred-wilson::bing_news::1
+  entitas: fred-wilson
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Fred+Wilson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Fred Wilson
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hann-liew::google_news_en::1
+  entitas: hann-liew
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Hann+Liew%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Hann Liew
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hann-liew::google_news_en::2
+  entitas: hann-liew
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Hann+Liew%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Hann Liew
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hann-liew::google_news_id::1
+  entitas: hann-liew
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Hann+Liew%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Hann Liew
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hann-liew::bing_news::1
+  entitas: hann-liew
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Hann+Liew%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Hann Liew
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: henri-arslanian::google_news_en::1
+  entitas: henri-arslanian
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Henri+Arslanian%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Henri Arslanian
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: henri-arslanian::google_news_en::2
+  entitas: henri-arslanian
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Henri+Arslanian%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Henri Arslanian
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: henri-arslanian::google_news_id::1
+  entitas: henri-arslanian
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Henri+Arslanian%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Henri Arslanian
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: henri-arslanian::bing_news::1
+  entitas: henri-arslanian
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Henri+Arslanian%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Henri Arslanian
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hunter-horsley::google_news_en::1
+  entitas: hunter-horsley
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Hunter+Horsley%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Hunter Horsley
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hunter-horsley::google_news_en::2
+  entitas: hunter-horsley
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Hunter+Horsley%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Hunter Horsley
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hunter-horsley::google_news_id::1
+  entitas: hunter-horsley
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Hunter+Horsley%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Hunter Horsley
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hunter-horsley::bing_news::1
+  entitas: hunter-horsley
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Hunter+Horsley%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Hunter Horsley
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: james-butterfill::google_news_en::1
+  entitas: james-butterfill
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22James+Butterfill%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — James Butterfill
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: james-butterfill::google_news_en::2
+  entitas: james-butterfill
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22James+Butterfill%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — James Butterfill
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: james-butterfill::google_news_id::1
+  entitas: james-butterfill
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22James+Butterfill%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — James Butterfill
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: james-butterfill::bing_news::1
+  entitas: james-butterfill
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22James+Butterfill%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — James Butterfill
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jan-van-eck::google_news_en::1
+  entitas: jan-van-eck
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jan+van+Eck%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jan van Eck
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jan-van-eck::google_news_en::2
+  entitas: jan-van-eck
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jan+van+Eck%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jan van Eck
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jan-van-eck::google_news_id::1
+  entitas: jan-van-eck
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jan+van+Eck%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jan van Eck
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jan-van-eck::bing_news::1
+  entitas: jan-van-eck
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jan+van+Eck%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jan van Eck
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jean-marie-mognetti::google_news_en::1
+  entitas: jean-marie-mognetti
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jean-Marie+Mognetti%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jean-Marie Mognetti
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jean-marie-mognetti::google_news_en::2
+  entitas: jean-marie-mognetti
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jean-Marie+Mognetti%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jean-Marie Mognetti
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jean-marie-mognetti::google_news_id::1
+  entitas: jean-marie-mognetti
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jean-Marie+Mognetti%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jean-Marie Mognetti
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jean-marie-mognetti::bing_news::1
+  entitas: jean-marie-mognetti
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jean-Marie+Mognetti%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jean-Marie Mognetti
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeff-yew::google_news_en::1
+  entitas: jeff-yew
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jeff+Yew%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jeff Yew
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeff-yew::google_news_en::2
+  entitas: jeff-yew
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jeff+Yew%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jeff Yew
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeff-yew::google_news_id::1
+  entitas: jeff-yew
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jeff+Yew%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jeff Yew
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeff-yew::bing_news::1
+  entitas: jeff-yew
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jeff+Yew%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jeff Yew
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeffrey-park::google_news_en::1
+  entitas: jeffrey-park
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jeffrey+Park%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jeffrey Park
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeffrey-park::google_news_en::2
+  entitas: jeffrey-park
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jeffrey+Park%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jeffrey Park
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeffrey-park::google_news_id::1
+  entitas: jeffrey-park
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jeffrey+Park%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jeffrey Park
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jeffrey-park::bing_news::1
+  entitas: jeffrey-park
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jeffrey+Park%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jeffrey Park
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jenny-johnson::google_news_en::1
+  entitas: jenny-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jenny+Johnson%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jenny Johnson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jenny-johnson::google_news_en::2
+  entitas: jenny-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jenny+Johnson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jenny Johnson
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jenny-johnson::google_news_id::1
+  entitas: jenny-johnson
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jenny+Johnson%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jenny Johnson
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jenny-johnson::bing_news::1
+  entitas: jenny-johnson
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jenny+Johnson%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jenny Johnson
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jim-bianco::google_news_en::1
+  entitas: jim-bianco
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jim+Bianco%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jim Bianco
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jim-bianco::google_news_en::2
+  entitas: jim-bianco
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jim+Bianco%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jim Bianco
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jim-bianco::google_news_id::1
+  entitas: jim-bianco
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jim+Bianco%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jim Bianco
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jim-bianco::bing_news::1
+  entitas: jim-bianco
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jim+Bianco%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jim Bianco
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jordi-visser::google_news_en::1
+  entitas: jordi-visser
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jordi+Visser%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Jordi Visser
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jordi-visser::google_news_en::2
+  entitas: jordi-visser
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Jordi+Visser%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Jordi Visser
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jordi-visser::google_news_id::1
+  entitas: jordi-visser
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Jordi+Visser%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Jordi Visser
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: jordi-visser::bing_news::1
+  entitas: jordi-visser
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Jordi+Visser%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Jordi Visser
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: junaid-wahedna::google_news_en::1
+  entitas: junaid-wahedna
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Junaid+Wahedna%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Junaid Wahedna
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: junaid-wahedna::google_news_en::2
+  entitas: junaid-wahedna
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Junaid+Wahedna%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Junaid Wahedna
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: junaid-wahedna::google_news_id::1
+  entitas: junaid-wahedna
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Junaid+Wahedna%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Junaid Wahedna
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: junaid-wahedna::bing_news::1
+  entitas: junaid-wahedna
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Junaid+Wahedna%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Junaid Wahedna
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: katie-haun::google_news_en::1
+  entitas: katie-haun
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Katie+Haun%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Katie Haun
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: katie-haun::google_news_en::2
+  entitas: katie-haun
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Katie+Haun%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Katie Haun
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: katie-haun::google_news_id::1
+  entitas: katie-haun
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Katie+Haun%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Katie Haun
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: katie-haun::bing_news::1
+  entitas: katie-haun
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Katie+Haun%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Katie Haun
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: kevin-oleary::google_news_en::1
+  entitas: kevin-oleary
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Kevin+O%27Leary%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Kevin O'Leary
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: kevin-oleary::google_news_en::2
+  entitas: kevin-oleary
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Kevin+O%27Leary%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Kevin O'Leary
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: kevin-oleary::google_news_id::1
+  entitas: kevin-oleary
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Kevin+O%27Leary%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Kevin O'Leary
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: kevin-oleary::bing_news::1
+  entitas: kevin-oleary
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Kevin+O%27Leary%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Kevin O'Leary
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: larry-fink::google_news_en::1
+  entitas: larry-fink
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Larry+Fink%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Larry Fink
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: larry-fink::google_news_en::2
+  entitas: larry-fink
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Larry+Fink%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Larry Fink
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: larry-fink::google_news_id::1
+  entitas: larry-fink
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Larry+Fink%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Larry Fink
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: larry-fink::bing_news::1
+  entitas: larry-fink
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Larry+Fink%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Larry Fink
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lawrence-samantha::google_news_en::1
+  entitas: lawrence-samantha
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Lawrence+Samantha%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Lawrence Samantha
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lawrence-samantha::google_news_en::2
+  entitas: lawrence-samantha
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Lawrence+Samantha%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Lawrence Samantha
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lawrence-samantha::google_news_id::1
+  entitas: lawrence-samantha
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Lawrence+Samantha%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Lawrence Samantha
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lawrence-samantha::bing_news::1
+  entitas: lawrence-samantha
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Lawrence+Samantha%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Lawrence Samantha
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden::google_news_en::1
+  entitas: lyn-alden
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Lyn+Alden%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Lyn Alden
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden::google_news_en::2
+  entitas: lyn-alden
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Lyn+Alden%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Lyn Alden
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden::google_news_id::1
+  entitas: lyn-alden
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Lyn+Alden%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Lyn Alden
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden::bing_news::1
+  entitas: lyn-alden
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Lyn+Alden%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Lyn Alden
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marc-andreessen::google_news_en::1
+  entitas: marc-andreessen
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Marc+Andreessen%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Marc Andreessen
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marc-andreessen::google_news_en::2
+  entitas: marc-andreessen
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Marc+Andreessen%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Marc Andreessen
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marc-andreessen::google_news_id::1
+  entitas: marc-andreessen
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Marc+Andreessen%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Marc Andreessen
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marc-andreessen::bing_news::1
+  entitas: marc-andreessen
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Marc+Andreessen%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Marc Andreessen
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marcelo-sampaio::google_news_en::1
+  entitas: marcelo-sampaio
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Marcelo+Sampaio%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Marcelo Sampaio
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marcelo-sampaio::google_news_en::2
+  entitas: marcelo-sampaio
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Marcelo+Sampaio%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Marcelo Sampaio
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marcelo-sampaio::google_news_id::1
+  entitas: marcelo-sampaio
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Marcelo+Sampaio%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Marcelo Sampaio
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: marcelo-sampaio::bing_news::1
+  entitas: marcelo-sampaio
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Marcelo+Sampaio%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Marcelo Sampaio
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban::google_news_en::1
+  entitas: mark-cuban
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mark+Cuban%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Mark Cuban
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban::google_news_en::2
+  entitas: mark-cuban
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mark+Cuban%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Mark Cuban
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban::google_news_id::1
+  entitas: mark-cuban
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Mark+Cuban%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Mark Cuban
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban::bing_news::1
+  entitas: mark-cuban
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Mark+Cuban%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Mark Cuban
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-yusko::google_news_en::1
+  entitas: mark-yusko
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mark+Yusko%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Mark Yusko
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-yusko::google_news_en::2
+  entitas: mark-yusko
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mark+Yusko%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Mark Yusko
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-yusko::google_news_id::1
+  entitas: mark-yusko
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Mark+Yusko%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Mark Yusko
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-yusko::bing_news::1
+  entitas: mark-yusko
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Mark+Yusko%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Mark Yusko
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matt-hougan::google_news_en::1
+  entitas: matt-hougan
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Matt+Hougan%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Matt Hougan
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matt-hougan::google_news_en::2
+  entitas: matt-hougan
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Matt+Hougan%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Matt Hougan
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matt-hougan::google_news_id::1
+  entitas: matt-hougan
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Matt+Hougan%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Matt Hougan
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matt-hougan::bing_news::1
+  entitas: matt-hougan
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Matt+Hougan%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Matt Hougan
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matthew-sigel::google_news_en::1
+  entitas: matthew-sigel
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Matthew+Sigel%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Matthew Sigel
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matthew-sigel::google_news_en::2
+  entitas: matthew-sigel
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Matthew+Sigel%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Matthew Sigel
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matthew-sigel::google_news_id::1
+  entitas: matthew-sigel
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Matthew+Sigel%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Matthew Sigel
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: matthew-sigel::bing_news::1
+  entitas: matthew-sigel
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Matthew+Sigel%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Matthew Sigel
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: meltem-demirors::google_news_en::1
+  entitas: meltem-demirors
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Meltem+Demirors%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Meltem Demirors
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: meltem-demirors::google_news_en::2
+  entitas: meltem-demirors
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Meltem+Demirors%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Meltem Demirors
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: meltem-demirors::google_news_id::1
+  entitas: meltem-demirors
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Meltem+Demirors%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Meltem Demirors
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: meltem-demirors::bing_news::1
+  entitas: meltem-demirors
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Meltem+Demirors%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Meltem Demirors
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: michael-saylor::google_news_en::1
+  entitas: michael-saylor
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Michael+Saylor%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Michael Saylor
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: michael-saylor::google_news_en::2
+  entitas: michael-saylor
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Michael+Saylor%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Michael Saylor
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: michael-saylor::google_news_id::1
+  entitas: michael-saylor
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Michael+Saylor%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Michael Saylor
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: michael-saylor::bing_news::1
+  entitas: michael-saylor
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Michael+Saylor%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Michael Saylor
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mike-novogratz::google_news_en::1
+  entitas: mike-novogratz
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mike+Novogratz%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Mike Novogratz
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mike-novogratz::google_news_en::2
+  entitas: mike-novogratz
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mike+Novogratz%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Mike Novogratz
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mike-novogratz::google_news_id::1
+  entitas: mike-novogratz
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Mike+Novogratz%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Mike Novogratz
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mike-novogratz::bing_news::1
+  entitas: mike-novogratz
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Mike+Novogratz%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Mike Novogratz
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mitchell-dong::google_news_en::1
+  entitas: mitchell-dong
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mitchell+Dong%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Mitchell Dong
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mitchell-dong::google_news_en::2
+  entitas: mitchell-dong
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Mitchell+Dong%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Mitchell Dong
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mitchell-dong::google_news_id::1
+  entitas: mitchell-dong
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Mitchell+Dong%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Mitchell Dong
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mitchell-dong::bing_news::1
+  entitas: mitchell-dong
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Mitchell+Dong%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Mitchell Dong
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: naval-ravikant::google_news_en::1
+  entitas: naval-ravikant
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Naval+Ravikant%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Naval Ravikant
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: naval-ravikant::google_news_en::2
+  entitas: naval-ravikant
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Naval+Ravikant%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Naval Ravikant
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: naval-ravikant::google_news_id::1
+  entitas: naval-ravikant
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Naval+Ravikant%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Naval Ravikant
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: naval-ravikant::bing_news::1
+  entitas: naval-ravikant
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Naval+Ravikant%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Naval Ravikant
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nic-carter::google_news_en::1
+  entitas: nic-carter
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Nic+Carter%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Nic Carter
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nic-carter::google_news_en::2
+  entitas: nic-carter
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Nic+Carter%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Nic Carter
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nic-carter::google_news_id::1
+  entitas: nic-carter
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Nic+Carter%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Nic Carter
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nic-carter::bing_news::1
+  entitas: nic-carter
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Nic+Carter%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Nic Carter
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: orlando-bravo::google_news_en::1
+  entitas: orlando-bravo
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Orlando+Bravo%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Orlando Bravo
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: orlando-bravo::google_news_en::2
+  entitas: orlando-bravo
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Orlando+Bravo%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Orlando Bravo
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: orlando-bravo::google_news_id::1
+  entitas: orlando-bravo
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Orlando+Bravo%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Orlando Bravo
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: orlando-bravo::bing_news::1
+  entitas: orlando-bravo
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Orlando+Bravo%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Orlando Bravo
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pascal-st-jean::google_news_en::1
+  entitas: pascal-st-jean
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Pascal+St-Jean%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Pascal St-Jean
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pascal-st-jean::google_news_en::2
+  entitas: pascal-st-jean
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Pascal+St-Jean%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Pascal St-Jean
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pascal-st-jean::google_news_id::1
+  entitas: pascal-st-jean
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Pascal+St-Jean%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Pascal St-Jean
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pascal-st-jean::bing_news::1
+  entitas: pascal-st-jean
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Pascal+St-Jean%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Pascal St-Jean
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: paul-tudor-jones::google_news_en::1
+  entitas: paul-tudor-jones
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Paul+Tudor+Jones%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Paul Tudor Jones
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: paul-tudor-jones::google_news_en::2
+  entitas: paul-tudor-jones
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Paul+Tudor+Jones%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Paul Tudor Jones
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: paul-tudor-jones::google_news_id::1
+  entitas: paul-tudor-jones
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Paul+Tudor+Jones%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Paul Tudor Jones
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: paul-tudor-jones::bing_news::1
+  entitas: paul-tudor-jones
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Paul+Tudor+Jones%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Paul Tudor Jones
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-mintzberg::google_news_en::1
+  entitas: peter-mintzberg
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Peter+Mintzberg%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Peter Mintzberg
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-mintzberg::google_news_en::2
+  entitas: peter-mintzberg
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Peter+Mintzberg%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Peter Mintzberg
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-mintzberg::google_news_id::1
+  entitas: peter-mintzberg
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Peter+Mintzberg%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Peter Mintzberg
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-mintzberg::bing_news::1
+  entitas: peter-mintzberg
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Peter+Mintzberg%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Peter Mintzberg
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-thiel::google_news_en::1
+  entitas: peter-thiel
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Peter+Thiel%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Peter Thiel
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-thiel::google_news_en::2
+  entitas: peter-thiel
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Peter+Thiel%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Peter Thiel
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-thiel::google_news_id::1
+  entitas: peter-thiel
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Peter+Thiel%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Peter Thiel
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: peter-thiel::bing_news::1
+  entitas: peter-thiel
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Peter+Thiel%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Peter Thiel
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: raoul-pal::google_news_en::1
+  entitas: raoul-pal
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Raoul+Pal%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Raoul Pal
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: raoul-pal::google_news_en::2
+  entitas: raoul-pal
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Raoul+Pal%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Raoul Pal
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: raoul-pal::google_news_id::1
+  entitas: raoul-pal
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Raoul+Pal%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Raoul Pal
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: raoul-pal::bing_news::1
+  entitas: raoul-pal
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Raoul+Pal%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Raoul Pal
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ray-dalio::google_news_en::1
+  entitas: ray-dalio
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ray+Dalio%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Ray Dalio
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ray-dalio::google_news_en::2
+  entitas: ray-dalio
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ray+Dalio%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Ray Dalio
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ray-dalio::google_news_id::1
+  entitas: ray-dalio
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Ray+Dalio%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Ray Dalio
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ray-dalio::bing_news::1
+  entitas: ray-dalio
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Ray+Dalio%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Ray Dalio
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ric-edelman::google_news_en::1
+  entitas: ric-edelman
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ric+Edelman%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Ric Edelman
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ric-edelman::google_news_en::2
+  entitas: ric-edelman
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Ric+Edelman%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Ric Edelman
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ric-edelman::google_news_id::1
+  entitas: ric-edelman
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Ric+Edelman%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Ric Edelman
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ric-edelman::bing_news::1
+  entitas: ric-edelman
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Ric+Edelman%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Ric Edelman
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: robert-kiyosaki::google_news_en::1
+  entitas: robert-kiyosaki
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Robert+Kiyosaki%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Robert Kiyosaki
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: robert-kiyosaki::google_news_en::2
+  entitas: robert-kiyosaki
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Robert+Kiyosaki%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Robert Kiyosaki
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: robert-kiyosaki::google_news_id::1
+  entitas: robert-kiyosaki
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Robert+Kiyosaki%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Robert Kiyosaki
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: robert-kiyosaki::bing_news::1
+  entitas: robert-kiyosaki
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Robert+Kiyosaki%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Robert Kiyosaki
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: russell-barlow::google_news_en::1
+  entitas: russell-barlow
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Russell+Barlow%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Russell Barlow
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: russell-barlow::google_news_en::2
+  entitas: russell-barlow
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Russell+Barlow%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Russell Barlow
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: russell-barlow::google_news_id::1
+  entitas: russell-barlow
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Russell+Barlow%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Russell Barlow
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: russell-barlow::bing_news::1
+  entitas: russell-barlow
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Russell+Barlow%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Russell Barlow
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: samir-kerbage::google_news_en::1
+  entitas: samir-kerbage
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Samir+Kerbage%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Samir Kerbage
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: samir-kerbage::google_news_en::2
+  entitas: samir-kerbage
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Samir+Kerbage%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Samir Kerbage
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: samir-kerbage::google_news_id::1
+  entitas: samir-kerbage
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Samir+Kerbage%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Samir Kerbage
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: samir-kerbage::bing_news::1
+  entitas: samir-kerbage
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Samir+Kerbage%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Samir Kerbage
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: steve-cohen::google_news_en::1
+  entitas: steve-cohen
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Steve+Cohen%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Steve Cohen
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: steve-cohen::google_news_en::2
+  entitas: steve-cohen
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Steve+Cohen%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Steve Cohen
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: steve-cohen::google_news_id::1
+  entitas: steve-cohen
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Steve+Cohen%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Steve Cohen
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: steve-cohen::bing_news::1
+  entitas: steve-cohen
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Steve+Cohen%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Steve Cohen
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tim-draper::google_news_en::1
+  entitas: tim-draper
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tim+Draper%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Tim Draper
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tim-draper::google_news_en::2
+  entitas: tim-draper
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tim+Draper%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Tim Draper
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tim-draper::google_news_id::1
+  entitas: tim-draper
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Tim+Draper%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Tim Draper
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tim-draper::bing_news::1
+  entitas: tim-draper
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Tim+Draper%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Tim Draper
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tom-lee::google_news_en::1
+  entitas: tom-lee
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tom+Lee%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Tom Lee
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tom-lee::google_news_en::2
+  entitas: tom-lee
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tom+Lee%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Tom Lee
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tom-lee::google_news_id::1
+  entitas: tom-lee
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Tom+Lee%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Tom Lee
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tom-lee::bing_news::1
+  entitas: tom-lee
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Tom+Lee%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Tom Lee
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tyler-winklevoss::google_news_en::1
+  entitas: tyler-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tyler+Winklevoss%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Tyler Winklevoss
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tyler-winklevoss::google_news_en::2
+  entitas: tyler-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Tyler+Winklevoss%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Tyler Winklevoss
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tyler-winklevoss::google_news_id::1
+  entitas: tyler-winklevoss
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Tyler+Winklevoss%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Tyler Winklevoss
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tyler-winklevoss::bing_news::1
+  entitas: tyler-winklevoss
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Tyler+Winklevoss%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Tyler Winklevoss
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: yat-siu::google_news_en::1
+  entitas: yat-siu
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Yat+Siu%22&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Yat Siu
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: yat-siu::google_news_en::2
+  entitas: yat-siu
+  jenis_entitas: tokoh
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%22Yat+Siu%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN, terfokus) — Yat Siu
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: yat-siu::google_news_id::1
+  entitas: yat-siu
+  jenis_entitas: tokoh
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%22Yat+Siu%22&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Yat Siu
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: yat-siu::bing_news::1
+  entitas: yat-siu
+  jenis_entitas: tokoh
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%22Yat+Siu%22+%28crypto+OR+bitcoin+OR+fund+OR+ETF+OR+investment+OR+market%29&format=RSS
+  label: Bing News — Yat Siu
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: strategy::google_news_en::1
+  entitas: strategy
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Strategy%22+OR+%22MicroStrategy%22+OR+%22Strategy+Inc%22+OR+%22MSTR%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Strategy
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: strategy::google_news_id::1
+  entitas: strategy
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Strategy%22+OR+%22MicroStrategy%22+OR+%22Strategy+Inc%22+OR+%22MSTR%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Strategy
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: strategy::bing_news::1
+  entitas: strategy
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Strategy%22+OR+%22MicroStrategy%22+OR+%22Strategy+Inc%22+OR+%22MSTR%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Strategy
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: strategy::sec_edgar::1
+  entitas: strategy
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Strategy+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Strategy
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: strategy::sec_edgar::2
+  entitas: strategy
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Strategy+Inc&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — Strategy
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: procap::google_news_en::1
+  entitas: procap
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Professional+Capital+Management+%2F+ProCap%22+OR+%22ProCap+BTC%22+OR+%22Professional+Capital+Management%22+OR+%22ProCap+Financial%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Professional Capital Management / ProCap
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: procap::google_news_id::1
+  entitas: procap
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Professional+Capital+Management+%2F+ProCap%22+OR+%22ProCap+BTC%22+OR+%22Professional+Capital+Management%22+OR+%22ProCap+Financial%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Professional Capital Management / ProCap
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: procap::bing_news::1
+  entitas: procap
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Professional+Capital+Management+%2F+ProCap%22+OR+%22ProCap+BTC%22+OR+%22Professional+Capital+Management%22+OR+%22ProCap+Financial%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Professional Capital Management / ProCap
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fundstrat::google_news_en::1
+  entitas: fundstrat
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Fundstrat+%2F+Fundstrat+Capital%22+OR+%22Fundstrat+Global+Advisors%22+OR+%22Fundstrat+Capital%22+OR+%22FS+Crypto%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Fundstrat / Fundstrat Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fundstrat::google_news_id::1
+  entitas: fundstrat
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Fundstrat+%2F+Fundstrat+Capital%22+OR+%22Fundstrat+Global+Advisors%22+OR+%22Fundstrat+Capital%22+OR+%22FS+Crypto%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Fundstrat / Fundstrat Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fundstrat::bing_news::1
+  entitas: fundstrat
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Fundstrat+%2F+Fundstrat+Capital%22+OR+%22Fundstrat+Global+Advisors%22+OR+%22Fundstrat+Capital%22+OR+%22FS+Crypto%22%29&format=RSS
+  label: Bing News — Fundstrat / Fundstrat Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ark-invest::google_news_en::1
+  entitas: ark-invest
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22ARK+Invest%22+OR+%22ARK+Investment+Management%22+OR+%22ARKK%22+OR+%22ARKB%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — ARK Invest
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ark-invest::google_news_id::1
+  entitas: ark-invest
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22ARK+Invest%22+OR+%22ARK+Investment+Management%22+OR+%22ARKK%22+OR+%22ARKB%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — ARK Invest
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ark-invest::bing_news::1
+  entitas: ark-invest
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22ARK+Invest%22+OR+%22ARK+Investment+Management%22+OR+%22ARKK%22+OR+%22ARKB%22%29&format=RSS
+  label: Bing News — ARK Invest
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: ark-invest::sec_edgar::1
+  entitas: ark-invest
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=ARK+Investment+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — ARK Invest
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: blackrock::google_news_en::1
+  entitas: blackrock
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22BlackRock%22+OR+%22iShares+Bitcoin+Trust%22+OR+%22IBIT%22+OR+%22iShares+Ethereum%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — BlackRock
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blackrock::google_news_id::1
+  entitas: blackrock
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22BlackRock%22+OR+%22iShares+Bitcoin+Trust%22+OR+%22IBIT%22+OR+%22iShares+Ethereum%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — BlackRock
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blackrock::bing_news::1
+  entitas: blackrock
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22BlackRock%22+OR+%22iShares+Bitcoin+Trust%22+OR+%22IBIT%22+OR+%22iShares+Ethereum%22%29&format=RSS
+  label: Bing News — BlackRock
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blackrock::sec_edgar::1
+  entitas: blackrock
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=BlackRock+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — BlackRock
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: blackrock::sec_edgar::2
+  entitas: blackrock
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=BlackRock+Inc&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — BlackRock
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: bitwise::google_news_en::1
+  entitas: bitwise
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Bitwise%22+OR+%22Bitwise+Asset+Management%22+OR+%22BITB%22+OR+%22Bitwise+10+Crypto+Index%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Bitwise
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bitwise::google_news_id::1
+  entitas: bitwise
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Bitwise%22+OR+%22Bitwise+Asset+Management%22+OR+%22BITB%22+OR+%22Bitwise+10+Crypto+Index%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Bitwise
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bitwise::bing_news::1
+  entitas: bitwise
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Bitwise%22+OR+%22Bitwise+Asset+Management%22+OR+%22BITB%22+OR+%22Bitwise+10+Crypto+Index%22%29&format=RSS
+  label: Bing News — Bitwise
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bitwise::sec_edgar::1
+  entitas: bitwise
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Bitwise+Asset+Management+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Bitwise
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: vaneck::google_news_en::1
+  entitas: vaneck
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22VanEck%22+OR+%22Van+Eck+Associates%22+OR+%22HODL+ETF%22+OR+%22VanEck+Bitcoin+Trust%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — VanEck
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: vaneck::google_news_id::1
+  entitas: vaneck
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22VanEck%22+OR+%22Van+Eck+Associates%22+OR+%22HODL+ETF%22+OR+%22VanEck+Bitcoin+Trust%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — VanEck
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: vaneck::bing_news::1
+  entitas: vaneck
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22VanEck%22+OR+%22Van+Eck+Associates%22+OR+%22HODL+ETF%22+OR+%22VanEck+Bitcoin+Trust%22%29&format=RSS
+  label: Bing News — VanEck
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: vaneck::sec_edgar::1
+  entitas: vaneck
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Van+Eck+Associates+Corporation&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — VanEck
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: grayscale::google_news_en::1
+  entitas: grayscale
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Grayscale+Investments%22+OR+%22Grayscale+Bitcoin+Trust%22+OR+%22GBTC%22+OR+%22Grayscale+Ethereum+Trust%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Grayscale Investments
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: grayscale::google_news_id::1
+  entitas: grayscale
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Grayscale+Investments%22+OR+%22Grayscale+Bitcoin+Trust%22+OR+%22GBTC%22+OR+%22Grayscale+Ethereum+Trust%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Grayscale Investments
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: grayscale::bing_news::1
+  entitas: grayscale
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Grayscale+Investments%22+OR+%22Grayscale+Bitcoin+Trust%22+OR+%22GBTC%22+OR+%22Grayscale+Ethereum+Trust%22%29&format=RSS
+  label: Bing News — Grayscale Investments
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: grayscale::sec_edgar::1
+  entitas: grayscale
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Grayscale+Investments+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Grayscale Investments
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: franklin-templeton::google_news_en::1
+  entitas: franklin-templeton
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Franklin+Templeton%22+OR+%22Franklin+Resources%22+OR+%22EZBC%22+OR+%22Benji+Investments%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Franklin Templeton
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: franklin-templeton::google_news_id::1
+  entitas: franklin-templeton
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Franklin+Templeton%22+OR+%22Franklin+Resources%22+OR+%22EZBC%22+OR+%22Benji+Investments%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Franklin Templeton
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: franklin-templeton::bing_news::1
+  entitas: franklin-templeton
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Franklin+Templeton%22+OR+%22Franklin+Resources%22+OR+%22EZBC%22+OR+%22Benji+Investments%22%29&format=RSS
+  label: Bing News — Franklin Templeton
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: franklin-templeton::sec_edgar::1
+  entitas: franklin-templeton
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Franklin+Resources+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Franklin Templeton
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: franklin-templeton::sec_edgar::2
+  entitas: franklin-templeton
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Franklin+Resources+Inc&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — Franklin Templeton
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: fidelity::google_news_en::1
+  entitas: fidelity
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Fidelity+Investments%22+OR+%22Fidelity+Digital+Assets%22+OR+%22FBTC%22+OR+%22Fidelity+Wise+Origin%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Fidelity Investments
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fidelity::google_news_id::1
+  entitas: fidelity
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Fidelity+Investments%22+OR+%22Fidelity+Digital+Assets%22+OR+%22FBTC%22+OR+%22Fidelity+Wise+Origin%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Fidelity Investments
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fidelity::bing_news::1
+  entitas: fidelity
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Fidelity+Investments%22+OR+%22Fidelity+Digital+Assets%22+OR+%22FBTC%22+OR+%22Fidelity+Wise+Origin%22%29&format=RSS
+  label: Bing News — Fidelity Investments
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: fidelity::sec_edgar::1
+  entitas: fidelity
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=FMR+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Fidelity Investments
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: coinshares::google_news_en::1
+  entitas: coinshares
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22CoinShares%22+OR+%22CoinShares+International%22+OR+%22XBT+Provider%22+OR+%22CoinShares+Physical%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — CoinShares
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coinshares::google_news_id::1
+  entitas: coinshares
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22CoinShares%22+OR+%22CoinShares+International%22+OR+%22XBT+Provider%22+OR+%22CoinShares+Physical%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — CoinShares
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coinshares::bing_news::1
+  entitas: coinshares
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22CoinShares%22+OR+%22CoinShares+International%22+OR+%22XBT+Provider%22+OR+%22CoinShares+Physical%22%29&format=RSS
+  label: Bing News — CoinShares
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 21shares::google_news_en::1
+  entitas: 21shares
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%2221Shares%22+OR+%2221Shares+AG%22+OR+%22ARK+21Shares%22+OR+%2221Shares+Bitcoin+ETP%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — 21Shares
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 21shares::google_news_id::1
+  entitas: 21shares
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%2221Shares%22+OR+%2221Shares+AG%22+OR+%22ARK+21Shares%22+OR+%2221Shares+Bitcoin+ETP%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — 21Shares
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 21shares::bing_news::1
+  entitas: 21shares
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%2221Shares%22+OR+%2221Shares+AG%22+OR+%22ARK+21Shares%22+OR+%2221Shares+Bitcoin+ETP%22%29&format=RSS
+  label: Bing News — 21Shares
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 21shares::sec_edgar::1
+  entitas: 21shares
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=21Shares+AG&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — 21Shares
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: hashdex::google_news_en::1
+  entitas: hashdex
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Hashdex%22+OR+%22Hashdex+Asset+Management%22+OR+%22DEFI+ETF%22+OR+%22Hashdex+Nasdaq+Crypto+Index%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Hashdex
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hashdex::google_news_id::1
+  entitas: hashdex
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Hashdex%22+OR+%22Hashdex+Asset+Management%22+OR+%22DEFI+ETF%22+OR+%22Hashdex+Nasdaq+Crypto+Index%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Hashdex
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hashdex::bing_news::1
+  entitas: hashdex
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Hashdex%22+OR+%22Hashdex+Asset+Management%22+OR+%22DEFI+ETF%22+OR+%22Hashdex+Nasdaq+Crypto+Index%22%29&format=RSS
+  label: Bing News — Hashdex
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: hashdex::sec_edgar::1
+  entitas: hashdex
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Hashdex+Asset+Management+Ltd&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Hashdex
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: monochrome::google_news_en::1
+  entitas: monochrome
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Monochrome+Asset+Management%22+OR+%22Monochrome+Bitcoin+ETF%22+OR+%22IBTC+ASX%22+OR+%22Monochrome+Ethereum%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Monochrome Asset Management
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: monochrome::google_news_id::1
+  entitas: monochrome
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Monochrome+Asset+Management%22+OR+%22Monochrome+Bitcoin+ETF%22+OR+%22IBTC+ASX%22+OR+%22Monochrome+Ethereum%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Monochrome Asset Management
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: monochrome::bing_news::1
+  entitas: monochrome
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Monochrome+Asset+Management%22+OR+%22Monochrome+Bitcoin+ETF%22+OR+%22IBTC+ASX%22+OR+%22Monochrome+Ethereum%22%29&format=RSS
+  label: Bing News — Monochrome Asset Management
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: virtune::google_news_en::1
+  entitas: virtune
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Virtune%22+OR+%22Virtune+AB%22+OR+%22Virtune+Bitcoin+ETP%22+OR+%22Virtune+Crypto%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Virtune
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: virtune::google_news_id::1
+  entitas: virtune
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Virtune%22+OR+%22Virtune+AB%22+OR+%22Virtune+Bitcoin+ETP%22+OR+%22Virtune+Crypto%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Virtune
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: virtune::bing_news::1
+  entitas: virtune
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Virtune%22+OR+%22Virtune+AB%22+OR+%22Virtune+Bitcoin+ETP%22+OR+%22Virtune+Crypto%22%29&format=RSS
+  label: Bing News — Virtune
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 3iq::google_news_en::1
+  entitas: 3iq
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%223iQ+Digital+Asset+Management%22+OR+%223iQ+Corp%22+OR+%223iQ+Bitcoin+Fund%22+OR+%22QBTC%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — 3iQ Digital Asset Management
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 3iq::google_news_id::1
+  entitas: 3iq
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%223iQ+Digital+Asset+Management%22+OR+%223iQ+Corp%22+OR+%223iQ+Bitcoin+Fund%22+OR+%22QBTC%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — 3iQ Digital Asset Management
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 3iq::bing_news::1
+  entitas: 3iq
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%223iQ+Digital+Asset+Management%22+OR+%223iQ+Corp%22+OR+%223iQ+Bitcoin+Fund%22+OR+%22QBTC%22%29&format=RSS
+  label: Bing News — 3iQ Digital Asset Management
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coincheck::google_news_en::1
+  entitas: coincheck
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Coincheck+Group%22+OR+%22Coincheck+exchange%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Coincheck Group
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coincheck::google_news_id::1
+  entitas: coincheck
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Coincheck+Group%22+OR+%22Coincheck+exchange%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Coincheck Group
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coincheck::bing_news::1
+  entitas: coincheck
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Coincheck+Group%22+OR+%22Coincheck+exchange%22%29&format=RSS
+  label: Bing News — Coincheck Group
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: coincheck::sec_edgar::1
+  entitas: coincheck
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Coincheck+Group+NV&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Coincheck Group
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: coincheck::sec_edgar::2
+  entitas: coincheck
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Coincheck+Group+NV&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — Coincheck Group
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: halogen-capital::google_news_en::1
+  entitas: halogen-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Halogen+Capital%22+OR+%22Halogen+Shariah+Bitcoin%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Halogen Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: halogen-capital::google_news_id::1
+  entitas: halogen-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Halogen+Capital%22+OR+%22Halogen+Shariah+Bitcoin%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Halogen Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: halogen-capital::bing_news::1
+  entitas: halogen-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Halogen+Capital%22+OR+%22Halogen+Shariah+Bitcoin%22%29&format=RSS
+  label: Bing News — Halogen Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nobi::google_news_en::1
+  entitas: nobi
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22NOBI%22+OR+%22NOBI+crypto%22+OR+%22NOBI+Indonesia%22+OR+%22aplikasi+NOBI%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — NOBI
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nobi::google_news_id::1
+  entitas: nobi
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22NOBI%22+OR+%22NOBI+crypto%22+OR+%22NOBI+Indonesia%22+OR+%22aplikasi+NOBI%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — NOBI
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nobi::bing_news::1
+  entitas: nobi
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22NOBI%22+OR+%22NOBI+crypto%22+OR+%22NOBI+Indonesia%22+OR+%22aplikasi+NOBI%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — NOBI
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: wahed::google_news_en::1
+  entitas: wahed
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Wahed%22+OR+%22Wahed+Invest%22+OR+%22Wahed+halal+investing%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Wahed
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: wahed::google_news_id::1
+  entitas: wahed
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Wahed%22+OR+%22Wahed+Invest%22+OR+%22Wahed+halal+investing%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Wahed
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: wahed::bing_news::1
+  entitas: wahed
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Wahed%22+OR+%22Wahed+Invest%22+OR+%22Wahed+halal+investing%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Wahed
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: wahed::sec_edgar::1
+  entitas: wahed
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Wahed+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Wahed
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: morgan-creek::google_news_en::1
+  entitas: morgan-creek
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Morgan+Creek+Capital+Management%22+OR+%22Morgan+Creek+Digital%22+OR+%22Morgan+Creek+Capital%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Morgan Creek Capital Management
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: morgan-creek::google_news_id::1
+  entitas: morgan-creek
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Morgan+Creek+Capital+Management%22+OR+%22Morgan+Creek+Digital%22+OR+%22Morgan+Creek+Capital%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Morgan Creek Capital Management
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: morgan-creek::bing_news::1
+  entitas: morgan-creek
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Morgan+Creek+Capital+Management%22+OR+%22Morgan+Creek+Digital%22+OR+%22Morgan+Creek+Capital%22%29&format=RSS
+  label: Bing News — Morgan Creek Capital Management
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: morgan-creek::sec_edgar::1
+  entitas: morgan-creek
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Morgan+Creek+Capital+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Morgan Creek Capital Management
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: miller-value::google_news_en::1
+  entitas: miller-value
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Miller+Value+Partners%22+OR+%22Miller+Opportunity+Trust%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Miller Value Partners
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: miller-value::google_news_id::1
+  entitas: miller-value
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Miller+Value+Partners%22+OR+%22Miller+Opportunity+Trust%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Miller Value Partners
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: miller-value::bing_news::1
+  entitas: miller-value
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Miller+Value+Partners%22+OR+%22Miller+Opportunity+Trust%22%29&format=RSS
+  label: Bing News — Miller Value Partners
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: miller-value::sec_edgar::1
+  entitas: miller-value
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Miller+Value+Partners+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Miller Value Partners
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: skybridge-capital::google_news_en::1
+  entitas: skybridge-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22SkyBridge+Capital%22+OR+%22SALT+conference%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — SkyBridge Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: skybridge-capital::google_news_id::1
+  entitas: skybridge-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22SkyBridge+Capital%22+OR+%22SALT+conference%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — SkyBridge Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: skybridge-capital::bing_news::1
+  entitas: skybridge-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22SkyBridge+Capital%22+OR+%22SALT+conference%22%29&format=RSS
+  label: Bing News — SkyBridge Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: skybridge-capital::sec_edgar::1
+  entitas: skybridge-capital
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=SkyBridge+Capital+II+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — SkyBridge Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: dacfp::google_news_en::1
+  entitas: dacfp
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Digital+Assets+Council+of+Financial+Professionals%22+OR+%22DACFP%22+OR+%22Digital+Assets+Council%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Digital Assets Council of Financial Professionals
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dacfp::google_news_id::1
+  entitas: dacfp
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Digital+Assets+Council+of+Financial+Professionals%22+OR+%22DACFP%22+OR+%22Digital+Assets+Council%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Digital Assets Council of Financial Professionals
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: dacfp::bing_news::1
+  entitas: dacfp
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Digital+Assets+Council+of+Financial+Professionals%22+OR+%22DACFP%22+OR+%22Digital+Assets+Council%22%29&format=RSS
+  label: Bing News — Digital Assets Council of Financial Professionals
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: galaxy::google_news_en::1
+  entitas: galaxy
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Galaxy%22+OR+%22Galaxy+Digital%22+OR+%22Galaxy+Asset+Management%22+OR+%22Galaxy+Research%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Galaxy
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: galaxy::google_news_id::1
+  entitas: galaxy
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Galaxy%22+OR+%22Galaxy+Digital%22+OR+%22Galaxy+Asset+Management%22+OR+%22Galaxy+Research%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Galaxy
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: galaxy::bing_news::1
+  entitas: galaxy
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Galaxy%22+OR+%22Galaxy+Digital%22+OR+%22Galaxy+Asset+Management%22+OR+%22Galaxy+Research%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Galaxy
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: galaxy::sec_edgar::1
+  entitas: galaxy
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Galaxy+Digital+Inc&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Galaxy
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: galaxy::sec_edgar::2
+  entitas: galaxy
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Galaxy+Digital+Inc&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — Galaxy
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: maelstrom::google_news_en::1
+  entitas: maelstrom
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Maelstrom%22+OR+%22Maelstrom+Fund%22+OR+%22Maelstrom+family+office%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Maelstrom
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: maelstrom::google_news_id::1
+  entitas: maelstrom
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Maelstrom%22+OR+%22Maelstrom+Fund%22+OR+%22Maelstrom+family+office%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Maelstrom
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: maelstrom::bing_news::1
+  entitas: maelstrom
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Maelstrom%22+OR+%22Maelstrom+Fund%22+OR+%22Maelstrom+family+office%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Maelstrom
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pantera-capital::google_news_en::1
+  entitas: pantera-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Pantera+Capital%22+OR+%22Pantera+Bitcoin+Fund%22+OR+%22Pantera+Capital+Management%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Pantera Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pantera-capital::google_news_id::1
+  entitas: pantera-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Pantera+Capital%22+OR+%22Pantera+Bitcoin+Fund%22+OR+%22Pantera+Capital+Management%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Pantera Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pantera-capital::bing_news::1
+  entitas: pantera-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Pantera+Capital%22+OR+%22Pantera+Bitcoin+Fund%22+OR+%22Pantera+Capital+Management%22%29&format=RSS
+  label: Bing News — Pantera Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pantera-capital::sec_edgar::1
+  entitas: pantera-capital
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Pantera+Capital+Management+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Pantera Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: bridgewater::google_news_en::1
+  entitas: bridgewater
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Bridgewater+Associates%22+OR+%22Pure+Alpha+fund%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Bridgewater Associates
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bridgewater::google_news_id::1
+  entitas: bridgewater
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Bridgewater+Associates%22+OR+%22Pure+Alpha+fund%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Bridgewater Associates
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bridgewater::bing_news::1
+  entitas: bridgewater
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Bridgewater+Associates%22+OR+%22Pure+Alpha+fund%22%29&format=RSS
+  label: Bing News — Bridgewater Associates
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bridgewater::sec_edgar::1
+  entitas: bridgewater
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Bridgewater+Associates+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Bridgewater Associates
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: tudor-investment::google_news_en::1
+  entitas: tudor-investment
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Tudor+Investment+Corporation%22+OR+%22Tudor+BVI+Global%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Tudor Investment Corporation
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tudor-investment::google_news_id::1
+  entitas: tudor-investment
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Tudor+Investment+Corporation%22+OR+%22Tudor+BVI+Global%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Tudor Investment Corporation
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tudor-investment::bing_news::1
+  entitas: tudor-investment
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Tudor+Investment+Corporation%22+OR+%22Tudor+BVI+Global%22%29&format=RSS
+  label: Bing News — Tudor Investment Corporation
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: tudor-investment::sec_edgar::1
+  entitas: tudor-investment
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Tudor+Investment+Corporation&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Tudor Investment Corporation
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: brevan-howard::google_news_en::1
+  entitas: brevan-howard
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Brevan+Howard%22+OR+%22Brevan+Howard+Digital%22+OR+%22BH+Digital%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Brevan Howard
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brevan-howard::google_news_id::1
+  entitas: brevan-howard
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Brevan+Howard%22+OR+%22Brevan+Howard+Digital%22+OR+%22BH+Digital%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Brevan Howard
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brevan-howard::bing_news::1
+  entitas: brevan-howard
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Brevan+Howard%22+OR+%22Brevan+Howard+Digital%22+OR+%22BH+Digital%22%29&format=RSS
+  label: Bing News — Brevan Howard
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: brevan-howard::sec_edgar::1
+  entitas: brevan-howard
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Brevan+Howard+Asset+Management+LLP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Brevan Howard
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: point72::google_news_en::1
+  entitas: point72
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Point72%22+OR+%22Point72+Asset+Management%22+OR+%22Point72+Ventures%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Point72
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: point72::google_news_id::1
+  entitas: point72
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Point72%22+OR+%22Point72+Asset+Management%22+OR+%22Point72+Ventures%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Point72
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: point72::bing_news::1
+  entitas: point72
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Point72%22+OR+%22Point72+Asset+Management%22+OR+%22Point72+Ventures%22%29&format=RSS
+  label: Bing News — Point72
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: point72::sec_edgar::1
+  entitas: point72
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Point72+Asset+Management+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Point72
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: parafi-capital::google_news_en::1
+  entitas: parafi-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22ParaFi+Capital%22+OR+%22ParaFi+Technologies%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — ParaFi Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: parafi-capital::google_news_id::1
+  entitas: parafi-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22ParaFi+Capital%22+OR+%22ParaFi+Technologies%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — ParaFi Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: parafi-capital::bing_news::1
+  entitas: parafi-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22ParaFi+Capital%22+OR+%22ParaFi+Technologies%22%29&format=RSS
+  label: Bing News — ParaFi Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: parafi-capital::sec_edgar::1
+  entitas: parafi-capital
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=ParaFi+Capital+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — ParaFi Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: blocktower::google_news_en::1
+  entitas: blocktower
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22BlockTower+Capital%22+OR+%22BlockTower+Credit%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — BlockTower Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blocktower::google_news_id::1
+  entitas: blocktower
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22BlockTower+Capital%22+OR+%22BlockTower+Credit%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — BlockTower Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blocktower::bing_news::1
+  entitas: blocktower
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22BlockTower+Capital%22+OR+%22BlockTower+Credit%22%29&format=RSS
+  label: Bing News — BlockTower Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: blocktower::sec_edgar::1
+  entitas: blocktower
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=BlockTower+Capital+Advisors+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — BlockTower Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: arca::google_news_en::1
+  entitas: arca
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Arca%22+OR+%22Arca+Capital+Management%22+OR+%22Arca+Labs%22+OR+%22Arca+digital+assets%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Arca
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arca::google_news_id::1
+  entitas: arca
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Arca%22+OR+%22Arca+Capital+Management%22+OR+%22Arca+Labs%22+OR+%22Arca+digital+assets%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Arca
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arca::bing_news::1
+  entitas: arca
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Arca%22+OR+%22Arca+Capital+Management%22+OR+%22Arca+Labs%22+OR+%22Arca+digital+assets%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Arca
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: arca::sec_edgar::1
+  entitas: arca
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Arca+Capital+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Arca
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: nine-blocks::google_news_en::1
+  entitas: nine-blocks
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Nine+Blocks+Capital+Management%22+OR+%22Nine+Blocks+Capital%22+OR+%22Nine+Blocks+Dubai%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Nine Blocks Capital Management
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nine-blocks::google_news_id::1
+  entitas: nine-blocks
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Nine+Blocks+Capital+Management%22+OR+%22Nine+Blocks+Capital%22+OR+%22Nine+Blocks+Dubai%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Nine Blocks Capital Management
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nine-blocks::bing_news::1
+  entitas: nine-blocks
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Nine+Blocks+Capital+Management%22+OR+%22Nine+Blocks+Capital%22+OR+%22Nine+Blocks+Dubai%22%29&format=RSS
+  label: Bing News — Nine Blocks Capital Management
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nickel-digital::google_news_en::1
+  entitas: nickel-digital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Nickel+Digital+Asset+Management%22+OR+%22Nickel+Digital%22+OR+%22Nickel+Asset+Management%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Nickel Digital Asset Management
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nickel-digital::google_news_id::1
+  entitas: nickel-digital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Nickel+Digital+Asset+Management%22+OR+%22Nickel+Digital%22+OR+%22Nickel+Asset+Management%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Nickel Digital Asset Management
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: nickel-digital::bing_news::1
+  entitas: nickel-digital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Nickel+Digital+Asset+Management%22+OR+%22Nickel+Digital%22+OR+%22Nickel+Asset+Management%22%29&format=RSS
+  label: Bing News — Nickel Digital Asset Management
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pythagoras::google_news_en::1
+  entitas: pythagoras
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Pythagoras+Investments%22+OR+%22Pythagoras+Investment+Management%22+OR+%22Pythagoras+crypto+fund%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Pythagoras Investments
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pythagoras::google_news_id::1
+  entitas: pythagoras
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Pythagoras+Investments%22+OR+%22Pythagoras+Investment+Management%22+OR+%22Pythagoras+crypto+fund%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Pythagoras Investments
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pythagoras::bing_news::1
+  entitas: pythagoras
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Pythagoras+Investments%22+OR+%22Pythagoras+Investment+Management%22+OR+%22Pythagoras+crypto+fund%22%29&format=RSS
+  label: Bing News — Pythagoras Investments
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: pythagoras::sec_edgar::1
+  entitas: pythagoras
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Pythagoras+Investment+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Pythagoras Investments
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: bkcm::google_news_en::1
+  entitas: bkcm
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22BKCM%22+OR+%22BKCM+LLC%22+OR+%22BKCM+Digital+Asset+Fund%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — BKCM
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bkcm::google_news_id::1
+  entitas: bkcm
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22BKCM%22+OR+%22BKCM+LLC%22+OR+%22BKCM+Digital+Asset+Fund%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — BKCM
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bkcm::bing_news::1
+  entitas: bkcm
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22BKCM%22+OR+%22BKCM+LLC%22+OR+%22BKCM+Digital+Asset+Fund%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — BKCM
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bkcm::sec_edgar::1
+  entitas: bkcm
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=BKCM+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — BKCM
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: a16z::google_news_en::1
+  entitas: a16z
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Andreessen+Horowitz%22+OR+%22a16z%22+OR+%22AH+Capital+Management%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Andreessen Horowitz
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: a16z::google_news_id::1
+  entitas: a16z
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Andreessen+Horowitz%22+OR+%22a16z%22+OR+%22AH+Capital+Management%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Andreessen Horowitz
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: a16z::bing_news::1
+  entitas: a16z
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Andreessen+Horowitz%22+OR+%22a16z%22+OR+%22AH+Capital+Management%22%29&format=RSS
+  label: Bing News — Andreessen Horowitz
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: a16z::sec_edgar::1
+  entitas: a16z
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=AH+Capital+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Andreessen Horowitz
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: a16z-crypto::google_news_en::1
+  entitas: a16z-crypto
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22a16z+crypto%22+OR+%22a16z+Crypto+Startup+School%22+OR+%22State+of+Crypto+report%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — a16z crypto
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: a16z-crypto::google_news_id::1
+  entitas: a16z-crypto
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22a16z+crypto%22+OR+%22a16z+Crypto+Startup+School%22+OR+%22State+of+Crypto+report%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — a16z crypto
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: a16z-crypto::bing_news::1
+  entitas: a16z-crypto
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22a16z+crypto%22+OR+%22a16z+Crypto+Startup+School%22+OR+%22State+of+Crypto+report%22%29&format=RSS
+  label: Bing News — a16z crypto
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: founders-fund::google_news_en::1
+  entitas: founders-fund
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Founders+Fund%22+OR+%22Thiel+Capital%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Founders Fund
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: founders-fund::google_news_id::1
+  entitas: founders-fund
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Founders+Fund%22+OR+%22Thiel+Capital%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Founders Fund
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: founders-fund::bing_news::1
+  entitas: founders-fund
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Founders+Fund%22+OR+%22Thiel+Capital%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Founders Fund
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: founders-fund::sec_edgar::1
+  entitas: founders-fund
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Founders+Fund+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Founders Fund
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: angellist::google_news_en::1
+  entitas: angellist
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22AngelList%22+OR+%22AngelList+Venture%22+OR+%22AngelList+Advisors%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — AngelList
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: angellist::google_news_id::1
+  entitas: angellist
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22AngelList%22+OR+%22AngelList+Venture%22+OR+%22AngelList+Advisors%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — AngelList
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: angellist::bing_news::1
+  entitas: angellist
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22AngelList%22+OR+%22AngelList+Venture%22+OR+%22AngelList+Advisors%22%29&format=RSS
+  label: Bing News — AngelList
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: angellist::sec_edgar::1
+  entitas: angellist
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=AngelList+Advisors+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — AngelList
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: draper-associates::google_news_en::1
+  entitas: draper-associates
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Draper+Associates%22+OR+%22Draper+Fisher+Jurvetson%22+OR+%22Draper+Goren%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Draper Associates
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: draper-associates::google_news_id::1
+  entitas: draper-associates
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Draper+Associates%22+OR+%22Draper+Fisher+Jurvetson%22+OR+%22Draper+Goren%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Draper Associates
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: draper-associates::bing_news::1
+  entitas: draper-associates
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Draper+Associates%22+OR+%22Draper+Fisher+Jurvetson%22+OR+%22Draper+Goren%22%29&format=RSS
+  label: Bing News — Draper Associates
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: oleary-ventures::google_news_en::1
+  entitas: oleary-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22O%27Leary+Ventures%22+OR+%22OLeary+Ventures%22+OR+%22Mr+Wonderful+crypto%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — O'Leary Ventures
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: oleary-ventures::google_news_id::1
+  entitas: oleary-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22O%27Leary+Ventures%22+OR+%22OLeary+Ventures%22+OR+%22Mr+Wonderful+crypto%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — O'Leary Ventures
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: oleary-ventures::bing_news::1
+  entitas: oleary-ventures
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22O%27Leary+Ventures%22+OR+%22OLeary+Ventures%22+OR+%22Mr+Wonderful+crypto%22%29&format=RSS
+  label: Bing News — O'Leary Ventures
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: social-capital::google_news_en::1
+  entitas: social-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Social+Capital%22+OR+%22Social+Capital+LP%22+OR+%22Social+Capital+Hedosophia%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Social Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: social-capital::google_news_id::1
+  entitas: social-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Social+Capital%22+OR+%22Social+Capital+LP%22+OR+%22Social+Capital+Hedosophia%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Social Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: social-capital::bing_news::1
+  entitas: social-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Social+Capital%22+OR+%22Social+Capital+LP%22+OR+%22Social+Capital+Hedosophia%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Social Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: social-capital::sec_edgar::1
+  entitas: social-capital
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Social+Capital+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Social Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: mark-cuban-companies::google_news_en::1
+  entitas: mark-cuban-companies
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Mark+Cuban+Companies%22+OR+%22Cost+Plus+Drugs%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Mark Cuban Companies
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban-companies::google_news_id::1
+  entitas: mark-cuban-companies
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Mark+Cuban+Companies%22+OR+%22Cost+Plus+Drugs%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Mark Cuban Companies
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: mark-cuban-companies::bing_news::1
+  entitas: mark-cuban-companies
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Mark+Cuban+Companies%22+OR+%22Cost+Plus+Drugs%22%29&format=RSS
+  label: Bing News — Mark Cuban Companies
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: union-square-ventures::google_news_en::1
+  entitas: union-square-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Union+Square+Ventures%22+OR+%22USV+crypto+fund%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Union Square Ventures
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: union-square-ventures::google_news_id::1
+  entitas: union-square-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Union+Square+Ventures%22+OR+%22USV+crypto+fund%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Union Square Ventures
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: union-square-ventures::bing_news::1
+  entitas: union-square-ventures
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Union+Square+Ventures%22+OR+%22USV+crypto+fund%22%29&format=RSS
+  label: Bing News — Union Square Ventures
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: union-square-ventures::sec_edgar::1
+  entitas: union-square-ventures
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Union+Square+Ventures+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Union Square Ventures
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: castle-island::google_news_en::1
+  entitas: castle-island
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Castle+Island+Ventures%22+OR+%22Castle+Island+VC%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Castle Island Ventures
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: castle-island::google_news_id::1
+  entitas: castle-island
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Castle+Island+Ventures%22+OR+%22Castle+Island+VC%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Castle Island Ventures
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: castle-island::bing_news::1
+  entitas: castle-island
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Castle+Island+Ventures%22+OR+%22Castle+Island+VC%22%29&format=RSS
+  label: Bing News — Castle Island Ventures
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: castle-island::sec_edgar::1
+  entitas: castle-island
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Castle+Island+Ventures+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Castle Island Ventures
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: crucible-capital::google_news_en::1
+  entitas: crucible-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Crucible+Capital%22+OR+%22Crucible+Ventures%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Crucible Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: crucible-capital::google_news_id::1
+  entitas: crucible-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Crucible+Capital%22+OR+%22Crucible+Ventures%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Crucible Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: crucible-capital::bing_news::1
+  entitas: crucible-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Crucible+Capital%22+OR+%22Crucible+Ventures%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Crucible Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: placeholder-vc::google_news_en::1
+  entitas: placeholder-vc
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Placeholder%22+OR+%22Placeholder+VC%22+OR+%22Placeholder+Management%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Placeholder
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: placeholder-vc::google_news_id::1
+  entitas: placeholder-vc
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Placeholder%22+OR+%22Placeholder+VC%22+OR+%22Placeholder+Management%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Placeholder
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: placeholder-vc::bing_news::1
+  entitas: placeholder-vc
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Placeholder%22+OR+%22Placeholder+VC%22+OR+%22Placeholder+Management%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Placeholder
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: placeholder-vc::sec_edgar::1
+  entitas: placeholder-vc
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Placeholder+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Placeholder
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: haun-ventures::google_news_en::1
+  entitas: haun-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Haun+Ventures%22+OR+%22Haun+Ventures+Management%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Haun Ventures
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: haun-ventures::google_news_id::1
+  entitas: haun-ventures
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Haun+Ventures%22+OR+%22Haun+Ventures+Management%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Haun Ventures
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: haun-ventures::bing_news::1
+  entitas: haun-ventures
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Haun+Ventures%22+OR+%22Haun+Ventures+Management%22%29&format=RSS
+  label: Bing News — Haun Ventures
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: haun-ventures::sec_edgar::1
+  entitas: haun-ventures
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Haun+Ventures+Management+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Haun Ventures
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: 50t::google_news_en::1
+  entitas: 50t
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%2250T%22+OR+%2250T+Holdings%22+OR+%2210T+Holdings%22+OR+%221RoundTable+Partners%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — 50T
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 50t::google_news_id::1
+  entitas: 50t
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%2250T%22+OR+%2250T+Holdings%22+OR+%2210T+Holdings%22+OR+%221RoundTable+Partners%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — 50T
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 50t::bing_news::1
+  entitas: 50t
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%2250T%22+OR+%2250T+Holdings%22+OR+%2210T+Holdings%22+OR+%221RoundTable+Partners%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — 50T
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 50t::sec_edgar::1
+  entitas: 50t
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=50T+Holdings&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — 50T
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: animoca-brands::google_news_en::1
+  entitas: animoca-brands
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Animoca+Brands%22+OR+%22Animoca%22+OR+%22Mocaverse%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Animoca Brands
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: animoca-brands::google_news_id::1
+  entitas: animoca-brands
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Animoca+Brands%22+OR+%22Animoca%22+OR+%22Mocaverse%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Animoca Brands
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: animoca-brands::bing_news::1
+  entitas: animoca-brands
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Animoca+Brands%22+OR+%22Animoca%22+OR+%22Mocaverse%22%29&format=RSS
+  label: Bing News — Animoca Brands
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: thoma-bravo::google_news_en::1
+  entitas: thoma-bravo
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Thoma+Bravo%22+OR+%22Thoma+Bravo+Advantage%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Thoma Bravo
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: thoma-bravo::google_news_id::1
+  entitas: thoma-bravo
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Thoma+Bravo%22+OR+%22Thoma+Bravo+Advantage%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Thoma Bravo
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: thoma-bravo::bing_news::1
+  entitas: thoma-bravo
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Thoma+Bravo%22+OR+%22Thoma+Bravo+Advantage%22%29&format=RSS
+  label: Bing News — Thoma Bravo
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: thoma-bravo::sec_edgar::1
+  entitas: thoma-bravo
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Thoma+Bravo+LP&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Thoma Bravo
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: real-vision::google_news_en::1
+  entitas: real-vision
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Real+Vision%22+OR+%22Real+Vision+Finance%22+OR+%22Real+Vision+Crypto%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Real Vision
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: real-vision::google_news_id::1
+  entitas: real-vision
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Real+Vision%22+OR+%22Real+Vision+Finance%22+OR+%22Real+Vision+Crypto%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Real Vision
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: real-vision::bing_news::1
+  entitas: real-vision
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Real+Vision%22+OR+%22Real+Vision+Finance%22+OR+%22Real+Vision+Crypto%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Real Vision
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: global-macro-investor::google_news_en::1
+  entitas: global-macro-investor
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Global+Macro+Investor%22+OR+%22GMI+report%22+OR+%22Everything+Code%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Global Macro Investor
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: global-macro-investor::google_news_id::1
+  entitas: global-macro-investor
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Global+Macro+Investor%22+OR+%22GMI+report%22+OR+%22Everything+Code%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Global Macro Investor
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: global-macro-investor::bing_news::1
+  entitas: global-macro-investor
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Global+Macro+Investor%22+OR+%22GMI+report%22+OR+%22Everything+Code%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Global Macro Investor
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden-strategy::google_news_en::1
+  entitas: lyn-alden-strategy
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Lyn+Alden+Investment+Strategy%22+OR+%22Lyn+Alden+newsletter%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Lyn Alden Investment Strategy
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden-strategy::google_news_id::1
+  entitas: lyn-alden-strategy
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Lyn+Alden+Investment+Strategy%22+OR+%22Lyn+Alden+newsletter%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Lyn Alden Investment Strategy
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: lyn-alden-strategy::bing_news::1
+  entitas: lyn-alden-strategy
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Lyn+Alden+Investment+Strategy%22+OR+%22Lyn+Alden+newsletter%22%29&format=RSS
+  label: Bing News — Lyn Alden Investment Strategy
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bianco-research::google_news_en::1
+  entitas: bianco-research
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Bianco+Research%22+OR+%22Bianco+Advisors%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Bianco Research
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bianco-research::google_news_id::1
+  entitas: bianco-research
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Bianco+Research%22+OR+%22Bianco+Advisors%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Bianco Research
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: bianco-research::bing_news::1
+  entitas: bianco-research
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Bianco+Research%22+OR+%22Bianco+Advisors%22%29&format=RSS
+  label: Bing News — Bianco Research
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 22v-research::google_news_en::1
+  entitas: 22v-research
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%2222V+Research%22+OR+%2222V+macro%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — 22V Research
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 22v-research::google_news_id::1
+  entitas: 22v-research
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%2222V+Research%22+OR+%2222V+macro%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — 22V Research
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: 22v-research::bing_news::1
+  entitas: 22v-research
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%2222V+Research%22+OR+%2222V+macro%22%29&format=RSS
+  label: Bing News — 22V Research
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: rich-dad::google_news_en::1
+  entitas: rich-dad
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Rich+Dad%22+OR+%22Rich+Dad+Poor+Dad%22+OR+%22Rich+Dad+Company%22+OR+%22Rich+Dad+Radio%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Rich Dad
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: rich-dad::google_news_id::1
+  entitas: rich-dad
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Rich+Dad%22+OR+%22Rich+Dad+Poor+Dad%22+OR+%22Rich+Dad+Company%22+OR+%22Rich+Dad+Radio%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Rich Dad
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: rich-dad::bing_news::1
+  entitas: rich-dad
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Rich+Dad%22+OR+%22Rich+Dad+Poor+Dad%22+OR+%22Rich+Dad+Company%22+OR+%22Rich+Dad+Radio%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Rich Dad
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cnbc::google_news_en::1
+  entitas: cnbc
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22CNBC%22+OR+%22CNBC+Fast+Money%22+OR+%22CNBC+Crypto+World%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — CNBC
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cnbc::google_news_id::1
+  entitas: cnbc
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22CNBC%22+OR+%22CNBC+Fast+Money%22+OR+%22CNBC+Crypto+World%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — CNBC
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: cnbc::bing_news::1
+  entitas: cnbc
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22CNBC%22+OR+%22CNBC+Fast+Money%22+OR+%22CNBC+Crypto+World%22%29&format=RSS
+  label: Bing News — CNBC
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: gemini::google_news_en::1
+  entitas: gemini
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Gemini%22+OR+%22Gemini+Trust+Company%22+OR+%22Gemini+exchange%22+OR+%22Gemini+Earn%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Gemini
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: gemini::google_news_id::1
+  entitas: gemini
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Gemini%22+OR+%22Gemini+Trust+Company%22+OR+%22Gemini+exchange%22+OR+%22Gemini+Earn%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Gemini
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: gemini::bing_news::1
+  entitas: gemini
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Gemini%22+OR+%22Gemini+Trust+Company%22+OR+%22Gemini+exchange%22+OR+%22Gemini+Earn%22%29+%28bitcoin+OR+crypto+OR+cryptocurrency+OR+ETF+OR+fund+OR+digital+asset%29&format=RSS
+  label: Bing News — Gemini
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: gemini::sec_edgar::1
+  entitas: gemini
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Gemini+Trust+Company+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Gemini
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: gemini::sec_edgar::2
+  entitas: gemini
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Gemini+Trust+Company+LLC&type=8-K&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 8-K (aksi korporasi) — Gemini
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
+- id: winklevoss-capital::google_news_en::1
+  entitas: winklevoss-capital
+  jenis_entitas: organisasi
+  jenis: google_news_en
+  url: https://news.google.com/rss/search?q=%28%22Winklevoss+Capital%22+OR+%22Winklevoss+Capital+Management%22%29&hl=en-US&gl=US&ceid=US:en
+  label: Google News (EN) — Winklevoss Capital
+  prioritas: 1
+  bobot: 1.0
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: winklevoss-capital::google_news_id::1
+  entitas: winklevoss-capital
+  jenis_entitas: organisasi
+  jenis: google_news_id
+  url: https://news.google.com/rss/search?q=%28%22Winklevoss+Capital%22+OR+%22Winklevoss+Capital+Management%22%29&hl=id&gl=ID&ceid=ID:id
+  label: Google News (ID) — Winklevoss Capital
+  prioritas: 2
+  bobot: 0.95
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: winklevoss-capital::bing_news::1
+  entitas: winklevoss-capital
+  jenis_entitas: organisasi
+  jenis: bing_news
+  url: https://www.bing.com/news/search?q=%28%22Winklevoss+Capital%22+OR+%22Winklevoss+Capital+Management%22%29&format=RSS
+  label: Bing News — Winklevoss Capital
+  prioritas: 2
+  bobot: 0.9
+  aktif: true
+  terverifikasi: true
+  catatan: ''
+- id: winklevoss-capital::sec_edgar::1
+  entitas: winklevoss-capital
+  jenis_entitas: organisasi
+  jenis: sec_edgar
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=Winklevoss+Capital+Management+LLC&type=13F-HR&dateb=&owner=include&count=20&output=atom
+  label: SEC EDGAR 13F-HR (posisi triwulanan) — Winklevoss Capital
+  prioritas: 1
+  bobot: 1.4
+  aktif: true
+  terverifikasi: false
+  catatan: Pencarian berdasarkan nama; ganti ke CIK bila hasilnya meleset
