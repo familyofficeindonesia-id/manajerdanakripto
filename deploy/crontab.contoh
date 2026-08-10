@@ -1,0 +1,24 @@
+# Contoh crontab bila Anda lebih memilih penjadwalan berkala ketimbang daemon.
+# Pasang dengan:  crontab -e   lalu tempelkan baris di bawah ini.
+#
+# Semua waktu mengikuti zona waktu server. Setel ke Asia/Jakarta dengan:
+#   sudo timedatectl set-timezone Asia/Jakarta
+
+MDK=/opt/manajerdanakripto
+PYTHONPATH=/opt/manajerdanakripto/src
+PY=/opt/manajerdanakripto/.venv/bin/python
+
+# Pemantauan setiap 20 menit sepanjang hari.
+*/20 * * * * cd $MDK && set -a && . ./.env && set +a && $PY -m mdk radar pantau --senyap --teruskan >> data/radar/cron.log 2>&1
+
+# Penerjemahan tiga kali sehari: 06.00, 12.00, dan 18.00 WIB.
+0 6,12,18 * * * cd $MDK && set -a && . ./.env && set +a && $PY -m mdk tulis --batas 25 >> data/radar/tulis.log 2>&1
+
+# Bangun ulang situs setiap jam.
+15 * * * * cd $MDK && $PY -m mdk bangun >> data/radar/bangun.log 2>&1
+
+# Uji kesehatan sumber setiap Senin pukul 03.00 dan nonaktifkan yang mati.
+0 3 * * 1 cd $MDK && $PY -m mdk radar periksa --semua --nonaktifkan-mati >> data/radar/periksa.log 2>&1
+
+# Dasbor pemantauan tiap 30 menit.
+*/30 * * * * cd $MDK && $PY -m mdk radar dasbor >> /dev/null 2>&1
