@@ -167,7 +167,7 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
 
     if tanggapan is None or tanggapan.status_code != 200:
         kode = "tanpa tanggapan" if tanggapan is None else tanggapan.status_code
-        rinci = "" if tanggapan is None else tanggapan.text[:300]
+        rinci = "" if tanggapan is None else " ".join(tanggapan.text.split())[:600]
         raise KesalahanPenulisan(f"API {kode}: {rinci}")
 
     data = tanggapan.json()
