@@ -140,10 +140,6 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
         "generationConfig": {
             "temperature": float(kfg.ai.get("suhu", 0.3)),
             "maxOutputTokens": int(kfg.ai.get("maks_token", 3000)),
-            "responseMimeType": "application/json",
-            # Matikan penalaran internal: anggarannya ikut memakan maxOutputTokens
-            # sehingga jawaban bisa terpotong habis sebelum teks sempat ditulis.
-            "thinkingConfig": {"thinkingBudget": 0},
         },
     }
 
