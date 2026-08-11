@@ -1,0 +1,116 @@
+name: Bangun ulang tampilan situs
+
+# Alur ini hanya membangun ulang situs dari basis data artikel yang sudah ada,
+# lalu menerbitkannya. Tidak mengambil umpan berita dan tidak memanggil Gemini,
+# sehingga selesai dalam sekitar satu menit dan tidak memakai kuota API.
+#
+# Dipakai ketika yang berubah hanya tampilan: berkas di static/, templates/,
+# halaman di content/, atau pengaturan situs.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "static/**"
+      - "templates/**"
+      - "content/**"
+      - "config/settings.yaml"
+      - "config/organisasi.yaml"
+      - "src/mdk/build.py"
+      - ".github/workflows/tampilan.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Memakai grup yang sama dengan alur penerbitan berita agar keduanya tidak
+# pernah menulis ke GitHub Pages pada saat bersamaan.
+concurrency:
+  group: terbit
+  cancel-in-progress: false
+
+jobs:
+  bangun-tampilan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Ambil repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Pasang dependensi
+        run: pip install -r requirements.txt
+
+      # Basis data artikel tidak disimpan di repositori (lihat .gitignore),
+      # melainkan di cache Actions yang ditulis oleh alur penerbitan berita.
+      - name: Pulihkan basis data artikel
+        uses: actions/cache/restore@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-tampilan
+          restore-keys: mdk-db-
+
+      # Pengaman: tanpa basis data, `bangun` akan menghasilkan situs kosong dan
+      # menimpa seluruh artikel yang sedang tayang. Lebih baik gagal di sini.
+      - name: Pastikan basis data tersedia
+        run: |
+          if [ ! -s data/mdk.sqlite3 ]; then
+            echo "::error::Basis data artikel tidak ditemukan di cache."
+            echo "Jalankan alur 'Ambil berita dan terbitkan situs' lebih dulu,"
+            echo "lalu ulangi alur ini."
+            exit 1
+          fi
+          echo "Basis data ditemukan: $(du -h data/mdk.sqlite3 | cut -f1)"
+
+      - name: Uji kesehatan konfigurasi
+        env:
+          PYTHONPATH: src
+        run: python -m mdk periksa
+
+      - name: Bangun situs statis
+        env:
+          PYTHONPATH: src
+        run: python -m mdk bangun
+
+      - name: Tulis berkas CNAME (domain kustom)
+        run: echo "manajerdanakripto.com" > dist/CNAME
+
+      # Pengaman kedua: bila hasil build terlalu sedikit, kemungkinan besar ada
+      # yang salah — jangan terbitkan agar situs yang sedang tayang tetap utuh.
+      - name: Periksa kewajaran hasil build
+        run: |
+          jumlah=$(find dist -name '*.html' | wc -l)
+          echo "Halaman HTML terbangun: $jumlah"
+          if [ "$jumlah" -lt 20 ]; then
+            echo "::error::Hasil build hanya $jumlah halaman — penerbitan dibatalkan."
+            exit 1
+          fi
+
+      - name: Siapkan GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Unggah artefak situs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Terbitkan ke GitHub Pages
+        id: penerbitan
+        uses: actions/deploy-pages@v4
+
+      - name: Ringkasan
+        run: |
+          {
+            echo "### Tampilan situs diterbitkan ulang"
+            echo ""
+            echo "- URL: ${{ steps.penerbitan.outputs.page_url }}"
+            echo "- Tanpa pengambilan umpan berita dan tanpa pemanggilan Gemini."
+          } >> "$GITHUB_STEP_SUMMARY"
