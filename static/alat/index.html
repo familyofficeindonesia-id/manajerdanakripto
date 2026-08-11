@@ -280,6 +280,11 @@ tr.tekan td{background:var(--giok-m);font-weight:600}
 .mdk-nav a{color:#B9CBC7;text-decoration:none;transition:color .13s}
 .mdk-nav a:hover{color:#fff;text-decoration:underline}
 .mdk-nav a.mdk-balik{color:#fff;font-weight:600}
+/* Perbaikan: .tirai hanya diberi display:none di dalam @media (max-width:900px),
+   sehingga di layar lebar ia menjadi item grid kosong yang menggeser .utama
+   ke kolom 1 baris 2. Aturan dasar di bawah mengembalikan tata letak dua kolom.
+   .tirai.buka (dua kelas) tetap menang di ponsel, jadi laci menu normal. */
+.tirai{display:none}
 #fps{min-height:calc(100vh - var(--mdk-bar))}
 .rel{height:calc(100vh - var(--mdk-bar))}
 @media (max-width:760px){ .mdk-nav a:not(.mdk-balik){display:none} }
