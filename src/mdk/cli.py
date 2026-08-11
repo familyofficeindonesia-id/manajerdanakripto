@@ -127,10 +127,10 @@ def perintah_periksa(args) -> int:
 
     kunci = kfg.kunci_api
     contoh = (not kunci) or len(kunci) < 30 or "xxxx" in kunci.lower()
-    print("! ANTHROPIC_API_KEY masih berisi nilai contoh — tahap `tulis` tidak akan berjalan"
+    print("! GEMINI_API_KEY masih berisi nilai contoh — tahap `tulis` tidak akan berjalan"
           if contoh and kunci else
-          ("! ANTHROPIC_API_KEY belum disetel — tahap `tulis` tidak akan berjalan"
-           if contoh else "✓ ANTHROPIC_API_KEY terpasang"))
+          ("! GEMINI_API_KEY belum disetel — tahap `tulis` tidak akan berjalan"
+           if contoh else "✓ GEMINI_API_KEY terpasang"))
 
     if masalah:
         print("\n✗ Ditemukan masalah:")

@@ -68,7 +68,7 @@ class Konfigurasi:
 
     @property
     def kunci_api(self) -> str:
-        return os.environ.get("ANTHROPIC_API_KEY", "")
+        return os.environ.get("GEMINI_API_KEY", "")
 
     def rubrik_by_slug(self, slug: str) -> dict:
         for r in self.rubrik:

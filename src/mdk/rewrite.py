@@ -22,8 +22,7 @@ from .entities import Registri
 from .models import Artikel
 from .utils import (hitung_kata, potong, sekarang_wib, sidik_jari, slugify)
 
-API_URL = "https://api.anthropic.com/v1/messages"
-API_VERSION = "2023-06-01"
+API_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
 
 class KesalahanPenulisan(RuntimeError):
@@ -121,25 +120,69 @@ Tulis artikel sesuai aturan pada instruksi sistem. Balas hanya dengan JSON."""
 
 # ----------------------------------------------------------------- panggilan --
 def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
+    """Panggil Gemini generateContent dan kembalikan teks jawabannya.
+
+    Tingkat gratis Gemini membatasi permintaan per menit, maka kode ini mengulang
+    percobaan dengan jeda menaik saat menerima 429 alih-alih langsung menyerah.
+    """
     if not kfg.kunci_api:
         raise KesalahanPenulisan(
-            "ANTHROPIC_API_KEY belum disetel. Salin .env.example menjadi .env lalu isi kuncinya.")
-    muatan = {
-        "model": kfg.ai.get("model", "claude-sonnet-4-6"),
-        "max_tokens": int(kfg.ai.get("maks_token", 2000)),
-        "temperature": float(kfg.ai.get("suhu", 0.3)),
-        "system": sistem,
-        "messages": [{"role": "user", "content": pengguna}],
+            "GEMINI_API_KEY belum disetel. Simpan kunci Google AI Studio sebagai "
+            "secret repositori bernama GEMINI_API_KEY.")
+
+    model = str(kfg.ai.get("model", "gemini-2.5-flash"))
+    url = f"{API_URL}/{model}:generateContent"
+    kepala = {"x-goog-api-key": kfg.kunci_api, "content-type": "application/json"}
+
+    muatan: dict[str, Any] = {
+        "system_instruction": {"parts": [{"text": sistem}]},
+        "contents": [{"role": "user", "parts": [{"text": pengguna}]}],
+        "generationConfig": {
+            "temperature": float(kfg.ai.get("suhu", 0.3)),
+            "maxOutputTokens": int(kfg.ai.get("maks_token", 3000)),
+            "responseMimeType": "application/json",
+            # Matikan penalaran internal: anggarannya ikut memakan maxOutputTokens
+            # sehingga jawaban bisa terpotong habis sebelum teks sempat ditulis.
+            "thinkingConfig": {"thinkingBudget": 0},
+        },
     }
-    tanggapan = requests.post(
-        API_URL, timeout=120,
-        headers={"x-api-key": kfg.kunci_api, "anthropic-version": API_VERSION,
-                 "content-type": "application/json"},
-        json=muatan)
-    if tanggapan.status_code != 200:
-        raise KesalahanPenulisan(f"API {tanggapan.status_code}: {tanggapan.text[:300]}")
+
+    tanggapan = None
+    tunggu = 5.0
+    for percobaan in range(4):
+        tanggapan = requests.post(url, timeout=120, headers=kepala, json=muatan)
+
+        # Sebagian model menolak thinkingConfig; coba sekali lagi tanpa itu.
+        if (tanggapan.status_code == 400
+                and "thinking" in tanggapan.text.lower()
+                and "thinkingConfig" in muatan["generationConfig"]):
+            muatan["generationConfig"].pop("thinkingConfig")
+            continue
+
+        if tanggapan.status_code == 429 and percobaan < 3:
+            time.sleep(tunggu)
+            tunggu *= 2
+            continue
+        break
+
+    if tanggapan is None or tanggapan.status_code != 200:
+        kode = "tanpa tanggapan" if tanggapan is None else tanggapan.status_code
+        rinci = "" if tanggapan is None else tanggapan.text[:300]
+        raise KesalahanPenulisan(f"API {kode}: {rinci}")
+
     data = tanggapan.json()
-    return "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+    kandidat = data.get("candidates") or []
+    if not kandidat:
+        alasan = (data.get("promptFeedback") or {}).get("blockReason", "tidak diketahui")
+        raise KesalahanPenulisan(f"Model tidak mengembalikan kandidat (alasan: {alasan})")
+
+    bagian = (kandidat[0].get("content") or {}).get("parts") or []
+    teks = "".join(b.get("text", "") for b in bagian if isinstance(b.get("text"), str))
+    if not teks.strip():
+        raise KesalahanPenulisan(
+            f"Keluaran model kosong (finishReason: {kandidat[0].get('finishReason')}). "
+            "Coba naikkan `ai.maks_token` di config/settings.yaml.")
+    return teks
 
 
 def urai_json(teks: str) -> dict[str, Any]:
