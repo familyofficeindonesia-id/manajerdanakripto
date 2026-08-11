@@ -89,11 +89,11 @@ relevansi:
 
 # --- Model AI penulis ulang ---------------------------------------------------
 ai:
-  model: "claude-sonnet-4-6"
-  maks_token: 2000
+  model: "gemini-2.5-flash"
+  maks_token: 3000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
-  jeda_antar_permintaan_detik: 1.0
+  jeda_antar_permintaan_detik: 5.0   # ±12 permintaan/menit, aman di tingkat gratis
 
 # --- Pembuatan situs ----------------------------------------------------------
 build:
