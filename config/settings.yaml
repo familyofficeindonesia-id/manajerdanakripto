@@ -89,7 +89,7 @@ relevansi:
 
 # --- Model AI penulis ulang ---------------------------------------------------
 ai:
-  model: "gemini-2.5-flash"
+  model: "gemini-flash-latest"
   maks_token: 3000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
