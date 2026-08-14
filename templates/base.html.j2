@@ -118,6 +118,7 @@ gtag('js',new Date());gtag('config','{{ analytics_id }}');</script>
     <div class="bungkus">
       <ul class="navigasi__daftar">
         <li><a href="/" {% if halaman.url == '/' %}aria-current="page"{% endif %}>Beranda</a></li>
+        <li><a href="/static/alat/">Financial Planning</a></li>
         {%- for r in rubrik %}
         <li><a href="/rubrik/{{ r.slug }}/" {% if halaman.url == '/rubrik/' ~ r.slug ~ '/' %}aria-current="page"{% endif %}>{{ r.label }}</a></li>
         {%- endfor %}
