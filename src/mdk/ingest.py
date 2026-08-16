@@ -66,13 +66,15 @@ class Pengambil:
     def __init__(self, kfg: Konfigurasi, reg: Registri, simpan: Penyimpanan):
         self.kfg, self.reg, self.simpan = kfg, reg, simpan
         self.opsi = kfg.sumber.get("pengaturan_pengambilan", {})
-        self.diblokir = {d.lower() for d in kfg.sumber.get("penerbit_diblokir", [])}
+        self.diblokir = {d.lower().strip() for d in
+                         kfg.sumber.get("penerbit_diblokir", []) if d}
         diminta = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
         self.batas_jam = min(diminta, BATAS_JAM_MAKS)
         self.batas_dipangkas = diminta if diminta > BATAS_JAM_MAKS else 0
         # Penghitung alasan penolakan, untuk ringkasan di akhir jalannya.
         self.tolak_tanpa_tanggal = 0
         self.tolak_basi = 0
+        self.tolak_penerbit = 0
 
     # ------------------------------------------------------------- daftar ----
     def daftar_umpan(self, sertakan_entitas: bool = True) -> list[dict]:
@@ -91,6 +93,33 @@ class Pengambil:
                         "petunjuk_tokoh": slug,
                     })
         return umpan
+
+    # ----------------------------------------------------------- blokir ------
+    def _diblokir(self, tautan: str, penerbit: str) -> bool:
+        """Periksa daftar penerbit diblokir terhadap domain DAN nama penerbit.
+
+        Untuk item yang datang lewat Google News, domain tautan selalu
+        `news.google.com`, sehingga pemeriksaan domain saja tidak pernah
+        mengenali penerbit aslinya. Nama penerbit diambil dari `entri.source`
+        dan itulah yang memuat nama media sebenarnya.
+        """
+        if not self.diblokir:
+            return False
+
+        domain = (domain_penerbit(tautan) or "").lower()
+        nama = (penerbit or "").lower().strip()
+        # Bentuk tanpa akhiran domain, agar "Yellow.com" cocok dengan "yellow".
+        nama_inti = nama.rsplit(".", 1)[0] if "." in nama else nama
+
+        for blok in self.diblokir:
+            blok_inti = blok.rsplit(".", 1)[0] if "." in blok else blok
+            if not blok_inti:
+                continue
+            if domain and (blok == domain or domain.endswith("." + blok)):
+                return True
+            if nama and (blok == nama or blok_inti == nama_inti):
+                return True
+        return False
 
     # ---------------------------------------------------------- kesegaran ----
     def _lolos_usia(self, entri, judul: str) -> str | None:
@@ -131,7 +160,8 @@ class Pengambil:
                 continue
             kanonik = kanonikalisasi_url(tautan)
             penerbit = _penerbit_entri(entri, umpan["nama"])
-            if domain_penerbit(tautan) in self.diblokir:
+            if self._diblokir(tautan, penerbit):
+                self.tolak_penerbit += 1
                 continue
             if self.simpan.sudah_ada(kanonik):
                 continue
@@ -191,9 +221,11 @@ class Pengambil:
 
         ringkas = {"umpan": len(umpan), "terbaca": total, "disimpan": disimpan,
                    "dibuang": dibuang, "tolak_basi": self.tolak_basi,
-                   "tolak_tanpa_tanggal": self.tolak_tanpa_tanggal}
+                   "tolak_tanpa_tanggal": self.tolak_tanpa_tanggal,
+                   "tolak_penerbit": self.tolak_penerbit}
         if verbose:
-            print(f"  ✗ Ditolak karena usia: {self.tolak_basi} · "
-                  f"tanpa tanggal: {self.tolak_tanpa_tanggal}")
+            print(f"  ✗ Ditolak — usia: {self.tolak_basi} · "
+                  f"tanpa tanggal: {self.tolak_tanpa_tanggal} · "
+                  f"penerbit diblokir: {self.tolak_penerbit}")
         self.simpan.catat("ingest", str(ringkas))
         return ringkas
