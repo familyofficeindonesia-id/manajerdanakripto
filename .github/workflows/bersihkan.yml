@@ -1,0 +1,58 @@
+name: Bersihkan Berita Basi
+
+# Dijalankan manual dari tab Actions. Tidak otomatis, supaya tidak ada
+# penghapusan yang terjadi tanpa Anda sadari.
+on:
+  workflow_dispatch:
+    inputs:
+      jam:
+        description: 'Hapus berita lebih tua dari berapa jam'
+        required: true
+        default: '48'
+      hapus:
+        description: 'Benar-benar hapus? (false = laporan saja)'
+        type: boolean
+        required: true
+        default: false
+      tanpa_tanggal:
+        description: 'Ikut hapus baris yang tanggalnya kosong'
+        type: boolean
+        required: true
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  bersihkan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Jalankan pembersihan
+        run: |
+          ARG="--jam ${{ inputs.jam }}"
+          if [ "${{ inputs.hapus }}" = "true" ]; then ARG="$ARG --hapus"; fi
+          if [ "${{ inputs.tanpa_tanggal }}" = "true" ]; then ARG="$ARG --tanpa-tanggal"; fi
+          echo "Perintah: python bersihkan_berita_lama.py $ARG"
+          python bersihkan_berita_lama.py $ARG
+
+      - name: Simpan perubahan database
+        if: ${{ inputs.hapus }}
+        run: |
+          rm -f *.bak **/*.bak || true
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan untuk disimpan."
+          else
+            git commit -m "Bersihkan berita basi (batas ${{ inputs.jam }} jam)"
+            git push
+          fi
