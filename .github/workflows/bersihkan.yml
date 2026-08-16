@@ -35,18 +35,26 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Cari file database
+        run: |
+          echo "Daftar file database yang ada di repositori:"
+          find . -path ./.git -prune -o \
+            \( -name '*.db' -o -name '*.sqlite' -o -name '*.sqlite3' -o -name '*.db3' \) \
+            -print || true
+          echo "--- selesai ---"
+
       - name: Jalankan pembersihan
         run: |
           ARG="--jam ${{ inputs.jam }}"
           if [ "${{ inputs.hapus }}" = "true" ]; then ARG="$ARG --hapus"; fi
           if [ "${{ inputs.tanpa_tanggal }}" = "true" ]; then ARG="$ARG --tanpa-tanggal"; fi
-          echo "Perintah: python bersihkan_berita_lama.py $ARG"
-          python bersihkan_berita_lama.py $ARG
+          echo "Perintah: python src/mdk/bersihkan_berita_lama.py $ARG"
+          python src/mdk/bersihkan_berita_lama.py $ARG
 
       - name: Simpan perubahan database
         if: ${{ inputs.hapus }}
         run: |
-          rm -f *.bak **/*.bak || true
+          find . -name '*.bak' -delete || true
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
