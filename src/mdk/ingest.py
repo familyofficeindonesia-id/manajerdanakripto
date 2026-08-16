@@ -2,15 +2,30 @@
 
 Hanya metadata yang disimpan (judul, tautan, ringkasan pendek, waktu, penerbit).
 Teks penuh artikel sumber tidak pernah disalin ke basis data maupun ke situs.
+
+CATATAN PERUBAHAN — penyaringan usia berita
+-------------------------------------------
+Sebelumnya ada tiga celah yang membuat berita lama lolos:
+
+  1. Entri tanpa tanggal diberi cap waktu SEKARANG, sehingga otomatis
+     dianggap berita baru.
+  2. Batas usia bawaan 96 jam (empat hari), terlalu longgar untuk portal
+     berita harian.
+  3. Tanggal yang gagal diurai dilewatkan begitu saja (`except: pass`),
+     sehingga entri bermasalah tetap masuk.
+
+Sekarang aturannya tegas: entri yang tanggal terbitnya tidak dapat dibaca
+DITOLAK, bukan ditebak. Batas bawaan 24 jam dan dapat diatur lewat
+`relevansi.usia_maksimum_jam` pada berkas konfigurasi.
 """
 from __future__ import annotations
 
 import time
-from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus
 
 import feedparser
 
+from .alat_kesegaran import parse_tanggal, umur_jam
 from .config import Konfigurasi
 from .entities import Registri
 from .models import ItemMentah
@@ -18,16 +33,12 @@ from .store import Penyimpanan
 from .utils import (bersihkan_html, domain_penerbit, kanonikalisasi_url, potong,
                     sekarang_wib)
 
+# Batas usia bawaan bila tidak disetel di konfigurasi.
+BATAS_JAM_BAWAAN = 24
 
-def _waktu_entri(entri) -> str:
-    for kunci in ("published_parsed", "updated_parsed"):
-        nilai = getattr(entri, kunci, None) or entri.get(kunci)
-        if nilai:
-            try:
-                return datetime(*nilai[:6], tzinfo=timezone.utc).isoformat()
-            except (TypeError, ValueError):
-                continue
-    return sekarang_wib().isoformat()
+# Toleransi tanggal "masa depan". Beda zona waktu di server sumber sering
+# membuat tanggal terlihat 1-2 jam ke depan; lebih dari ini dianggap rusak.
+TOLERANSI_DEPAN_JAM = 3
 
 
 def _penerbit_entri(entri, cadangan: str) -> str:
@@ -50,6 +61,10 @@ class Pengambil:
         self.kfg, self.reg, self.simpan = kfg, reg, simpan
         self.opsi = kfg.sumber.get("pengaturan_pengambilan", {})
         self.diblokir = {d.lower() for d in kfg.sumber.get("penerbit_diblokir", [])}
+        self.batas_jam = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
+        # Penghitung alasan penolakan, untuk ringkasan di akhir jalannya.
+        self.tolak_tanpa_tanggal = 0
+        self.tolak_basi = 0
 
     # ------------------------------------------------------------- daftar ----
     def daftar_umpan(self, sertakan_entitas: bool = True) -> list[dict]:
@@ -69,10 +84,29 @@ class Pengambil:
                     })
         return umpan
 
+    # ---------------------------------------------------------- kesegaran ----
+    def _lolos_usia(self, entri, judul: str) -> str | None:
+        """Kembalikan tanggal terbit ISO bila entri cukup segar, selain itu None.
+
+        Entri tanpa tanggal yang terbaca DITOLAK. Menebak tanggal dengan waktu
+        sekarang adalah persis penyebab berita lama tampil sebagai berita baru.
+        """
+        tanggal = parse_tanggal(entri)
+        if tanggal is None:
+            self.tolak_tanpa_tanggal += 1
+            return None
+
+        jam = umur_jam(tanggal)
+        if jam < -TOLERANSI_DEPAN_JAM:
+            self.tolak_basi += 1
+            return None
+        if jam > self.batas_jam:
+            self.tolak_basi += 1
+            return None
+        return tanggal.isoformat()
+
     # ------------------------------------------------------------ ambil 1 ----
     def ambil_umpan(self, umpan: dict) -> list[ItemMentah]:
-        batas_usia = sekarang_wib() - timedelta(
-            hours=int(self.kfg.relevansi.get("usia_maksimum_jam", 96)))
         maks = int(self.opsi.get("maks_item_per_umpan", 40))
         hasil: list[ItemMentah] = []
 
@@ -94,14 +128,13 @@ class Pengambil:
             if self.simpan.sudah_ada(kanonik):
                 continue
 
-            terbit = _waktu_entri(entri)
-            try:
-                if datetime.fromisoformat(terbit) < batas_usia:
-                    continue
-            except ValueError:
-                pass
-
             judul = _judul_bersih(entri.get("title", ""))
+
+            # Gerbang kesegaran — dijalankan sebelum pekerjaan lain.
+            terbit = self._lolos_usia(entri, judul)
+            if terbit is None:
+                continue
+
             ringkas = potong(bersihkan_html(entri.get("summary", "") or
                                             entri.get("description", "")), 400)
             if not judul or self.reg.ditolak(f"{judul} {ringkas}"):
@@ -126,6 +159,10 @@ class Pengambil:
         jeda = float(self.opsi.get("jeda_antar_umpan_detik", 1.2))
         total, disimpan, dibuang = 0, 0, 0
 
+        if verbose:
+            print(f"  Batas usia berita: {self.batas_jam} jam "
+                  f"(entri tanpa tanggal ditolak)")
+
         for i, u in enumerate(umpan, 1):
             item = self.ambil_umpan(u)
             total += len(item)
@@ -141,6 +178,10 @@ class Pengambil:
             time.sleep(jeda)
 
         ringkas = {"umpan": len(umpan), "terbaca": total, "disimpan": disimpan,
-                   "dibuang": dibuang}
+                   "dibuang": dibuang, "tolak_basi": self.tolak_basi,
+                   "tolak_tanpa_tanggal": self.tolak_tanpa_tanggal}
+        if verbose:
+            print(f"  ✗ Ditolak karena usia: {self.tolak_basi} · "
+                  f"tanpa tanggal: {self.tolak_tanpa_tanggal}")
         self.simpan.catat("ingest", str(ringkas))
         return ringkas
