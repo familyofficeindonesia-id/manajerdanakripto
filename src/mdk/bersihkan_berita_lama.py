@@ -37,10 +37,17 @@ except ImportError:
 
 # Kolom yang mungkin menyimpan tanggal terbit, diurut dari yang paling dipercaya.
 KANDIDAT_KOLOM_TANGGAL = (
-    "tanggal_sumber", "tanggal_terbit", "published_at", "published",
-    "pubdate", "pub_date", "date_published", "tanggal", "waktu_terbit",
+    # Tanggal terbit ASLI dari sumber — paling dipercaya.
+    "tanggal_sumber", "sumber_tanggal", "terbit_sumber", "published_at",
+    "published", "pubdate", "pub_date", "date_published", "tanggal_terbit",
+    # Tanggal internal. Hati-hati: kalau ini diisi waktu build, penyaringan
+    # berdasarkan kolom ini TIDAK akan menangkap berita basi.
+    "terbit_pada", "tanggal", "waktu_terbit", "diambil_pada", "waktu_ambil",
     "created_at", "date", "waktu",
 )
+
+# Kolom yang isinya kemungkinan waktu proses, bukan waktu terbit sumber.
+KOLOM_MERAGUKAN = {"terbit_pada", "diambil_pada", "waktu_ambil", "created_at"}
 
 # Kolom yang mungkin berisi judul, untuk keperluan laporan saja.
 KANDIDAT_KOLOM_JUDUL = ("judul", "title", "headline", "nama", "slug")
@@ -85,6 +92,11 @@ def proses_tabel(kon, tabel, batas_jam, hapus, hapus_tanpa_tanggal):
         return 0
 
     print(f"  Tabel '{tabel}' (kolom tanggal: {kol_tgl})")
+    print(f"    Semua kolom: {', '.join(kolom)}")
+    if kol_tgl.lower() in KOLOM_MERAGUKAN:
+        print(f"    PERINGATAN: '{kol_tgl}' mungkin berisi waktu proses/build,")
+        print(f"    bukan tanggal terbit asli dari sumber. Kalau artikel lama")
+        print(f"    tetap terhitung 'segar' di bawah, itu penyebabnya.")
 
     pilih_judul = f', "{kol_judul}"' if kol_judul else ""
     baris = list(kon.execute(f'SELECT rowid, "{kol_tgl}"{pilih_judul} FROM "{tabel}"'))
@@ -146,7 +158,28 @@ def main():
                    help="Ikut hapus baris yang tanggalnya kosong/tidak terbaca.")
     p.add_argument("--tanpa-cadangan", action="store_true",
                    help="Lewati pembuatan file cadangan .bak.")
+    p.add_argument("--skema", action="store_true",
+                   help="Hanya tampilkan struktur tabel lalu berhenti.")
     a = p.parse_args()
+
+    if a.skema:
+        for db in cari_database(a.db):
+            print(f"Database: {db}")
+            kon = sqlite3.connect(db)
+            for (nama, sql) in kon.execute(
+                    "SELECT name, sql FROM sqlite_master WHERE type='table' "
+                    "AND name NOT LIKE 'sqlite_%'"):
+                jml = kon.execute(f'SELECT COUNT(*) FROM "{nama}"').fetchone()[0]
+                print(f"\n--- Tabel '{nama}' ({jml} baris) ---\n{sql}")
+                contoh = kon.execute(f'SELECT * FROM "{nama}" LIMIT 2').fetchall()
+                nama_kol = [d[0] for d in kon.execute(
+                    f'SELECT * FROM "{nama}" LIMIT 1').description]
+                for baris in contoh:
+                    print("  contoh baris:")
+                    for k, v in zip(nama_kol, baris):
+                        print(f"    {k} = {str(v)[:90]!r}")
+            kon.close()
+        return
 
     sekarang = datetime.now(timezone.utc)
     print(f"Waktu sekarang (UTC): {sekarang.isoformat()}")
