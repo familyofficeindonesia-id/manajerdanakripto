@@ -1,6 +1,19 @@
-"""Orkestrasi pipeline: ambil → saring → tulis ulang → simpan → bangun situs."""
+"""Orkestrasi pipeline: ambil → saring → tulis ulang → simpan → bangun situs.
+
+CATATAN PERUBAHAN — gerbang kesegaran berita
+--------------------------------------------
+Sebelumnya, item pada tabel `mentah` yang berstatus 'baru' tidak pernah
+kedaluwarsa. Item berskor tinggi bisa mengendap berhari-hari di antrean, lalu
+ditulis menjadi artikel dan tayang dengan tanggal hari ini — sehingga berita
+lama tampil seolah baru.
+
+Sekarang, sebelum satu pun panggilan API dilakukan, seluruh antrean disaring
+berdasarkan `terbit_pada` (tanggal terbit ASLI dari sumber). Item yang lewat
+batas umur ditandai 'dilewati' dan tidak akan diproses lagi.
+"""
 from __future__ import annotations
 
+from .alat_kesegaran import alasan_tolak, masih_segar
 from .build import Pembangun
 from .config import muat_konfigurasi
 from .dedup import cari_duplikat
@@ -8,6 +21,15 @@ from .entities import registri
 from .ingest import Pengambil
 from .rewrite import Penulis
 from .store import buka
+
+# Batas umur berita yang boleh ditulis menjadi artikel, dihitung dari tanggal
+# terbit sumber. Sengaja lebih longgar dari batas pengambilan (24 jam) supaya
+# berita yang masuk tepat sebelum jadwal tidak hangus sebelum sempat ditulis.
+BATAS_JAM_TULIS = 36
+
+# Berapa banyak antrean yang diperiksa kesegarannya dalam satu jalan.
+# Angka besar agar sisa antrean lama ikut terkuras, bukan hanya bagian atasnya.
+PERIKSA_ANTREAN_MAKS = 2000
 
 
 def tahap_ambil(sertakan_entitas: bool = True, verbose: bool = True) -> dict:
@@ -18,15 +40,50 @@ def tahap_ambil(sertakan_entitas: bool = True, verbose: bool = True) -> dict:
     return Pengambil(kfg, reg, simpan).jalankan(sertakan_entitas, verbose)
 
 
+def _kuras_antrean_basi(simpan, verbose: bool = True) -> int:
+    """Tandai 'dilewati' semua item antrean yang tanggal sumbernya sudah lewat.
+
+    Dijalankan sebelum pemilihan artikel supaya berita basi tidak pernah
+    sampai ke tahap penulisan, dan tidak menyumbat antrean di jalan berikutnya.
+    """
+    antre = simpan.mentah_menunggu(PERIKSA_ANTREAN_MAKS)
+    dibuang = 0
+    for baris in antre:
+        alasan = alasan_tolak(baris["terbit_pada"], BATAS_JAM_TULIS)
+        if alasan is None:
+            continue
+        simpan.tandai_mentah(baris["id"], "dilewati")
+        dibuang += 1
+        if verbose and dibuang <= 15:
+            print(f"  [BASI] {baris['judul'][:70]} — {alasan}")
+    if verbose:
+        if dibuang > 15:
+            print(f"  ... dan {dibuang - 15} item basi lainnya")
+        if dibuang:
+            print(f"  ✗ {dibuang} item basi dikeluarkan dari antrean "
+                  f"(batas {BATAS_JAM_TULIS} jam dari tanggal terbit sumber)")
+            simpan.catat("tulis", f"antrean basi dibuang: {dibuang}")
+    return dibuang
+
+
 def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     kfg, reg = muat_konfigurasi(), registri()
     simpan = buka(kfg)
     batas = batas or int(kfg.ai.get("batas_artikel_per_jalankan", 40))
+
+    # Gerbang kesegaran — dijalankan lebih dahulu, sebelum biaya API keluar.
+    basi = _kuras_antrean_basi(simpan, verbose)
+
     antre = simpan.mentah_menunggu(batas * 2)
 
     # Buang duplikat lintas sumber sebelum memanggil model (hemat biaya API).
     terpilih, judul_dipakai = [], []
     for baris in antre:
+        # Pengaman kedua: kalau ada item lolos di antara kurasan dan pemilihan.
+        if not masih_segar(baris["terbit_pada"], BATAS_JAM_TULIS):
+            simpan.tandai_mentah(baris["id"], "dilewati")
+            basi += 1
+            continue
         if cari_duplikat(baris["judul"], judul_dipakai):
             simpan.tandai_mentah(baris["id"], "dilewati")
             continue
@@ -37,9 +94,9 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
 
     if verbose:
         print(f"▸ Tahap 2/3 — Menulis ulang {len(terpilih)} berita "
-              f"({len(antre) - len(terpilih)} duplikat dilewati)")
+              f"({len(antre) - len(terpilih)} duplikat/basi dilewati)")
     if not terpilih:
-        return {"ditulis": 0, "gagal": 0, "dilewati": len(antre)}
+        return {"ditulis": 0, "gagal": 0, "dilewati": len(antre), "basi": basi}
 
     artikel, gagal = Penulis(kfg, reg).tulis_banyak(terpilih, verbose)
     for a in artikel:
@@ -50,7 +107,7 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
         simpan.catat("tulis", f"{id_}: {alasan}")
 
     ringkas = {"ditulis": len(artikel), "gagal": len(gagal),
-               "dilewati": len(antre) - len(terpilih)}
+               "dilewati": len(antre) - len(terpilih), "basi": basi}
     simpan.catat("tulis", str(ringkas))
     return ringkas
 
