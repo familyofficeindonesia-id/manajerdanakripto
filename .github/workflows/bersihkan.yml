@@ -11,9 +11,15 @@ on:
         required: true
         default: 'skema'
         options:
-          - skema      # tampilkan struktur tabel saja
-          - laporan    # tampilkan apa yang akan dihapus, tanpa menghapus
-          - hapus      # benar-benar hapus, lalu bangun ulang situs
+          - skema        # tampilkan struktur tabel saja
+          - laporan      # tampilkan apa yang akan dihapus, tanpa menghapus
+          - hapus        # benar-benar hapus, lalu bangun ulang situs
+          - cocok-lihat  # cari baris yang memuat teks tertentu
+          - cocok-hapus  # hapus baris yang memuat teks itu, lalu bangun ulang
+      teks:
+        description: 'Untuk mode cocok-*: teks yang dicari (mis. nama penerbit)'
+        required: false
+        default: ''
       jam:
         description: 'Hapus berita lebih tua dari berapa jam'
         required: true
@@ -79,6 +85,25 @@ jobs:
           python src/mdk/bersihkan_berita_lama.py \
             --db data/mdk.sqlite3 --jam ${{ inputs.jam }}
 
+      - name: Cari baris yang cocok
+        if: ${{ inputs.mode == 'cocok-lihat' }}
+        run: |
+          if [ -z "${{ inputs.teks }}" ]; then
+            echo "GAGAL: mode cocok-lihat butuh isian 'teks'."; exit 1
+          fi
+          python src/mdk/bersihkan_berita_lama.py \
+            --db data/mdk.sqlite3 --cocok "${{ inputs.teks }}"
+
+      - name: Hapus baris yang cocok
+        if: ${{ inputs.mode == 'cocok-hapus' }}
+        run: |
+          if [ -z "${{ inputs.teks }}" ]; then
+            echo "GAGAL: mode cocok-hapus butuh isian 'teks'."; exit 1
+          fi
+          python src/mdk/bersihkan_berita_lama.py \
+            --db data/mdk.sqlite3 --cocok "${{ inputs.teks }}" --hapus
+          rm -f data/*.bak
+
       - name: Hapus berita basi
         if: ${{ inputs.mode == 'hapus' }}
         run: |
@@ -90,7 +115,7 @@ jobs:
           rm -f data/*.bak
 
       - name: Bangun ulang situs
-        if: ${{ inputs.mode == 'hapus' }}
+        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' }}
         env:
           PYTHONPATH: src
         run: |
@@ -104,22 +129,22 @@ jobs:
           fi
 
       - name: Simpan basis data artikel
-        if: ${{ inputs.mode == 'hapus' }}
+        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' }}
         uses: actions/cache/save@v4
         with:
           path: data/mdk.sqlite3
           key: mdk-db-${{ github.run_id }}
 
       - name: Siapkan GitHub Pages
-        if: ${{ inputs.mode == 'hapus' }}
+        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' }}
         uses: actions/configure-pages@v5
 
       - name: Unggah artefak situs
-        if: ${{ inputs.mode == 'hapus' }}
+        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
       - name: Terbitkan ke GitHub Pages
-        if: ${{ inputs.mode == 'hapus' }}
+        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' }}
         uses: actions/deploy-pages@v4
