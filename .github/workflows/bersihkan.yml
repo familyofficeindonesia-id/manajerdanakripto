@@ -1,31 +1,43 @@
 name: Bersihkan Berita Basi
 
-# Dijalankan manual dari tab Actions. Tidak otomatis, supaya tidak ada
-# penghapusan yang terjadi tanpa Anda sadari.
+# Dijalankan manual dari tab Actions. Basis data diambil dari cache
+# (sama seperti terbit.yml), dibersihkan, lalu disimpan kembali ke cache.
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: 'Pilih tindakan'
+        type: choice
+        required: true
+        default: 'skema'
+        options:
+          - skema      # tampilkan struktur tabel saja
+          - laporan    # tampilkan apa yang akan dihapus, tanpa menghapus
+          - hapus      # benar-benar hapus, lalu bangun ulang situs
       jam:
         description: 'Hapus berita lebih tua dari berapa jam'
         required: true
         default: '48'
-      hapus:
-        description: 'Benar-benar hapus? (false = laporan saja)'
-        type: boolean
-        required: true
-        default: false
       tanpa_tanggal:
         description: 'Ikut hapus baris yang tanggalnya kosong'
         type: boolean
         required: true
-        default: true
+        default: false
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: terbit          # sama dengan terbit.yml, supaya tidak bentrok
+  cancel-in-progress: false
 
 jobs:
   bersihkan:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - name: Ambil repositori
         uses: actions/checkout@v4
@@ -33,34 +45,81 @@ jobs:
       - name: Siapkan Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
+          cache: pip
 
-      - name: Cari file database
-        run: |
-          echo "Daftar file database yang ada di repositori:"
-          find . -path ./.git -prune -o \
-            \( -name '*.db' -o -name '*.sqlite' -o -name '*.sqlite3' -o -name '*.db3' \) \
-            -print || true
-          echo "--- selesai ---"
+      - name: Pasang dependensi
+        run: pip install -r requirements.txt
 
-      - name: Jalankan pembersihan
-        run: |
-          ARG="--jam ${{ inputs.jam }}"
-          if [ "${{ inputs.hapus }}" = "true" ]; then ARG="$ARG --hapus"; fi
-          if [ "${{ inputs.tanpa_tanggal }}" = "true" ]; then ARG="$ARG --tanpa-tanggal"; fi
-          echo "Perintah: python src/mdk/bersihkan_berita_lama.py $ARG"
-          python src/mdk/bersihkan_berita_lama.py $ARG
+      - name: Pulihkan basis data artikel
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+          restore-keys: mdk-db-
 
-      - name: Simpan perubahan database
-        if: ${{ inputs.hapus }}
+      - name: Pastikan basis data ada
         run: |
-          find . -name '*.bak' -delete || true
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "Tidak ada perubahan untuk disimpan."
-          else
-            git commit -m "Bersihkan berita basi (batas ${{ inputs.jam }} jam)"
-            git push
+          if [ ! -f data/mdk.sqlite3 ]; then
+            echo "GAGAL: data/mdk.sqlite3 tidak ditemukan di cache."
+            echo "Jalankan terbit.yml lebih dulu, atau cache sudah kedaluwarsa."
+            exit 1
           fi
+          echo "Ukuran basis data: $(du -h data/mdk.sqlite3 | cut -f1)"
+          cp data/mdk.sqlite3 /tmp/mdk-sebelum.sqlite3
+
+      - name: Tampilkan struktur tabel
+        if: ${{ inputs.mode == 'skema' }}
+        run: python src/mdk/bersihkan_berita_lama.py --db data/mdk.sqlite3 --skema
+
+      - name: Laporan berita basi
+        if: ${{ inputs.mode == 'laporan' }}
+        run: |
+          python src/mdk/bersihkan_berita_lama.py \
+            --db data/mdk.sqlite3 --jam ${{ inputs.jam }}
+
+      - name: Hapus berita basi
+        if: ${{ inputs.mode == 'hapus' }}
+        run: |
+          ARG="--db data/mdk.sqlite3 --jam ${{ inputs.jam }} --hapus"
+          if [ "${{ inputs.tanpa_tanggal }}" = "true" ]; then
+            ARG="$ARG --tanpa-tanggal"
+          fi
+          python src/mdk/bersihkan_berita_lama.py $ARG
+          rm -f data/*.bak
+
+      - name: Bangun ulang situs
+        if: ${{ inputs.mode == 'hapus' }}
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m mdk bangun
+          echo "manajerdanakripto.com" > dist/CNAME
+          JML=$(find dist -name '*.html' | wc -l)
+          echo "Jumlah berkas HTML: $JML"
+          if [ "$JML" -lt 5 ]; then
+            echo "GAGAL: hasil build terlalu sedikit, penerbitan dibatalkan."
+            exit 1
+          fi
+
+      - name: Simpan basis data artikel
+        if: ${{ inputs.mode == 'hapus' }}
+        uses: actions/cache/save@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+
+      - name: Siapkan GitHub Pages
+        if: ${{ inputs.mode == 'hapus' }}
+        uses: actions/configure-pages@v5
+
+      - name: Unggah artefak situs
+        if: ${{ inputs.mode == 'hapus' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Terbitkan ke GitHub Pages
+        if: ${{ inputs.mode == 'hapus' }}
+        uses: actions/deploy-pages@v4
