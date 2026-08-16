@@ -166,6 +166,56 @@ def proses_tabel(kon, tabel, batas_jam, hapus, hapus_tanpa_tanggal,
     return len(target)
 
 
+def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None):
+    """Hapus baris yang salah satu kolom teksnya memuat `teks`.
+
+    Dipakai untuk kasus yang tidak dapat diselesaikan lewat tanggal, misalnya
+    penerbit yang melaporkan tanggal terbit keliru.
+    """
+    if tabel_diminta and tabel.lower() not in tabel_diminta:
+        return 0
+    if not tabel_diminta and tabel.lower() in TABEL_DILINDUNGI:
+        return 0
+
+    kolom = kolom_tabel(kon, tabel)
+    kol_judul = pilih_kolom(kolom, KANDIDAT_KOLOM_JUDUL)
+    cari = teks.lower()
+
+    baris = list(kon.execute(f'SELECT rowid, * FROM "{tabel}"'))
+    if not baris:
+        return 0
+    nama_kol = [d[0] for d in kon.execute(
+        f'SELECT rowid, * FROM "{tabel}" LIMIT 1').description]
+
+    kena = []
+    for r in baris:
+        for k, v in zip(nama_kol, r):
+            if isinstance(v, str) and cari in v.lower():
+                judul = "(tanpa judul)"
+                if kol_judul and kol_judul in nama_kol:
+                    judul = str(r[nama_kol.index(kol_judul)])
+                kena.append((r[0], judul, k))
+                break
+
+    if not kena:
+        return 0
+
+    print(f"  Tabel '{tabel}': {len(kena)} baris memuat {teks!r}")
+    for rowid, judul, k in kena[:25]:
+        print(f"    [COCOK] {judul[:70]} (kolom {k})")
+    if len(kena) > 25:
+        print(f"    ... dan {len(kena) - 25} lainnya")
+
+    if not hapus:
+        print(f"    -> {len(kena)} baris AKAN dihapus (mode laporan)")
+        return 0
+
+    kon.executemany(f'DELETE FROM "{tabel}" WHERE rowid = ?',
+                    [(k[0],) for k in kena])
+    print(f"    -> {len(kena)} baris DIHAPUS")
+    return len(kena)
+
+
 def main():
     p = argparse.ArgumentParser(description="Hapus berita basi dari database.")
     p.add_argument("--db", help="Path database. Kosongkan untuk deteksi otomatis.")
@@ -180,6 +230,9 @@ def main():
     p.add_argument("--tabel",
                    help="Batasi ke tabel tertentu (pisahkan dengan koma). "
                         "Ini juga membuka tabel yang dilindungi.")
+    p.add_argument("--cocok",
+                   help="Hapus baris yang memuat teks ini (mis. nama penerbit). "
+                        "Mengabaikan penyaringan tanggal.")
     p.add_argument("--skema", action="store_true",
                    help="Hanya tampilkan struktur tabel lalu berhenti.")
     a = p.parse_args()
@@ -205,7 +258,10 @@ def main():
 
     sekarang = datetime.now(timezone.utc)
     print(f"Waktu sekarang (UTC): {sekarang.isoformat()}")
-    print(f"Batas umur: {a.jam} jam")
+    if a.cocok:
+        print(f"Pencocokan teks: {a.cocok!r} (penyaringan tanggal diabaikan)")
+    else:
+        print(f"Batas umur: {a.jam} jam")
     print(f"Mode: {'HAPUS' if a.hapus else 'LAPORAN SAJA'}\n")
 
     daftar_db = cari_database(a.db)
@@ -232,8 +288,11 @@ def main():
             diminta = ({t.strip().lower() for t in a.tabel.split(",")}
                        if a.tabel else None)
             for t in tabel:
-                total += proses_tabel(kon, t, a.jam, a.hapus, a.tanpa_tanggal,
-                                      diminta)
+                if a.cocok:
+                    total += proses_cocok(kon, t, a.cocok, a.hapus, diminta)
+                else:
+                    total += proses_tabel(kon, t, a.jam, a.hapus,
+                                          a.tanpa_tanggal, diminta)
             if a.hapus:
                 kon.commit()
                 kon.execute("VACUUM")
