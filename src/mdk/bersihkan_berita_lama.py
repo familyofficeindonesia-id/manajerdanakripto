@@ -38,8 +38,9 @@ except ImportError:
 # Kolom yang mungkin menyimpan tanggal terbit, diurut dari yang paling dipercaya.
 KANDIDAT_KOLOM_TANGGAL = (
     # Tanggal terbit ASLI dari sumber — paling dipercaya.
-    "tanggal_sumber", "sumber_tanggal", "terbit_sumber", "published_at",
-    "published", "pubdate", "pub_date", "date_published", "tanggal_terbit",
+    "sumber_terbit", "tanggal_sumber", "sumber_tanggal", "terbit_sumber",
+    "published_at", "published", "pubdate", "pub_date", "date_published",
+    "tanggal_terbit",
     # Tanggal internal. Hati-hati: kalau ini diisi waktu build, penyaringan
     # berdasarkan kolom ini TIDAK akan menangkap berita basi.
     "terbit_pada", "tanggal", "waktu_terbit", "diambil_pada", "waktu_ambil",
@@ -47,7 +48,16 @@ KANDIDAT_KOLOM_TANGGAL = (
 )
 
 # Kolom yang isinya kemungkinan waktu proses, bukan waktu terbit sumber.
-KOLOM_MERAGUKAN = {"terbit_pada", "diambil_pada", "waktu_ambil", "created_at"}
+KOLOM_MERAGUKAN = {"terbit_pada", "diambil_pada", "waktu_ambil",
+                   "created_at", "dilihat_pada"}
+
+# Tabel pembukuan radar. JANGAN dihapus isinya: `terlihat` adalah catatan
+# anti-duplikat — kalau dikosongkan, berita lama justru akan diambil ulang
+# karena sistem lupa pernah melihatnya.
+TABEL_DILINDUNGI = {
+    "terlihat", "kesehatan", "klaster", "notifikasi",
+    "sumber", "meta", "migrasi",
+}
 
 # Kolom yang mungkin berisi judul, untuk keperluan laporan saja.
 KANDIDAT_KOLOM_JUDUL = ("judul", "title", "headline", "nama", "slug")
@@ -82,7 +92,16 @@ def pilih_kolom(kolom: list[str], kandidat) -> str | None:
     return None
 
 
-def proses_tabel(kon, tabel, batas_jam, hapus, hapus_tanpa_tanggal):
+def proses_tabel(kon, tabel, batas_jam, hapus, hapus_tanpa_tanggal,
+                 tabel_diminta=None):
+    if tabel_diminta and tabel.lower() not in tabel_diminta:
+        return 0
+
+    if not tabel_diminta and tabel.lower() in TABEL_DILINDUNGI:
+        print(f"  Tabel '{tabel}': tabel pembukuan radar — DILINDUNGI, dilewati.")
+        print(f"    (pakai --tabel {tabel} kalau memang sengaja ingin diproses)")
+        return 0
+
     kolom = kolom_tabel(kon, tabel)
     kol_tgl = pilih_kolom(kolom, KANDIDAT_KOLOM_TANGGAL)
     kol_judul = pilih_kolom(kolom, KANDIDAT_KOLOM_JUDUL)
@@ -158,6 +177,9 @@ def main():
                    help="Ikut hapus baris yang tanggalnya kosong/tidak terbaca.")
     p.add_argument("--tanpa-cadangan", action="store_true",
                    help="Lewati pembuatan file cadangan .bak.")
+    p.add_argument("--tabel",
+                   help="Batasi ke tabel tertentu (pisahkan dengan koma). "
+                        "Ini juga membuka tabel yang dilindungi.")
     p.add_argument("--skema", action="store_true",
                    help="Hanya tampilkan struktur tabel lalu berhenti.")
     a = p.parse_args()
@@ -207,8 +229,11 @@ def main():
             if not tabel:
                 print("  (tidak ada tabel)")
                 continue
+            diminta = ({t.strip().lower() for t in a.tabel.split(",")}
+                       if a.tabel else None)
             for t in tabel:
-                total += proses_tabel(kon, t, a.jam, a.hapus, a.tanpa_tanggal)
+                total += proses_tabel(kon, t, a.jam, a.hapus, a.tanpa_tanggal,
+                                      diminta)
             if a.hapus:
                 kon.commit()
                 kon.execute("VACUUM")
