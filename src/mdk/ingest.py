@@ -36,6 +36,12 @@ from .utils import (bersihkan_html, domain_penerbit, kanonikalisasi_url, potong,
 # Batas usia bawaan bila tidak disetel di konfigurasi.
 BATAS_JAM_BAWAAN = 24
 
+# Batas ATAS yang tidak boleh dilampaui, berapa pun isi konfigurasi.
+# Portal berita harian tidak seharusnya menayangkan berita berumur berhari-hari.
+# Ubah angka di sini bila suatu saat batasnya memang perlu dilonggarkan —
+# nilai pada konfigurasi sengaja tidak diberi wewenang melewatinya.
+BATAS_JAM_MAKS = 24
+
 # Toleransi tanggal "masa depan". Beda zona waktu di server sumber sering
 # membuat tanggal terlihat 1-2 jam ke depan; lebih dari ini dianggap rusak.
 TOLERANSI_DEPAN_JAM = 3
@@ -61,7 +67,9 @@ class Pengambil:
         self.kfg, self.reg, self.simpan = kfg, reg, simpan
         self.opsi = kfg.sumber.get("pengaturan_pengambilan", {})
         self.diblokir = {d.lower() for d in kfg.sumber.get("penerbit_diblokir", [])}
-        self.batas_jam = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
+        diminta = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
+        self.batas_jam = min(diminta, BATAS_JAM_MAKS)
+        self.batas_dipangkas = diminta if diminta > BATAS_JAM_MAKS else 0
         # Penghitung alasan penolakan, untuk ringkasan di akhir jalannya.
         self.tolak_tanpa_tanggal = 0
         self.tolak_basi = 0
@@ -162,6 +170,10 @@ class Pengambil:
         if verbose:
             print(f"  Batas usia berita: {self.batas_jam} jam "
                   f"(entri tanpa tanggal ditolak)")
+            if self.batas_dipangkas:
+                print(f"  ! Konfigurasi meminta {self.batas_dipangkas} jam, "
+                      f"dipangkas ke {BATAS_JAM_MAKS} jam oleh BATAS_JAM_MAKS "
+                      f"di ingest.py")
 
         for i, u in enumerate(umpan, 1):
             item = self.ambil_umpan(u)
