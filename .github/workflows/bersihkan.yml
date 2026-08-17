@@ -22,6 +22,11 @@ on:
         description: 'Untuk mode cocok-*: teks yang dicari (mis. nama penerbit)'
         required: false
         default: ''
+      cocok_pakai_umur:
+        description: 'Mode cocok-*: hanya hapus yang JUGA lebih tua dari batas jam'
+        type: boolean
+        required: true
+        default: true
       jam:
         description: 'Hapus berita lebih tua dari berapa jam'
         required: true
@@ -93,8 +98,9 @@ jobs:
           if [ -z "${{ inputs.teks }}" ]; then
             echo "GAGAL: mode cocok-lihat butuh isian 'teks'."; exit 1
           fi
-          python src/mdk/bersihkan_berita_lama.py \
-            --db data/mdk.sqlite3 --cocok "${{ inputs.teks }}"
+          ARG='--db data/mdk.sqlite3 --jam ${{ inputs.jam }}'
+          if [ "${{ inputs.cocok_pakai_umur }}" = "true" ]; then ARG="$ARG --pakai-umur"; fi
+          python src/mdk/bersihkan_berita_lama.py $ARG --cocok "${{ inputs.teks }}"
 
       - name: Hapus baris yang cocok
         if: ${{ inputs.mode == 'cocok-hapus' }}
@@ -102,8 +108,9 @@ jobs:
           if [ -z "${{ inputs.teks }}" ]; then
             echo "GAGAL: mode cocok-hapus butuh isian 'teks'."; exit 1
           fi
-          python src/mdk/bersihkan_berita_lama.py \
-            --db data/mdk.sqlite3 --cocok "${{ inputs.teks }}" --hapus
+          ARG='--db data/mdk.sqlite3 --jam ${{ inputs.jam }} --hapus'
+          if [ "${{ inputs.cocok_pakai_umur }}" = "true" ]; then ARG="$ARG --pakai-umur"; fi
+          python src/mdk/bersihkan_berita_lama.py $ARG --cocok "${{ inputs.teks }}"
           rm -f data/*.bak
 
       - name: Cari artikel berselisih jauh
