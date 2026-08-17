@@ -232,11 +232,12 @@ def proses_selisih(kon, tabel, batas_jam, hapus, tabel_diminta=None):
     return len(kena)
 
 
-def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None):
+def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None, batas_jam=0):
     """Hapus baris yang salah satu kolom teksnya memuat `teks`.
 
-    Dipakai untuk kasus yang tidak dapat diselesaikan lewat tanggal, misalnya
-    penerbit yang melaporkan tanggal terbit keliru.
+    Bila `batas_jam` > 0, hanya baris yang JUGA lebih tua dari batas itu yang
+    dihapus — berguna agar berita segar dari penerbit yang sama tidak ikut
+    terbuang. Bila `batas_jam` = 0, seluruh baris yang cocok dihapus.
     """
     if tabel_diminta and tabel.lower() not in tabel_diminta:
         return 0
@@ -245,6 +246,7 @@ def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None):
 
     kolom = kolom_tabel(kon, tabel)
     kol_judul = pilih_kolom(kolom, KANDIDAT_KOLOM_JUDUL)
+    kol_tgl = pilih_kolom(kolom, KANDIDAT_KOLOM_TANGGAL)
     cari = teks.lower()
 
     baris = list(kon.execute(f'SELECT rowid, * FROM "{tabel}"'))
@@ -260,17 +262,42 @@ def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None):
                 judul = "(tanpa judul)"
                 if kol_judul and kol_judul in nama_kol:
                     judul = str(r[nama_kol.index(kol_judul)])
-                kena.append((r[0], judul, k))
+                tanggal = None
+                if kol_tgl and kol_tgl in nama_kol:
+                    tanggal = parse_tanggal(r[nama_kol.index(kol_tgl)])
+                kena.append((r[0], judul, k, tanggal))
                 break
 
     if not kena:
         return 0
 
     print(f"  Tabel '{tabel}': {len(kena)} baris memuat {teks!r}")
-    for rowid, judul, k in kena[:25]:
-        print(f"    [COCOK] {judul[:70]} (kolom {k})")
-    if len(kena) > 25:
-        print(f"    ... dan {len(kena) - 25} lainnya")
+    if kol_tgl:
+        print(f"    Tanggal diambil dari kolom '{kol_tgl}'")
+
+    # Saring lagi berdasarkan umur bila diminta.
+    if batas_jam > 0:
+        tersaring, aman = [], 0
+        for rowid, judul, k, tanggal in kena:
+            if tanggal is None:
+                tersaring.append((rowid, judul, k, tanggal))
+                continue
+            if umur_jam(tanggal) > batas_jam:
+                tersaring.append((rowid, judul, k, tanggal))
+            else:
+                aman += 1
+        print(f"    Penyaringan umur {batas_jam} jam aktif — "
+              f"{len(tersaring)} kena, {aman} dipertahankan karena masih segar")
+        kena = tersaring
+        if not kena:
+            return 0
+
+    for rowid, judul, k, tanggal in kena[:30]:
+        cap = tanggal.strftime("%Y-%m-%d %H:%M") if tanggal else "tanpa tanggal"
+        umur = f"{umur_jam(tanggal) / 24:>5.1f} hari" if tanggal else "        ?"
+        print(f"    [COCOK] {cap} · {umur} · {judul[:56]}")
+    if len(kena) > 30:
+        print(f"    ... dan {len(kena) - 30} lainnya")
 
     if not hapus:
         print(f"    -> {len(kena)} baris AKAN dihapus (mode laporan)")
@@ -296,6 +323,8 @@ def main():
     p.add_argument("--tabel",
                    help="Batasi ke tabel tertentu (pisahkan dengan koma). "
                         "Ini juga membuka tabel yang dilindungi.")
+    p.add_argument("--pakai-umur", action="store_true", dest="pakai_umur",
+                   help="Untuk --cocok: hanya hapus yang JUGA lebih tua dari --jam.")
     p.add_argument("--selisih", type=int, metavar="JAM",
                    help="Hapus baris yang waktu tayang kami berjarak lebih dari "
                         "JAM dari tanggal sumbernya.")
@@ -328,7 +357,10 @@ def main():
     sekarang = datetime.now(timezone.utc)
     print(f"Waktu sekarang (UTC): {sekarang.isoformat()}")
     if a.cocok:
-        print(f"Pencocokan teks: {a.cocok!r} (penyaringan tanggal diabaikan)")
+        if a.pakai_umur:
+            print(f"Pencocokan teks: {a.cocok!r} DAN lebih tua dari {a.jam} jam")
+        else:
+            print(f"Pencocokan teks: {a.cocok!r} (semua, tanpa lihat tanggal)")
     elif a.selisih:
         print(f"Batas selisih tayang vs tanggal sumber: {a.selisih} jam")
     else:
@@ -360,7 +392,8 @@ def main():
                        if a.tabel else None)
             for t in tabel:
                 if a.cocok:
-                    total += proses_cocok(kon, t, a.cocok, a.hapus, diminta)
+                    total += proses_cocok(kon, t, a.cocok, a.hapus, diminta,
+                                          a.jam if a.pakai_umur else 0)
                 elif a.selisih:
                     total += proses_selisih(kon, t, a.selisih, a.hapus, diminta)
                 else:
