@@ -31,6 +31,10 @@ BATAS_JAM_TULIS = 36
 # Angka besar agar sisa antrean lama ikut terkuras, bukan hanya bagian atasnya.
 PERIKSA_ANTREAN_MAKS = 2000
 
+# Berapa banyak judul artikel terbit yang dijadikan pembanding duplikat.
+# Semakin besar, semakin jauh ke belakang pengulangan dapat dikenali.
+RIWAYAT_JUDUL_MAKS = 400
+
 
 def tahap_ambil(sertakan_entitas: bool = True, verbose: bool = True) -> dict:
     kfg, reg = muat_konfigurasi(), registri()
@@ -76,8 +80,18 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
 
     antre = simpan.mentah_menunggu(batas * 2)
 
+    # Riwayat judul yang SUDAH terbit, dipakai sebagai pembanding duplikat.
+    # Tanpa ini, satu peristiwa yang sama bisa ditulis berulang kali pada
+    # hari-hari berbeda — persis yang terjadi ketika Google News menyajikan
+    # ulang artikel lama dengan URL baru setiap beberapa hari.
+    riwayat = [(a.id, a.judul)
+               for a in simpan.artikel("terbit", RIWAYAT_JUDUL_MAKS)]
+    if verbose and riwayat:
+        print(f"  Pembanding duplikat: {len(riwayat)} judul yang sudah terbit")
+
     # Buang duplikat lintas sumber sebelum memanggil model (hemat biaya API).
-    terpilih, judul_dipakai = [], []
+    terpilih, judul_dipakai = [], list(riwayat)
+    ulangan = 0
     for baris in antre:
         # Pengaman kedua: kalau ada item lolos di antara kurasan dan pemilihan.
         if not masih_segar(baris["terbit_pada"], BATAS_JAM_TULIS):
@@ -86,6 +100,9 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
             continue
         if cari_duplikat(baris["judul"], judul_dipakai):
             simpan.tandai_mentah(baris["id"], "dilewati")
+            ulangan += 1
+            if verbose and ulangan <= 10:
+                print(f"  [ULANG] {baris['judul'][:70]}")
             continue
         judul_dipakai.append((baris["id"], baris["judul"]))
         terpilih.append(baris)
@@ -93,8 +110,11 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
             break
 
     if verbose:
+        if ulangan > 10:
+            print(f"  ... dan {ulangan - 10} pengulangan lainnya")
         print(f"▸ Tahap 2/3 — Menulis ulang {len(terpilih)} berita "
-              f"({len(antre) - len(terpilih)} duplikat/basi dilewati)")
+              f"({ulangan} pengulangan, "
+              f"{len(antre) - len(terpilih) - ulangan} lain dilewati)")
     if not terpilih:
         return {"ditulis": 0, "gagal": 0, "dilewati": len(antre), "basi": basi}
 
