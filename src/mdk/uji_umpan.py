@@ -32,14 +32,14 @@ except ImportError:
     except ImportError:
         sys.exit("GAGAL: alat_kesegaran.py tidak ditemukan.")
 
-AGEN = "ManajerDanaKripto/1.0 (+https://manajerdanakripto.com/tentang)"
+AGEN_BAWAAN = "ManajerDanaKripto/1.0 (+https://manajerdanakripto.com/tentang)"
 
 
-def periksa(nama: str, url: str) -> dict:
+def periksa(nama: str, url: str, agen: str = AGEN_BAWAAN) -> dict:
     hasil = {"nama": nama, "url": url, "entri": 0, "status": "?",
              "umur_terbaru": None, "bertanggal": 0, "ok": False}
     try:
-        f = feedparser.parse(url, agent=AGEN)
+        f = feedparser.parse(url, agent=agen)
     except Exception as e:                                       # noqa: BLE001
         hasil["status"] = f"galat: {type(e).__name__}"
         return hasil
@@ -80,13 +80,19 @@ def main() -> int:
         kfg = yaml.safe_load(fh)
 
     umpan = kfg.get("umpan_umum", [])
-    print(f"Memeriksa {len(umpan)} umpan dari {a.config}\n" + "=" * 78)
+    # Pakai User-Agent yang sama persis dengan pipeline, supaya hasil uji
+    # mencerminkan keadaan sebenarnya saat pengambilan berjalan.
+    agen = " ".join((kfg.get("pengaturan_pengambilan", {})
+                     .get("user_agent") or AGEN_BAWAAN).split())
+
+    print(f"Memeriksa {len(umpan)} umpan dari {a.config}")
+    print(f"User-Agent: {agen[:70]}\n" + "=" * 78)
     print(f"{'':2} {'Nama':<26} {'Entri':>6} {'Terbaru':>10} {'Tgl':>5}  Status")
     print("-" * 78)
 
     sehat, sakit = [], []
     for u in umpan:
-        r = periksa(u.get("nama", "?"), u.get("url", ""))
+        r = periksa(u.get("nama", "?"), u.get("url", ""), agen)
         tanda = "OK" if r["ok"] else "!!"
         umur = (f"{r['umur_terbaru']:.0f} jam" if r["umur_terbaru"] is not None
                 else "-")
