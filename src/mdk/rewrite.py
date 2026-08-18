@@ -29,6 +29,20 @@ class KesalahanPenulisan(RuntimeError):
     """Model gagal menghasilkan keluaran yang sah."""
 
 
+class KuotaHabis(KesalahanPenulisan):
+    """Kuota harian API tercapai. Percobaan berikutnya pasti gagal juga."""
+
+
+# Penanda pada pesan galat 429 yang membedakan kuota HARIAN dari batas
+# permintaan per menit. Batas per menit layak ditunggu; kuota harian tidak.
+PENANDA_KUOTA_HARIAN = ("perday", "per day", "requests per day", "daily limit")
+
+# Berapa kegagalan kuota berturut-turut sebelum seluruh sisa antrean dilepas.
+# Tanpa ambang ini, satu jalan dapat menghabiskan belasan menit hanya untuk
+# menabrak tembok yang sama berulang kali.
+MAKS_GAGAL_KUOTA_BERUNTUN = 3
+
+
 # --------------------------------------------------------------------- prompt -
 def bangun_prompt_sistem(kfg: Konfigurasi, reg: Registri) -> str:
     ed = kfg.editorial
@@ -155,10 +169,16 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             muatan["generationConfig"].pop("thinkingConfig")
             continue
 
-        if tanggapan.status_code == 429 and percobaan < 3:
-            time.sleep(tunggu)
-            tunggu *= 2
-            continue
+        if tanggapan.status_code == 429:
+            rinci = " ".join(tanggapan.text.split()).lower()
+            # Kuota harian habis: menunggu tidak akan menolong sama sekali.
+            if any(t in rinci for t in PENANDA_KUOTA_HARIAN):
+                raise KuotaHabis(
+                    f"API 429 kuota harian habis: {rinci[:300]}")
+            if percobaan < 2:          # batas per menit — layak ditunggu
+                time.sleep(tunggu)
+                tunggu *= 2
+                continue
         break
 
     if tanggapan is None or tanggapan.status_code != 200:
@@ -315,16 +335,40 @@ class Penulis:
         jeda = float(self.kfg.ai.get("jeda_antar_permintaan_detik", 1.0))
         berhasil: list[Artikel] = []
         gagal: list[tuple[str, str]] = []
+        gagal_kuota_beruntun = 0
+
         for i, baris in enumerate(baris_list, 1):
             b = dict(baris)
             try:
                 artikel = self.tulis(b)
                 berhasil.append(artikel)
+                gagal_kuota_beruntun = 0
                 if verbose:
                     print(f"  [{i}/{len(baris_list)}] ✓ {artikel.judul[:70]}")
-            except (KesalahanPenulisan, requests.RequestException, json.JSONDecodeError) as e:
-                gagal.append((b["id"], str(e)[:160]))
+            except (KesalahanPenulisan, requests.RequestException,
+                    json.JSONDecodeError) as e:
+                pesan = str(e)[:160]
+                gagal.append((b["id"], pesan))
                 if verbose:
-                    print(f"  [{i}/{len(baris_list)}] ✗ {b['judul'][:50]} → {str(e)[:70]}")
+                    print(f"  [{i}/{len(baris_list)}] ✗ {b['judul'][:50]} → {pesan[:70]}")
+
+                # Hitung kegagalan yang jelas-jelas soal kuota.
+                if isinstance(e, KuotaHabis) or "429" in pesan:
+                    gagal_kuota_beruntun += 1
+                else:
+                    gagal_kuota_beruntun = 0
+
+                if gagal_kuota_beruntun >= MAKS_GAGAL_KUOTA_BERUNTUN:
+                    sisa = baris_list[i:]
+                    if verbose:
+                        print(f"\n  ⏹ Kuota API habis — {gagal_kuota_beruntun} "
+                              f"kegagalan beruntun. Menghentikan jalan ini.")
+                        print(f"  {len(sisa)} berita sisa dilepas tanpa dicoba; "
+                              f"semuanya kembali ke antrean untuk jalan berikutnya.")
+                    for lain in sisa:
+                        gagal.append((dict(lain)["id"],
+                                      "API 429: dilewati, kuota habis pada jalan ini"))
+                    return berhasil, gagal
+
             time.sleep(jeda)
         return berhasil, gagal
