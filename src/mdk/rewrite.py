@@ -42,6 +42,14 @@ PENANDA_KUOTA_HARIAN = ("perday", "per day", "requests per day", "daily limit")
 # menabrak tembok yang sama berulang kali.
 MAKS_GAGAL_KUOTA_BERUNTUN = 3
 
+# Kelebihan beban server (503) berbeda sifatnya dari kuota habis: ia datang dan
+# pergi dalam hitungan detik, jadi layak dicoba ulang. Ambangnya dibuat lebih
+# longgar agar satu gelombang kepadatan tidak membatalkan seluruh jalan.
+MAKS_GAGAL_SIBUK_BERUNTUN = 8
+
+# Status yang menandakan server sibuk, bukan kesalahan permintaan.
+STATUS_SIBUK = (500, 502, 503, 504)
+
 
 # --------------------------------------------------------------------- prompt -
 def bangun_prompt_sistem(kfg: Konfigurasi, reg: Registri) -> str:
@@ -167,6 +175,13 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
                 and "thinking" in tanggapan.text.lower()
                 and "thinkingConfig" in muatan["generationConfig"]):
             muatan["generationConfig"].pop("thinkingConfig")
+            continue
+
+        # Server sibuk — tunggu sebentar lalu coba lagi. Ini penyebab kegagalan
+        # paling sering pada model bertanda "-latest", yang lalu lintasnya padat.
+        if tanggapan.status_code in STATUS_SIBUK and percobaan < 3:
+            time.sleep(tunggu)
+            tunggu *= 1.8
             continue
 
         if tanggapan.status_code == 429:
@@ -336,13 +351,14 @@ class Penulis:
         berhasil: list[Artikel] = []
         gagal: list[tuple[str, str]] = []
         gagal_kuota_beruntun = 0
+        gagal_sibuk_beruntun = 0
 
         for i, baris in enumerate(baris_list, 1):
             b = dict(baris)
             try:
                 artikel = self.tulis(b)
                 berhasil.append(artikel)
-                gagal_kuota_beruntun = 0
+                gagal_kuota_beruntun = gagal_sibuk_beruntun = 0
                 if verbose:
                     print(f"  [{i}/{len(baris_list)}] ✓ {artikel.judul[:70]}")
             except (KesalahanPenulisan, requests.RequestException,
@@ -352,22 +368,34 @@ class Penulis:
                 if verbose:
                     print(f"  [{i}/{len(baris_list)}] ✗ {b['judul'][:50]} → {pesan[:70]}")
 
-                # Hitung kegagalan yang jelas-jelas soal kuota.
+                # Bedakan kuota habis dari server sibuk — keduanya sementara,
+                # tetapi ambang menyerahnya tidak sama.
                 if isinstance(e, KuotaHabis) or "429" in pesan:
                     gagal_kuota_beruntun += 1
-                else:
+                    gagal_sibuk_beruntun = 0
+                elif any(f"API {k}" in pesan for k in STATUS_SIBUK):
+                    gagal_sibuk_beruntun += 1
                     gagal_kuota_beruntun = 0
+                else:
+                    gagal_kuota_beruntun = gagal_sibuk_beruntun = 0
 
+                sebab = None
                 if gagal_kuota_beruntun >= MAKS_GAGAL_KUOTA_BERUNTUN:
+                    sebab = (f"Kuota API habis — {gagal_kuota_beruntun} "
+                             f"kegagalan beruntun")
+                elif gagal_sibuk_beruntun >= MAKS_GAGAL_SIBUK_BERUNTUN:
+                    sebab = (f"Server model sibuk terus-menerus — "
+                             f"{gagal_sibuk_beruntun} kegagalan beruntun")
+
+                if sebab:
                     sisa = baris_list[i:]
                     if verbose:
-                        print(f"\n  ⏹ Kuota API habis — {gagal_kuota_beruntun} "
-                              f"kegagalan beruntun. Menghentikan jalan ini.")
+                        print(f"\n  ⏹ {sebab}. Menghentikan jalan ini.")
                         print(f"  {len(sisa)} berita sisa dilepas tanpa dicoba; "
                               f"semuanya kembali ke antrean untuk jalan berikutnya.")
                     for lain in sisa:
                         gagal.append((dict(lain)["id"],
-                                      "API 429: dilewati, kuota habis pada jalan ini"))
+                                      "API 503: dilewati, layanan sibuk pada jalan ini"))
                     return berhasil, gagal
 
             time.sleep(jeda)
