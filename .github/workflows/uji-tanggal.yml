@@ -1,0 +1,69 @@
+name: Uji Verifikasi Tanggal
+
+# Uji sekali jalan. TIDAK mengubah basis data dan TIDAK menerbitkan apa pun.
+# Tujuannya menjawab: dapatkah tanggal terbit asli dibaca dari halaman penerbit?
+on:
+  workflow_dispatch:
+    inputs:
+      jumlah:
+        description: 'Berapa artikel yang diuji'
+        required: true
+        default: '8'
+      penerbit:
+        description: 'Saring penerbit tertentu (kosongkan untuk campuran)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  uji:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Ambil repositori
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Pasang dependensi
+        run: pip install -r requirements.txt
+
+      - name: Pulihkan basis data artikel
+        uses: actions/cache/restore@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+          restore-keys: mdk-db-
+
+      - name: Pastikan basis data ada
+        run: |
+          if [ ! -f data/mdk.sqlite3 ]; then
+            echo "GAGAL: data/mdk.sqlite3 tidak ada di cache."
+            exit 1
+          fi
+
+      - name: Jalankan uji
+        run: |
+          ARG="--db data/mdk.sqlite3 --jumlah ${{ inputs.jumlah }}"
+          if [ -n "${{ inputs.penerbit }}" ]; then
+            ARG="$ARG --penerbit ${{ inputs.penerbit }}"
+          fi
+          python src/mdk/uji_tanggal.py $ARG | tee hasil-uji.txt
+
+      - name: Ringkasan
+        if: always()
+        run: |
+          {
+            echo '### Hasil uji verifikasi tanggal'
+            echo ''
+            echo '```'
+            tail -n 25 hasil-uji.txt 2>/dev/null || echo "(tidak ada keluaran)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
