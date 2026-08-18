@@ -30,7 +30,13 @@
 # =============================================================================
 
 pengaturan_pengambilan:
-  user_agent: "ManajerDanaKripto/1.0 (+https://manajerdanakripto.com/tentang)"
+  # User-Agent peramban. Beberapa penerbit (Bisnis Indonesia, CNBC Indonesia,
+  # Kontan) menolak perayap dengan balasan 403 atau mengembalikan HTML alih-alih
+  # XML bila agennya bukan peramban. Identitas asli tetap dicantumkan di akhir.
+  user_agent: >-
+    Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+    Gecko) Chrome/122.0.0.0 Safari/537.36 ManajerDanaKripto/1.0
+    (+https://manajerdanakripto.com/tentang)
   timeout_detik: 20
   jeda_antar_umpan_detik: 1.2
   percobaan_ulang: 2
@@ -51,8 +57,10 @@ umpan_umum:
     url: "https://www.theblock.co/rss.xml"
     bahasa: en
     bobot: 1.15
+  # Alamat lama (blockworks.co/feed) berhenti diperbarui sejak ~222 hari lalu.
+  # Alamat di bawah belum terbukti; uji ulang, hapus bila tetap beku.
   - nama: "Blockworks"
-    url: "https://blockworks.co/feed"
+    url: "https://blockworks.co/feeds/rss"
     bahasa: en
     bobot: 1.1
   - nama: "Cointelegraph"
@@ -75,8 +83,9 @@ umpan_umum:
   # --- Tambahan baru: liputan institusional & kebijakan ---
   # PERLU DIVERIFIKASI. Jalankan "Uji Umpan Berita" sebelum mengandalkannya;
   # alamat RSS berubah cukup sering. Hapus baris yang gagal.
+  # Alamat lama berhenti diperbarui sejak ~102 hari lalu. Belum terbukti.
   - nama: "DL News"
-    url: "https://www.dlnews.com/arc/outboundfeeds/rss/"
+    url: "https://www.dlnews.com/feeds/rss/"
     bahasa: en
     bobot: 1.0
   - nama: "The Defiant"
@@ -95,10 +104,6 @@ umpan_umum:
     url: "https://cryptobriefing.com/feed/"
     bahasa: en
     bobot: 0.8
-  - nama: "Forbes — Digital Assets"
-    url: "https://www.forbes.com/digital-assets/feed/"
-    bahasa: en
-    bobot: 0.95
   - nama: "Fortune — Crypto"
     url: "https://fortune.com/feed/fortune-feeds/?id=3230629"
     bahasa: en
@@ -109,8 +114,10 @@ umpan_umum:
     url: "https://finance.yahoo.com/news/rssindex"
     bahasa: en
     bobot: 0.7
+  # Alamat pencarian lama menjawab 200 tanpa entri. Bentuk /device/rss/ adalah
+  # umpan resmi CNBC yang masih dipelihara. Uji ulang untuk memastikan.
   - nama: "CNBC — Finance"
-    url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss25&id=10000664"
+    url: "https://www.cnbc.com/id/10000664/device/rss/rss.html"
     bahasa: en
     bobot: 0.8
   # Reuters tidak lagi menyediakan RSS publik, sehingga jalur ini terpaksa
@@ -122,6 +129,8 @@ umpan_umum:
     bobot: 0.85
 
   # --- Media Indonesia: konteks lokal dan pembanding ---
+  # Ketiganya sempat gagal (403 / bukan XML) karena penolakan User-Agent.
+  # Alamatnya dipertahankan; perbaikannya ada pada user_agent di atas.
   - nama: "Kontan — Investasi"
     url: "https://www.kontan.co.id/rss/investasi"
     bahasa: id
