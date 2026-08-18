@@ -1,9 +1,24 @@
 name: Uji Umpan Berita
 
-# Memeriksa apakah setiap umpan RSS di config/sources.yaml masih hidup dan
-# menyertakan tanggal terbit. TIDAK mengubah apa pun.
+# Dua tugas dalam satu alur:
+#   periksa : uji kesehatan seluruh umpan di config/sources.yaml
+#   cari    : temukan alamat RSS resmi untuk domain yang bermasalah
+# Keduanya TIDAK mengubah apa pun.
 on:
   workflow_dispatch:
+    inputs:
+      tugas:
+        description: 'Pilih tugas'
+        type: choice
+        required: true
+        default: 'periksa'
+        options:
+          - periksa
+          - cari
+      domain:
+        description: 'Untuk tugas cari: domain dipisah spasi (kosong = daftar bermasalah)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -11,7 +26,7 @@ permissions:
 jobs:
   uji:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Ambil repositori
@@ -26,16 +41,26 @@ jobs:
       - name: Pasang dependensi
         run: pip install -r requirements.txt
 
-      - name: Periksa umpan
-        run: python src/mdk/uji_umpan.py --config config/sources.yaml | tee hasil-umpan.txt
+      - name: Periksa kesehatan umpan
+        if: ${{ inputs.tugas == 'periksa' }}
+        run: python src/mdk/uji_umpan.py --config config/sources.yaml | tee hasil.txt
+
+      - name: Cari alamat umpan resmi
+        if: ${{ inputs.tugas == 'cari' }}
+        run: |
+          if [ -z "${{ inputs.domain }}" ]; then
+            python src/mdk/cari_umpan.py --bermasalah | tee hasil.txt
+          else
+            python src/mdk/cari_umpan.py ${{ inputs.domain }} | tee hasil.txt
+          fi
 
       - name: Ringkasan
         if: always()
         run: |
           {
-            echo '### Kesehatan umpan berita'
+            echo '### Hasil — tugas `${{ inputs.tugas }}`'
             echo ''
             echo '```'
-            cat hasil-umpan.txt 2>/dev/null || echo "(tidak ada keluaran)"
+            cat hasil.txt 2>/dev/null || echo "(tidak ada keluaran)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
