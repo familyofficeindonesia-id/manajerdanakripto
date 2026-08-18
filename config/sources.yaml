@@ -11,6 +11,22 @@
 # nama penerbit) untuk keperluan pemrosesan. Teks penuh TIDAK PERNAH
 # dipublikasikan ulang. Setiap artikel yang tayang adalah tulisan orisinal
 # berbahasa Indonesia yang selalu menautkan sumber aslinya.
+#
+# -----------------------------------------------------------------------------
+# CATATAN PERUBAHAN — keandalan tanggal terbit
+#
+# Uji lapangan menunjukkan tautan Google News (`news.google.com/rss/articles/
+# CBMi...`) tidak dapat dipecahkan menjadi alamat penerbit asli, sehingga
+# tanggal terbit yang dilaporkannya tidak dapat diperiksa kebenarannya. Pada
+# beberapa penerbit, tanggal itu terbukti keliru berbulan-bulan: artikel
+# Februari dilaporkan sebagai berita Agustus.
+#
+# Umpan langsung penerbit tidak punya masalah ini — pengujian menunjukkan
+# selisih 0,0 jam antara tanggal umpan dan metadata halaman aslinya.
+#
+# Karena itu susunan sumber digeser: umpan langsung diperkuat dan diperbanyak,
+# kueri Google News diturunkan bobotnya menjadi pelengkap penemuan, bukan
+# tulang punggung.
 # =============================================================================
 
 pengaturan_pengambilan:
@@ -22,35 +38,73 @@ pengaturan_pengambilan:
   hormati_robots_txt: true
 
 # --- A. Umpan RSS umum --------------------------------------------------------
+# Bobot dinaikkan agar artikel dari sumber langsung menang di antrean penulisan.
+# Urutan antrean memakai skor menurun, sehingga versi Google News atas peristiwa
+# yang sama akan tersingkir sebagai pengulangan oleh pembanding riwayat judul.
 umpan_umum:
+  # --- Media kripto papan atas (tanggal terbukti akurat) ---
   - nama: "CoinDesk"
     url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
     bahasa: en
-    bobot: 1.0
+    bobot: 1.15
+  - nama: "The Block"
+    url: "https://www.theblock.co/rss.xml"
+    bahasa: en
+    bobot: 1.15
+  - nama: "Blockworks"
+    url: "https://blockworks.co/feed"
+    bahasa: en
+    bobot: 1.1
   - nama: "Cointelegraph"
     url: "https://cointelegraph.com/rss"
     bahasa: en
-    bobot: 0.9
+    bobot: 1.05
   - nama: "Decrypt"
     url: "https://decrypt.co/feed"
-    bahasa: en
-    bobot: 0.85
-  - nama: "The Block"
-    url: "https://www.theblock.co/rss.xml"
     bahasa: en
     bobot: 1.0
   - nama: "Bitcoin Magazine"
     url: "https://bitcoinmagazine.com/feed"
     bahasa: en
-    bobot: 0.8
+    bobot: 0.9
   - nama: "CryptoSlate"
     url: "https://cryptoslate.com/feed/"
     bahasa: en
-    bobot: 0.7
-  - nama: "Blockworks"
-    url: "https://blockworks.co/feed"
+    bobot: 0.8
+
+  # --- Tambahan baru: liputan institusional & kebijakan ---
+  # PERLU DIVERIFIKASI. Jalankan "Uji Umpan Berita" sebelum mengandalkannya;
+  # alamat RSS berubah cukup sering. Hapus baris yang gagal.
+  - nama: "DL News"
+    url: "https://www.dlnews.com/arc/outboundfeeds/rss/"
+    bahasa: en
+    bobot: 1.0
+  - nama: "The Defiant"
+    url: "https://thedefiant.io/feed"
+    bahasa: en
+    bobot: 0.85
+  - nama: "Protos"
+    url: "https://protos.com/feed/"
+    bahasa: en
+    bobot: 0.8
+  - nama: "Ledger Insights"
+    url: "https://www.ledgerinsights.com/feed/"
+    bahasa: en
+    bobot: 0.9
+  - nama: "Crypto Briefing"
+    url: "https://cryptobriefing.com/feed/"
+    bahasa: en
+    bobot: 0.8
+  - nama: "Forbes — Digital Assets"
+    url: "https://www.forbes.com/digital-assets/feed/"
     bahasa: en
     bobot: 0.95
+  - nama: "Fortune — Crypto"
+    url: "https://fortune.com/feed/fortune-feeds/?id=3230629"
+    bahasa: en
+    bobot: 0.9
+
+  # --- Keuangan umum ---
   - nama: "Yahoo Finance — Crypto"
     url: "https://finance.yahoo.com/news/rssindex"
     bahasa: en
@@ -59,35 +113,50 @@ umpan_umum:
     url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss25&id=10000664"
     bahasa: en
     bobot: 0.8
+  # Reuters tidak lagi menyediakan RSS publik, sehingga jalur ini terpaksa
+  # lewat Google News dan mewarisi ketidakandalan tanggalnya. Bobot diturunkan
+  # agar tidak mendahului sumber langsung.
   - nama: "Reuters via Google News"
     url: "https://news.google.com/rss/search?q=crypto+fund+OR+bitcoin+ETF+site:reuters.com&hl=en-US&gl=US&ceid=US:en"
     bahasa: en
-    bobot: 1.0
-  # Media Indonesia — dipakai untuk konteks lokal dan pembanding
+    bobot: 0.85
+
+  # --- Media Indonesia: konteks lokal dan pembanding ---
   - nama: "Kontan — Investasi"
     url: "https://www.kontan.co.id/rss/investasi"
     bahasa: id
-    bobot: 0.9
+    bobot: 0.95
   - nama: "Bisnis Indonesia — Market"
     url: "https://market.bisnis.com/rss"
     bahasa: id
-    bobot: 0.9
+    bobot: 0.95
   - nama: "CNBC Indonesia — Market"
     url: "https://www.cnbcindonesia.com/market/rss"
     bahasa: id
-    bobot: 0.85
+    bobot: 0.9
 
 # --- B. Template kueri per entitas -------------------------------------------
 # {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
+#
+# CATATAN BOBOT — angka di bawah dihitung terhadap relevansi.skor_minimum = 40.
+# Skor akhir = int(skor_mentah × bobot). Entitas di judul bernilai 45, kata
+# kunci tema menambah 10.
+#
+#   nama tokoh saja        : 45 × 0,80 = 36  → GUGUR
+#   nama tokoh + tema      : 55 × 0,80 = 44  → lolos
+#
+# Jadi Google News kini hanya meloloskan berita yang menyebut tokoh DAN
+# bertema kripto. Bila bobot diturunkan di bawah 0,73, seluruh kueri entitas
+# akan mati total — bukan sekadar melemah. Jangan ubah tanpa menghitung ulang.
 kueri_entitas:
   aktif: true
   template:
     - nama: "Google News — nama tokoh"
       url: "https://news.google.com/rss/search?q=%22{q}%22&hl=en-US&gl=US&ceid=US:en"
-      bobot: 0.9
+      bobot: 0.80
     - nama: "Google News — tokoh + kripto"
       url: "https://news.google.com/rss/search?q=%22{q}%22+(crypto+OR+bitcoin+OR+ETF+OR+fund)&hl=en-US&gl=US&ceid=US:en"
-      bobot: 1.0
+      bobot: 0.85
   # Batasi jumlah alias yang dipakai per tokoh agar kuota permintaan terkendali.
   maks_alias_per_tokoh: 2
   # Hanya alias pertama (nama lengkap) yang dipakai bila mode hemat diaktifkan.
@@ -124,6 +193,14 @@ kata_kunci_tolak:
   - "press release distribution"
 
 # Penerbit yang tidak pernah diambil (konten berbayar penuh / paywall keras /
-# agregator berkualitas rendah).
+# agregator berkualitas rendah / tanggal terbit tidak dapat dipercaya).
+#
+# Daftar ini digabung dengan PENERBIT_DIBLOKIR_TETAP di src/mdk/ingest.py.
+# Pencocokan berlaku pada domain tautan MAUPUN nama penerbit, sehingga bekerja
+# untuk item yang datang lewat Google News (yang domainnya selalu
+# news.google.com dan menyembunyikan penerbit aslinya).
 penerbit_diblokir:
   - "example-content-farm.com"
+  # Menerbitkan ulang artikel lama dengan tanggal baru. Artikel 3 Februari 2026
+  # dilaporkan sebagai berita 16 Agustus 2026 — selisih lebih dari lima bulan.
+  - "yellow.com"
