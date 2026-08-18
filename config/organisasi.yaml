@@ -853,3 +853,184 @@ organisasi:
     alias: ["Winklevoss Capital Management", "Winklevoss Capital"]
     tokoh: [cameron-winklevoss, tyler-winklevoss]
     terverifikasi: false
+
+  # ===========================================================================
+  # ENTITAS INDONESIA
+  # ---------------------------------------------------------------------------
+  # Ditambahkan agar berita dari umpan lokal (Blockchain Media Indonesia, Detik
+  # Finance, Katadata, Antara) dapat dikenali sebagai relevan. Tanpa entitas
+  # yang cocok, `ingest.py` membuang item apa pun berapa pun skor temanya —
+  # syarat `not it.entitas` dievaluasi sebelum ambang skor.
+  #
+  # CATATAN JENIS
+  # Daftar jenis yang dikenal: manajer-aset | hedge-fund | ventura | treasury |
+  # riset | bursa | media. Regulator dan asosiasi tidak punya jenis sendiri,
+  # sehingga sementara ditandai `riset`. Bila `entities.py` tidak memvalidasi
+  # nilai jenis, tambahkan `regulator` dan `asosiasi` agar lebih tepat.
+  #
+  # Kolom `tokoh` sengaja dikosongkan. Mengisinya dengan slug yang belum ada di
+  # config/entities.yaml berisiko memutus registri saat dimuat.
+  # ===========================================================================
+
+  # ------------------------------------------------------------ bursa lokal --
+  - slug: indodax
+    nama: Indodax
+    nama_resmi: PT Indodax Nasional Indonesia
+    jenis: bursa
+    negara: Indonesia
+    situs_web: indodax.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Indodax", "bursa Indodax", "Bitcoin Indonesia"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: tokocrypto
+    nama: Tokocrypto
+    nama_resmi: PT Crypto Indonesia Berkat
+    jenis: bursa
+    negara: Indonesia
+    situs_web: tokocrypto.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Tokocrypto", "Toko Crypto", "TKO"]
+    tokoh: []
+    terverifikasi: false
+
+  # "Pintu" adalah kata umum dalam Bahasa Indonesia, karena itu generik: true
+  # agar kueri selalu diberi kata pembatas topik.
+  - slug: pintu
+    nama: Pintu
+    nama_resmi: PT Pintu Kemana Saja
+    jenis: bursa
+    negara: Indonesia
+    situs_web: pintu.co.id
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["aplikasi Pintu", "Pintu Kemana Saja", "Pintu crypto"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: reku
+    nama: Reku
+    nama_resmi: PT Rekeningku Dotcom Indonesia
+    jenis: bursa
+    negara: Indonesia
+    situs_web: reku.id
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Reku", "Rekeningku", "aplikasi Reku"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: bitocto
+    nama: Bitocto
+    nama_resmi: PT Bumi Santosa Cemerlang
+    jenis: bursa
+    negara: Indonesia
+    situs_web: bitocto.com
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Bitocto", "Octo crypto"]
+    tokoh: []
+    terverifikasi: false
+
+  # ------------------------------------------ infrastruktur pasar & regulator --
+  - slug: cfx
+    nama: CFX — Bursa Komoditi dan Derivatif Indonesia
+    nama_resmi: PT Bursa Komoditi Nusantara
+    jenis: bursa
+    negara: Indonesia
+    situs_web: cfx.co.id
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["CFX", "Bursa Kripto Indonesia", "Bursa Komoditi Nusantara"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: kliring-berjangka-indonesia
+    nama: Kliring Berjangka Indonesia
+    nama_resmi: PT Kliring Berjangka Indonesia (Persero)
+    jenis: bursa
+    negara: Indonesia
+    situs_web: kbi.co.id
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Kliring Berjangka Indonesia", "KBI", "lembaga kliring kripto"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: ojk
+    nama: Otoritas Jasa Keuangan
+    nama_resmi: Otoritas Jasa Keuangan Republik Indonesia
+    jenis: riset
+    negara: Indonesia
+    situs_web: ojk.go.id
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["OJK", "Otoritas Jasa Keuangan", "pengawas jasa keuangan"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: bappebti
+    nama: Bappebti
+    nama_resmi: Badan Pengawas Perdagangan Berjangka Komoditi
+    jenis: riset
+    negara: Indonesia
+    situs_web: bappebti.go.id
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Bappebti", "Badan Pengawas Perdagangan Berjangka Komoditi"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: bank-indonesia
+    nama: Bank Indonesia
+    nama_resmi: Bank Indonesia
+    jenis: riset
+    negara: Indonesia
+    situs_web: bi.go.id
+    ticker: ""
+    edgar: false
+    generik: true
+    alias: ["Bank Indonesia", "bank sentral Indonesia", "rupiah digital",
+            "Garuda digital rupiah"]
+    tokoh: []
+    terverifikasi: false
+
+  # ------------------------------------------------------ asosiasi industri --
+  - slug: aspakrindo
+    nama: Aspakrindo
+    nama_resmi: Asosiasi Pedagang Aset Kripto Indonesia
+    jenis: riset
+    negara: Indonesia
+    situs_web: aspakrindo.org
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Aspakrindo", "Asosiasi Pedagang Aset Kripto Indonesia",
+            "asosiasi pedagang aset kripto"]
+    tokoh: []
+    terverifikasi: false
+
+  - slug: asosiasi-blockchain-indonesia
+    nama: Asosiasi Blockchain Indonesia
+    nama_resmi: Asosiasi Blockchain Indonesia
+    jenis: riset
+    negara: Indonesia
+    situs_web: asosiasiblockchain.co.id
+    ticker: ""
+    edgar: false
+    generik: false
+    alias: ["Asosiasi Blockchain Indonesia", "ABI blockchain"]
+    tokoh: []
+    terverifikasi: false
