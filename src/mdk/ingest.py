@@ -42,6 +42,16 @@ BATAS_JAM_BAWAAN = 24
 # nilai pada konfigurasi sengaja tidak diberi wewenang melewatinya.
 BATAS_JAM_MAKS = 24
 
+# Penerbit yang diblokir permanen, di luar daftar pada berkas konfigurasi.
+# Yellow.com menerbitkan ulang artikel lama dengan tanggal baru, dan tanggal
+# palsu itu diteruskan Google News apa adanya — sehingga artikel Februari dapat
+# tampil sebagai berita hari ini. Karena tanggal dari sumbernya sendiri tidak
+# dapat dipercaya, tidak ada penyaringan tanggal yang mampu menahannya.
+# Tambahkan penerbit lain ke daftar ini bila ditemukan pola serupa.
+PENERBIT_DIBLOKIR_TETAP = {
+    "yellow.com",
+}
+
 # Toleransi tanggal "masa depan". Beda zona waktu di server sumber sering
 # membuat tanggal terlihat 1-2 jam ke depan; lebih dari ini dianggap rusak.
 TOLERANSI_DEPAN_JAM = 3
@@ -68,6 +78,7 @@ class Pengambil:
         self.opsi = kfg.sumber.get("pengaturan_pengambilan", {})
         self.diblokir = {d.lower().strip() for d in
                          kfg.sumber.get("penerbit_diblokir", []) if d}
+        self.diblokir |= {d.lower().strip() for d in PENERBIT_DIBLOKIR_TETAP}
         diminta = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
         self.batas_jam = min(diminta, BATAS_JAM_MAKS)
         self.batas_dipangkas = diminta if diminta > BATAS_JAM_MAKS else 0
@@ -200,6 +211,8 @@ class Pengambil:
         if verbose:
             print(f"  Batas usia berita: {self.batas_jam} jam "
                   f"(entri tanpa tanggal ditolak)")
+            print(f"  Penerbit diblokir: {len(self.diblokir)} "
+                  f"({', '.join(sorted(self.diblokir)[:6])})")
             if self.batas_dipangkas:
                 print(f"  ! Konfigurasi meminta {self.batas_dipangkas} jam, "
                       f"dipangkas ke {BATAS_JAM_MAKS} jam oleh BATAS_JAM_MAKS "
