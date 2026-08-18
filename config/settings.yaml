@@ -85,7 +85,7 @@ relevansi:
   bobot_entitas_di_ringkasan: 25
   bobot_organisasi: 15
   bobot_kata_kunci_tema: 10
-  usia_maksimum_jam: 96          # jangan proses berita lebih tua dari ini
+  usia_maksimum_jam: 24          # jangan proses berita lebih tua dari ini
 
 # --- Model AI penulis ulang ---------------------------------------------------
 ai:
