@@ -100,7 +100,12 @@ class Pengambil:
                     umpan.append({
                         "nama": f"{t['nama']}: {alias}",
                         "url": t["url"].replace("{q}", quote_plus(alias)),
-                        "bahasa": "en", "bobot": float(t.get("bobot", 1.0)),
+                        # Bahasa diambil dari template, bukan dipaksa "en".
+                        # Tanpa ini, kueri edisi Indonesia akan terhitung
+                        # sebagai berita asing dan tidak pernah masuk jatah
+                        # lokal pada tahap penulisan.
+                        "bahasa": t.get("bahasa", "en"),
+                        "bobot": float(t.get("bobot", 1.0)),
                         "petunjuk_tokoh": slug,
                     })
         return umpan
