@@ -57,12 +57,15 @@ umpan_umum:
     url: "https://www.theblock.co/rss.xml"
     bahasa: en
     bobot: 1.15
-  # Alamat lama (blockworks.co/feed) berhenti diperbarui sejak ~222 hari lalu.
-  # Alamat di bawah belum terbukti; uji ulang, hapus bila tetap beku.
-  - nama: "Blockworks"
-    url: "https://blockworks.co/feeds/rss"
-    bahasa: en
-    bobot: 1.1
+  # Blockworks DINONAKTIFKAN. Penelusuran memastikan umpan resminya memang
+  # https://blockworks.co/feed dan dapat diurai (50 entri), tetapi entri
+  # terbarunya berumur ~222 hari — umpannya berhenti diperbarui. Semua entri
+  # akan ditolak saringan usia, jadi memanggilnya hanya membuang waktu.
+  # Aktifkan kembali bila suatu saat umpannya hidup lagi:
+  # - nama: "Blockworks"
+  #   url: "https://blockworks.co/feed"
+  #   bahasa: en
+  #   bobot: 1.1
   - nama: "Cointelegraph"
     url: "https://cointelegraph.com/rss"
     bahasa: en
@@ -83,11 +86,8 @@ umpan_umum:
   # --- Tambahan baru: liputan institusional & kebijakan ---
   # PERLU DIVERIFIKASI. Jalankan "Uji Umpan Berita" sebelum mengandalkannya;
   # alamat RSS berubah cukup sering. Hapus baris yang gagal.
-  # Alamat lama berhenti diperbarui sejak ~102 hari lalu. Belum terbukti.
-  - nama: "DL News"
-    url: "https://www.dlnews.com/feeds/rss/"
-    bahasa: en
-    bobot: 1.0
+  # DL News DIBUANG — penelusuran atas 23 alamat lazim tidak menemukan umpan
+  # RSS apa pun. Situsnya tampaknya tidak lagi menyediakan RSS publik.
   - nama: "The Defiant"
     url: "https://thedefiant.io/feed"
     bahasa: en
@@ -129,20 +129,15 @@ umpan_umum:
     bobot: 0.85
 
   # --- Media Indonesia: konteks lokal dan pembanding ---
-  # Ketiganya sempat gagal (403 / bukan XML) karena penolakan User-Agent.
-  # Alamatnya dipertahankan; perbaikannya ada pada user_agent di atas.
-  - nama: "Kontan — Investasi"
-    url: "https://www.kontan.co.id/rss/investasi"
-    bahasa: id
-    bobot: 0.95
-  - nama: "Bisnis Indonesia — Market"
-    url: "https://market.bisnis.com/rss"
-    bahasa: id
-    bobot: 0.95
-  - nama: "CNBC Indonesia — Market"
-    url: "https://www.cnbcindonesia.com/market/rss"
-    bahasa: id
-    bobot: 0.9
+  # KOSONG untuk sementara. Kontan, Bisnis Indonesia, dan CNBC Indonesia
+  # dibuang setelah penelusuran atas 23 alamat lazim per domain tidak
+  # menemukan umpan RSS apa pun — bukan sekadar masalah User-Agent.
+  #
+  # Calon pengganti yang perlu ditelusuri lebih dulu dengan tugas `cari`:
+  #   coinvestasi.com · blockchainmedia.id · finance.detik.com
+  #   katadata.co.id  · antaranews.com     · bitcoin.co.id
+  # Jangan menambahkan alamat tanpa lolos uji; tebakan alamat sudah terbukti
+  # gagal berulang kali.
 
 # --- B. Template kueri per entitas -------------------------------------------
 # {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
