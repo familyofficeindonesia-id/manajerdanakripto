@@ -129,15 +129,50 @@ umpan_umum:
     bobot: 0.85
 
   # --- Media Indonesia: konteks lokal dan pembanding ---
-  # KOSONG untuk sementara. Kontan, Bisnis Indonesia, dan CNBC Indonesia
-  # dibuang setelah penelusuran atas 23 alamat lazim per domain tidak
-  # menemukan umpan RSS apa pun — bukan sekadar masalah User-Agent.
+  # Seluruh alamat di bawah DITEMUKAN lewat penelusuran deklarasi umpan resmi
+  # (tugas `cari`), bukan ditebak. Kontan, Bisnis Indonesia, CNBC Indonesia,
+  # Coinvestasi, dan Bitcoin.co.id dibuang karena tidak menyediakan RSS.
   #
-  # Calon pengganti yang perlu ditelusuri lebih dulu dengan tugas `cari`:
-  #   coinvestasi.com · blockchainmedia.id · finance.detik.com
-  #   katadata.co.id  · antaranews.com     · bitcoin.co.id
-  # Jangan menambahkan alamat tanpa lolos uji; tebakan alamat sudah terbukti
-  # gagal berulang kali.
+  # CATATAN BOBOT — bobot lokal sengaja di atas 1,0. Ambang skor_minimum = 40,
+  # sementara entitas yang hanya muncul di ringkasan bernilai 25 dan kata kunci
+  # tema menambah 10 (total 35). Media Indonesia jarang menyebut nama manajer
+  # dana di judul, sehingga tanpa pengangkatan bobot hampir semua berita lokal
+  # gugur sebelum sempat masuk jatah lokal di tahap penulisan.
+  #
+  #   entitas di ringkasan + tema : 35 × 1,15 = 40  -> lolos (pas di ambang)
+  #   entitas di ringkasan saja   : 25 × 1,15 = 28  -> gugur
+  #
+  # Karena itu 1,15 adalah lantai untuk sumber lokal. Di bawah itu (mis. 1,10
+  # menghasilkan 38) berita lokal bersinyal sedang gugur seluruhnya. Perlu
+  # dicatat: item tanpa entitas terpantau tetap dibuang lebih dulu oleh
+  # `ingest.py`, jadi yang lolos di ambang ini pasti menyebut tokoh atau
+  # organisasi yang memang dipantau — bukan berita umum sembarangan.
+  - nama: "Blockchain Media Indonesia"
+    url: "https://blockchainmedia.id/feed/"
+    bahasa: id
+    bobot: 1.25
+  - nama: "Detik Finance"
+    url: "https://finance.detik.com/rss"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Katadata"
+    url: "https://katadata.co.id/rss"
+    bahasa: id
+    bobot: 1.15
+  # Antara memuat seluruh berita nasional, sehingga kepadatan topik kriptonya
+  # rendah. Bobot tetap di lantai 1,15 agar berita lokal yang relevan tidak
+  # gugur; penyaringan sesungguhnya dilakukan oleh syarat entitas terpantau.
+  - nama: "Antara — Terkini"
+    url: "https://www.antaranews.com/rss/terkini"
+    bahasa: id
+    bobot: 1.15
+  # Calon yang belum diuji: umpan ekonomi Antara mungkin lebih padat topik
+  # daripada /rss/terkini. Aktifkan lalu jalankan tugas `periksa` untuk menguji;
+  # bila sehat, pertimbangkan mengganti baris di atas.
+  # - nama: "Antara — Ekonomi"
+  #   url: "https://www.antaranews.com/rss/ekonomi.xml"
+  #   bahasa: id
+  #   bobot: 1.15
 
 # --- B. Template kueri per entitas -------------------------------------------
 # {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
