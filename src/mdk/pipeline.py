@@ -32,13 +32,24 @@ from .config import muat_konfigurasi
 from .dedup import cari_duplikat
 from .entities import registri
 from .ingest import Pengambil
-from .rewrite import Penulis
+from .rewrite import Penulis, kegagalan_sementara
 from .store import buka
 
 # Batas umur berita yang boleh ditulis menjadi artikel, dihitung dari tanggal
 # terbit sumber. Sengaja lebih longgar dari batas pengambilan supaya berita yang
 # masuk tepat sebelum jadwal tidak hangus sebelum sempat ditulis.
-BATAS_JAM_TULIS = 36
+#
+# Dinaikkan dari 36 ke 48 jam. Log 28 Agustus menunjukkan ambang 36 jam membuang
+# justru bahan terbaik di antrean — pengumuman penutupan dana $1,5 miliar
+# Franklin Templeton, perubahan lisensi indeks ARK 21Shares, pernyataan Michael
+# Saylor dan Bitwise — semuanya gugur pada 36,0 sampai 37,7 jam, yaitu selisih
+# menit dari ambang.
+#
+# Kelonggaran ini TIDAK melanggar prinsip integritas tanggal. Tanggal yang
+# ditampilkan tetap tanggal terbit asli dari sumber, dan berita berumur dua hari
+# tetap ditandai demikian di situs. Yang dijaga adalah kejujuran tanggal, bukan
+# kemudaan berita.
+BATAS_JAM_TULIS = 48
 
 # Berapa banyak antrean yang diperiksa kesegarannya dalam satu jalan.
 # Angka besar agar sisa antrean lama ikut terkuras, bukan hanya bagian atasnya.
@@ -155,11 +166,33 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     for a in artikel:
         simpan.simpan_artikel(a)
         simpan.tandai_mentah(a.id, "diproses")
+    # Kegagalan sementara dikembalikan ke antrean, bukan dikubur.
+    #
+    # `rewrite.py` sudah membedakan server sibuk dari kuota habis dan bahkan
+    # mencetak janji "semuanya kembali ke antrean untuk jalan berikutnya" —
+    # tetapi janji itu tidak pernah ditepati selama seluruh kegagalan ditandai
+    # 'gagal' di sini tanpa memeriksa sebabnya. Jalan 28 Agustus kehilangan lima
+    # berita layak dengan cara ini: empat karena server Gemini sedang padat, satu
+    # karena kuota harian habis. Tidak satu pun disebabkan oleh beritanya.
+    #
+    # Item yang dikembalikan tidak akan berputar selamanya: gerbang kesegaran di
+    # awal jalan berikutnya tetap menguras yang sudah lewat 48 jam.
+    dikubur = dikembalikan = 0
     for id_, alasan in gagal:
-        simpan.tandai_mentah(id_, "gagal")
+        if kegagalan_sementara(alasan):
+            simpan.tandai_mentah(id_, "baru")
+            dikembalikan += 1
+        else:
+            simpan.tandai_mentah(id_, "gagal")
+            dikubur += 1
         simpan.catat("tulis", f"{id_}: {alasan}")
 
-    ringkas = {"ditulis": len(artikel), "gagal": len(gagal),
+    if verbose and dikembalikan:
+        print(f"  ↩ {dikembalikan} berita dikembalikan ke antrean "
+              f"(kegagalan sementara di sisi layanan, bukan isi beritanya)")
+
+    ringkas = {"ditulis": len(artikel), "gagal": dikubur,
+               "dikembalikan": dikembalikan,
                "dilewati": ulangan, "tersisa": tersisa, "basi": basi}
     simpan.catat("tulis", str(ringkas))
     return ringkas
