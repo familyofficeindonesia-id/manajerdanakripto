@@ -267,30 +267,44 @@ umpan_umum:
     url: "https://feed.liputan6.com/rss/bisnis"
     bahasa: id
     bobot: 1.15
-  - nama: "CNN Indonesia — Ekonomi"
-    url: "https://www.cnnindonesia.com/ekonomi/rss"
-    bahasa: id
-    bobot: 1.15
+  # Uji 28 Agu 2026: 50 entri terurai, tetapi entri TERBARU pun berumur 102 jam.
+  # Selama umpannya tidak diperbarui, semua entrinya akan ditolak saringan usia
+  # dan sumber ini tidak menyumbang apa pun. Dibiarkan hidup karena biayanya
+  # hanya satu permintaan; PANTAU pada uji berikutnya dan buang bila umur entri
+  # terbarunya masih di atas 36 jam.
   - nama: "Tempo — Bisnis"
     url: "https://rss.tempo.co/bisnis"
-    bahasa: id
-    bobot: 1.15
-  - nama: "Suara — Bisnis"
-    url: "https://www.suara.com/rss/bisnis"
-    bahasa: id
-    bobot: 1.15
-  - nama: "Merdeka — Uang"
-    url: "https://www.merdeka.com/feed/uang"
-    bahasa: id
-    bobot: 1.15
-  - nama: "Okezone — Ekonomi"
-    url: "https://sindikasi.okezone.com/index.php/rss/6/RSS2.0"
     bahasa: id
     bobot: 1.15
   - nama: "Republika"
     url: "https://www.republika.co.id/rss"
     bahasa: id
     bobot: 1.15
+
+  # --- Dibuang setelah uji umpan 28 Agustus 2026 ---
+  # Keempatnya gagal dan sudah dikeluarkan. Dicatat di sini agar tidak
+  # ditambahkan kembali secara tidak sengaja di kemudian hari:
+  #
+  #   CNN Indonesia — Ekonomi   403  (perayap ditolak meski User-Agent peramban)
+  #     https://www.cnnindonesia.com/ekonomi/rss
+  #   Suara — Bisnis            301  (pengalihan tidak diikuti pengurai)
+  #     https://www.suara.com/rss/bisnis
+  #   Merdeka — Uang            404  (alamat tidak ada)
+  #     https://www.merdeka.com/feed/uang
+  #   Okezone — Ekonomi         200  (30 entri, terbaru berumur ~10 tahun)
+  #     https://sindikasi.okezone.com/index.php/rss/6/RSS2.0
+  #
+  # Calon pengganti, BELUM DIUJI sama sekali — ini tebakan pola alamat, bukan
+  # hasil penelusuran. Aktifkan satu per satu lalu jalankan "Uji Umpan Berita";
+  # jangan aktifkan semuanya sekaligus lalu menebak mana yang gagal.
+  # - nama: "Merdeka — Uang"
+  #   url: "https://www.merdeka.com/uang/feed"
+  #   bahasa: id
+  #   bobot: 1.15
+  # - nama: "Suara — Bisnis"
+  #   url: "https://suara.com/rss/bisnis"
+  #   bahasa: id
+  #   bobot: 1.15
 
 # --- B. Template kueri per entitas -------------------------------------------
 # {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
