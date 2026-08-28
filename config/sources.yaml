@@ -27,6 +27,31 @@
 # Karena itu susunan sumber digeser: umpan langsung diperkuat dan diperbanyak,
 # kueri Google News diturunkan bobotnya menjadi pelengkap penemuan, bukan
 # tulang punggung.
+#
+# -----------------------------------------------------------------------------
+# CATATAN PERUBAHAN — memperbanyak pasokan berita
+#
+# Situs tampak sepi bukan karena alur jarang berjalan, melainkan karena terlalu
+# sedikit berita yang lolos gerbang. Dua penyempitan dilonggarkan di sini:
+#
+#   1. LANTAI BOBOT 0,90 untuk umpan berbahasa Inggris. Dengan
+#      relevansi.skor_minimum = 40, entitas yang muncul di JUDUL bernilai 45:
+#
+#        45 × 0,80 = 36  → gugur   (bobot lama pada enam umpan)
+#        45 × 0,90 = 40  → lolos   (lantai baru)
+#
+#      Artinya berita yang menyebut manajer dana terpantau di judulnya kini
+#      lolos meski tidak memuat kata kunci tema. Yang hanya menyebut entitas di
+#      ringkasan (25 + 10 tema = 35 × 0,90 = 31) tetap gugur, jadi gerbangnya
+#      longgar tetapi tidak bocor.
+#
+#   2. LEBIH BANYAK UMPAN LANGSUNG. Sekitar dua puluh umpan tambahan
+#      ditambahkan agar antrean tidak kering di antara jalannya alur yang kini
+#      berlangsung tiap jam.
+#
+# Umpan bertanda "PERLU DIUJI" belum diverifikasi. Jalankan tugas `periksa`
+# setelah mengunggah berkas ini, lalu HAPUS baris mana pun yang gagal —
+# membiarkan umpan mati hanya memperlambat setiap jalannya alur.
 # =============================================================================
 
 pengaturan_pengambilan:
@@ -38,9 +63,14 @@ pengaturan_pengambilan:
     Gecko) Chrome/122.0.0.0 Safari/537.36 ManajerDanaKripto/1.0
     (+https://manajerdanakripto.com/tentang)
   timeout_detik: 20
-  jeda_antar_umpan_detik: 1.2
+  # Diturunkan dari 1,2 detik. Dengan jumlah umpan yang kini hampir dua kali
+  # lipat, jeda lama membuat tahap pengambilan melewati lima menit per jalan.
+  jeda_antar_umpan_detik: 0.8
   percobaan_ulang: 2
-  maks_item_per_umpan: 40
+  # Dinaikkan dari 40. Umpan besar seperti Antara dan Detik memuat berita
+  # nasional bercampur; 40 item teratas sering habis sebelum sampai ke berita
+  # ekonomi yang relevan.
+  maks_item_per_umpan: 60
   hormati_robots_txt: true
 
 # --- A. Umpan RSS umum --------------------------------------------------------
@@ -69,69 +99,126 @@ umpan_umum:
   - nama: "Cointelegraph"
     url: "https://cointelegraph.com/rss"
     bahasa: en
-    bobot: 1.05
+    bobot: 1.10
   - nama: "Decrypt"
     url: "https://decrypt.co/feed"
     bahasa: en
-    bobot: 1.0
+    bobot: 1.05
   - nama: "Bitcoin Magazine"
     url: "https://bitcoinmagazine.com/feed"
     bahasa: en
-    bobot: 0.9
+    bobot: 0.95
   - nama: "CryptoSlate"
     url: "https://cryptoslate.com/feed/"
     bahasa: en
-    bobot: 0.8
+    bobot: 0.95
 
-  # --- Tambahan baru: liputan institusional & kebijakan ---
-  # PERLU DIVERIFIKASI. Jalankan "Uji Umpan Berita" sebelum mengandalkannya;
-  # alamat RSS berubah cukup sering. Hapus baris yang gagal.
+  # --- Liputan institusional & kebijakan ---
   # DL News DIBUANG — penelusuran atas 23 alamat lazim tidak menemukan umpan
   # RSS apa pun. Situsnya tampaknya tidak lagi menyediakan RSS publik.
   - nama: "The Defiant"
     url: "https://thedefiant.io/feed"
     bahasa: en
-    bobot: 0.85
+    bobot: 0.95
   - nama: "Protos"
     url: "https://protos.com/feed/"
     bahasa: en
-    bobot: 0.8
+    bobot: 0.90
   - nama: "Ledger Insights"
     url: "https://www.ledgerinsights.com/feed/"
     bahasa: en
-    bobot: 0.9
+    bobot: 1.00
   - nama: "Crypto Briefing"
     url: "https://cryptobriefing.com/feed/"
     bahasa: en
-    bobot: 0.8
+    bobot: 0.90
   - nama: "Fortune — Crypto"
     url: "https://fortune.com/feed/fortune-feeds/?id=3230629"
     bahasa: en
-    bobot: 0.9
+    bobot: 0.95
+
+  # --- Tambahan baru: media kripto arus utama berbahasa Inggris ---
+  # PERLU DIUJI. Semuanya memakai pola WordPress /feed/ yang lazim, tetapi
+  # belum diverifikasi dari runner. Hapus yang gagal pada tugas `periksa`.
+  - nama: "BeInCrypto"
+    url: "https://beincrypto.com/feed/"
+    bahasa: en
+    bobot: 0.95
+  - nama: "Bitcoin.com News"
+    url: "https://news.bitcoin.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "U.Today"
+    url: "https://u.today/rss"
+    bahasa: en
+    bobot: 0.90
+  - nama: "NewsBTC"
+    url: "https://www.newsbtc.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "CryptoPotato"
+    url: "https://cryptopotato.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "AMBCrypto"
+    url: "https://ambcrypto.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "Bitcoinist"
+    url: "https://bitcoinist.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "The Daily Hodl"
+    url: "https://dailyhodl.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "CoinGape"
+    url: "https://coingape.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "Finbold"
+    url: "https://finbold.com/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "CoinJournal"
+    url: "https://coinjournal.net/news/feed/"
+    bahasa: en
+    bobot: 0.90
+  - nama: "Cryptonews"
+    url: "https://cryptonews.com/news/feed/"
+    bahasa: en
+    bobot: 0.90
+
+  # --- Sumber primer regulator (tanggal paling tepercaya yang ada) ---
+  # PERLU DIUJI. Berguna khusus untuk rubrik Regulasi & Kebijakan.
+  - nama: "SEC — Siaran Pers"
+    url: "https://www.sec.gov/news/pressreleases.rss"
+    bahasa: en
+    bobot: 1.00
 
   # --- Keuangan umum ---
   - nama: "Yahoo Finance — Crypto"
     url: "https://finance.yahoo.com/news/rssindex"
     bahasa: en
-    bobot: 0.7
+    bobot: 0.85
   # Alamat pencarian lama menjawab 200 tanpa entri. Bentuk /device/rss/ adalah
   # umpan resmi CNBC yang masih dipelihara. Uji ulang untuk memastikan.
   - nama: "CNBC — Finance"
     url: "https://www.cnbc.com/id/10000664/device/rss/rss.html"
     bahasa: en
-    bobot: 0.8
+    bobot: 0.90
   # Reuters tidak lagi menyediakan RSS publik, sehingga jalur ini terpaksa
-  # lewat Google News dan mewarisi ketidakandalan tanggalnya. Bobot diturunkan
-  # agar tidak mendahului sumber langsung.
+  # lewat Google News dan mewarisi ketidakandalan tanggalnya. Bobot ditahan di
+  # bawah lantai 0,90 dengan sengaja: ini satu-satunya umpan_umum yang
+  # tanggalnya tidak dapat diperiksa, jadi ia harus kalah dari sumber langsung.
   - nama: "Reuters via Google News"
     url: "https://news.google.com/rss/search?q=crypto+fund+OR+bitcoin+ETF+site:reuters.com&hl=en-US&gl=US&ceid=US:en"
     bahasa: en
     bobot: 0.85
 
   # --- Media Indonesia: konteks lokal dan pembanding ---
-  # Seluruh alamat di bawah DITEMUKAN lewat penelusuran deklarasi umpan resmi
-  # (tugas `cari`), bukan ditebak. Kontan, Bisnis Indonesia, CNBC Indonesia,
-  # Coinvestasi, dan Bitcoin.co.id dibuang karena tidak menyediakan RSS.
+  # Kontan, Bisnis Indonesia, CNBC Indonesia, Coinvestasi, dan Bitcoin.co.id
+  # dibuang karena tidak menyediakan RSS.
   #
   # CATATAN BOBOT — bobot lokal sengaja di atas 1,0. Ambang skor_minimum = 40,
   # sementara entitas yang hanya muncul di ringkasan bernilai 25 dan kata kunci
@@ -166,16 +253,54 @@ umpan_umum:
     url: "https://www.antaranews.com/rss/terkini"
     bahasa: id
     bobot: 1.15
-  # Calon yang belum diuji: umpan ekonomi Antara mungkin lebih padat topik
-  # daripada /rss/terkini. Aktifkan lalu jalankan tugas `periksa` untuk menguji;
-  # bila sehat, pertimbangkan mengganti baris di atas.
-  # - nama: "Antara — Ekonomi"
-  #   url: "https://www.antaranews.com/rss/ekonomi.xml"
-  #   bahasa: id
-  #   bobot: 1.15
+  # Diaktifkan: umpan ekonomi lebih padat topik daripada /rss/terkini.
+  # PERLU DIUJI — bila gagal, hapus baris ini saja, /rss/terkini tetap jalan.
+  - nama: "Antara — Ekonomi"
+    url: "https://www.antaranews.com/rss/ekonomi"
+    bahasa: id
+    bobot: 1.20
+
+  # --- Tambahan baru: media ekonomi Indonesia ---
+  # PERLU DIUJI seluruhnya. Ini penyumbang terbesar bagi "rasa lokal" situs,
+  # jadi berbaik hati menguji satu per satu sepadan dengan waktunya.
+  - nama: "Liputan6 — Bisnis"
+    url: "https://feed.liputan6.com/rss/bisnis"
+    bahasa: id
+    bobot: 1.15
+  - nama: "CNN Indonesia — Ekonomi"
+    url: "https://www.cnnindonesia.com/ekonomi/rss"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Tempo — Bisnis"
+    url: "https://rss.tempo.co/bisnis"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Suara — Bisnis"
+    url: "https://www.suara.com/rss/bisnis"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Merdeka — Uang"
+    url: "https://www.merdeka.com/feed/uang"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Okezone — Ekonomi"
+    url: "https://sindikasi.okezone.com/index.php/rss/6/RSS2.0"
+    bahasa: id
+    bobot: 1.15
+  - nama: "Republika"
+    url: "https://www.republika.co.id/rss"
+    bahasa: id
+    bobot: 1.15
 
 # --- B. Template kueri per entitas -------------------------------------------
 # {q} diganti alias entitas (URL-encoded) oleh src/mdk/ingest.py
+#
+# PENTING — alur `terbit.yml` MEMATIKAN bagian ini pada jalan ringan (tiap jam)
+# dengan menyunting `aktif: true` menjadi `false` di dalam runner. Kueri entitas
+# mengirim ratusan permintaan ke Google News per jalan; menjalankannya 24x
+# sehari akan membuat alamat IP runner dibatasi. Bagian ini hanya hidup pada
+# empat jalan penuh per hari. Jangan mengubah baris `  aktif: true` di bawah
+# menjadi bentuk lain — perintah sed di alur mencocokkannya persis.
 #
 # CATATAN BOBOT — angka di bawah dihitung terhadap relevansi.skor_minimum = 40.
 # Skor akhir = int(skor_mentah × bobot). Entitas di judul bernilai 45, kata
@@ -202,6 +327,9 @@ kueri_entitas:
   mode_hemat: false
 
 # --- Kata kunci tema (penambah skor relevansi) -------------------------------
+# Ditambah istilah berbahasa Indonesia. Sebelumnya seluruh daftar berbahasa
+# Inggris, sehingga berita lokal kehilangan tambahan 10 poin tema dan gugur
+# di ambang 40 meski menyebut entitas terpantau.
 kata_kunci_tema:
   - "bitcoin"
   - "ethereum"
@@ -219,6 +347,20 @@ kata_kunci_tema:
   - "treasury"
   - "SEC"
   - "portfolio"
+  # --- istilah Indonesia ---
+  - "kripto"
+  - "aset digital"
+  - "aset kripto"
+  - "manajer investasi"
+  - "reksa dana"
+  - "portofolio"
+  - "bursa kripto"
+  - "pedagang aset kripto"
+  - "kustodian"
+  - "tokenisasi"
+  - "dana kelolaan"
+  - "investor institusi"
+  - "blockchain"
 
 # --- Daftar tolak (menekan positif palsu) ------------------------------------
 kata_kunci_tolak:
@@ -230,6 +372,16 @@ kata_kunci_tolak:
   - "airdrop scam"
   - "sponsored post"
   - "press release distribution"
+  # Tambahan Indonesia — umpan seperti Antara, Suara, dan Okezone memuat
+  # seluruh berita nasional, jadi penolakan eksplisit menghemat pemrosesan.
+  - "ramalan zodiak"
+  - "resep masakan"
+  - "sinopsis"
+  - "jadwal siaran"
+  - "prediksi skor"
+  - "link nonton"
+  - "kunci jawaban"
+  - "lowongan kerja"
 
 # Penerbit yang tidak pernah diambil (konten berbayar penuh / paywall keras /
 # agregator berkualitas rendah / tanggal terbit tidak dapat dipercaya).
