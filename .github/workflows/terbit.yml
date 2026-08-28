@@ -47,7 +47,11 @@ concurrency:
 jobs:
   terbitkan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # 75 menit, bukan 45. Jalan penuh #62 sudah memakan 39 menit dengan susunan
+    # umpan lama; dengan umpan tambahan, batas 45 terlalu mepet. Jalan ringan
+    # tiap jam tetap selesai di bawah 10 menit, jadi angka ini hanya jaring
+    # pengaman untuk empat jalan penuh per hari.
+    timeout-minutes: 75
 
     steps:
       - name: Ambil repositori
