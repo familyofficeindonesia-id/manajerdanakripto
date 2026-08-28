@@ -50,6 +50,34 @@ MAKS_GAGAL_SIBUK_BERUNTUN = 8
 # Status yang menandakan server sibuk, bukan kesalahan permintaan.
 STATUS_SIBUK = (500, 502, 503, 504)
 
+# Penanda pada pesan galat yang menandakan kegagalan SEMENTARA.
+#
+# Pembedaan ini menentukan nasib sebuah berita. Kegagalan sementara berasal dari
+# sisi layanan — server sibuk (5xx), kuota harian tercapai, gangguan jaringan.
+# Beritanya sendiri tidak bermasalah, jadi menguburnya sebagai 'gagal' berarti
+# membuang berita layak tanpa sebab.
+#
+# Kegagalan PERMANEN berasal dari isi beritanya — model menilai tidak layak
+# tayang, metadata terlalu tipis untuk ditulis, keluaran bukan JSON yang sah.
+# Mengulang berita semacam itu hanya membakar kuota untuk hasil yang sama.
+_POLA_SEMENTARA = tuple(f"api {k}" for k in STATUS_SIBUK) + (
+    "api 429",
+    "kuota",
+    "dilewati",
+    "timeout",
+    "timed out",
+    "connection",
+    "temporarily",
+    "overloaded",
+    "unavailable",
+)
+
+
+def kegagalan_sementara(pesan: str) -> bool:
+    """True bila kegagalan ini pantas dicoba ulang pada jalan berikutnya."""
+    p = (pesan or "").lower()
+    return any(t in p for t in _POLA_SEMENTARA)
+
 
 # --------------------------------------------------------------------- prompt -
 def bangun_prompt_sistem(kfg: Konfigurasi, reg: Registri) -> str:
@@ -370,7 +398,14 @@ class Penulis:
 
                 # Bedakan kuota habis dari server sibuk — keduanya sementara,
                 # tetapi ambang menyerahnya tidak sama.
-                if isinstance(e, KuotaHabis) or "429" in pesan:
+                if isinstance(e, KuotaHabis):
+                    # Kuota HARIAN, bukan batas per menit. Mencoba berita
+                    # berikutnya pada jalan yang sama pasti gagal juga dan hanya
+                    # membakar sisa kuota. Langsung angkat ke ambang berhenti
+                    # alih-alih menunggu tiga kegagalan beruntun.
+                    gagal_kuota_beruntun = MAKS_GAGAL_KUOTA_BERUNTUN
+                    gagal_sibuk_beruntun = 0
+                elif "429" in pesan:
                     gagal_kuota_beruntun += 1
                     gagal_sibuk_beruntun = 0
                 elif any(f"API {k}" in pesan for k in STATUS_SIBUK):
@@ -393,9 +428,13 @@ class Penulis:
                         print(f"\n  ⏹ {sebab}. Menghentikan jalan ini.")
                         print(f"  {len(sisa)} berita sisa dilepas tanpa dicoba; "
                               f"semuanya kembali ke antrean untuk jalan berikutnya.")
+                    # Label harus menyebut sebab yang benar: pipeline.py membaca
+                    # pesan ini untuk memutuskan apakah item kembali ke antrean.
+                    label = ("API 429: dilewati, kuota habis pada jalan ini"
+                             if gagal_kuota_beruntun >= MAKS_GAGAL_KUOTA_BERUNTUN
+                             else "API 503: dilewati, layanan sibuk pada jalan ini")
                     for lain in sisa:
-                        gagal.append((dict(lain)["id"],
-                                      "API 503: dilewati, layanan sibuk pada jalan ini"))
+                        gagal.append((dict(lain)["id"], label))
                     return berhasil, gagal
 
             time.sleep(jeda)
