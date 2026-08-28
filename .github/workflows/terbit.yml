@@ -1,26 +1,45 @@
 name: Ambil berita dan terbitkan situs
 
+# =============================================================================
+# JADWAL — dua irama berbeda
+# -----------------------------------------------------------------------------
 # Jadwal dinyatakan dalam UTC. WIB = UTC+7.
-#   23:00 UTC = 06.00 WIB  (edisi pagi, menangkap penutupan pasar AS)
-#   05:00 UTC = 12.00 WIB  (edisi siang)
-#   11:00 UTC = 18.00 WIB  (edisi sore, pembukaan pasar AS)
+#
+#   RINGAN  — setiap jam, menit :20
+#     Hanya membaca umpan RSS langsung penerbit (kueri_entitas dimatikan).
+#     Cepat, hemat, dan aman dijalankan 24x sehari. Menulis maksimal 3 artikel
+#     per jalan, sehingga terbitan MENETES sepanjang hari alih-alih menumpuk
+#     tiga kali sehari lalu sepi berjam-jam.
+#
+#   PENUH   — 4x sehari (01:50, 07:50, 13:50, 19:50 UTC
+#             = 08.50, 14.50, 20.50, 02.50 WIB)
+#     Menyertakan kueri entitas ke Google News. Langkah ini mengirim ratusan
+#     permintaan (64+ tokoh x 2 alias x 2 template), jadi TIDAK boleh dijalankan
+#     tiap jam — Google akan membatasi atau memblokir alamat IP runner.
+#     Menulis maksimal 8 artikel per jalan.
+#
+# Catatan: cron GitHub Actions sering telat 5-20 menit pada jam sibuk dan
+# sesekali dilewati sama sekali. Menit :20 dan :50 dipilih karena beban
+# penjadwal GitHub paling berat tepat di menit :00.
+# =============================================================================
 on:
   schedule:
-    - cron: "0 23 * * *"
-    - cron: "0 5 * * *"
-    - cron: "0 11 * * *"
+    - cron: "20 * * * *"
+    - cron: "50 1,7,13,19 * * *"
   workflow_dispatch:
     inputs:
       batas:
         description: "Jumlah maksimum artikel yang ditulis pada jalannya ini"
         required: false
-        default: "25"
+        default: "10"
 
 permissions:
   contents: write     # untuk menyimpan kembali basis data artikel
   pages: write
   id-token: write
 
+# Wajib ada pada jadwal serapat ini. Tanpa ini, satu jalan yang melambat bisa
+# ditabrak jalan berikutnya, dan keduanya berebut menerbitkan ke Pages.
 concurrency:
   group: terbit
   cancel-in-progress: false
@@ -33,6 +52,32 @@ jobs:
     steps:
       - name: Ambil repositori
         uses: actions/checkout@v4
+
+      - name: Tentukan mode jalan
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MODE=penuh
+            BATAS="${{ github.event.inputs.batas || 10 }}"
+          elif [ "${{ github.event.schedule }}" = "50 1,7,13,19 * * *" ]; then
+            MODE=penuh
+            BATAS=8
+          else
+            MODE=ringan
+            BATAS=3
+          fi
+          echo "mode=$MODE"   >> "$GITHUB_OUTPUT"
+          echo "batas=$BATAS" >> "$GITHUB_OUTPUT"
+          echo "Mode jalan: $MODE (batas $BATAS artikel)"
+
+      # Kueri entitas hanya dipakai pada jalan penuh. Berkas konfigurasi disunting
+      # di dalam runner saja; repositori tidak ikut berubah, karena checkout
+      # bersifat sementara dan alur ini tidak pernah mendorong balik config/.
+      - name: Matikan kueri entitas (jalan ringan)
+        if: steps.mode.outputs.mode == 'ringan'
+        run: |
+          sed -i '/^kueri_entitas:/,/^[a-z_]/ s/^  aktif: true/  aktif: false/' config/sources.yaml
+          grep -A1 '^kueri_entitas:' config/sources.yaml
 
       - name: Siapkan Python
         uses: actions/setup-python@v5
@@ -65,7 +110,7 @@ jobs:
         env:
           PYTHONPATH: src
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python -m mdk tulis --batas ${{ github.event.inputs.batas || 25 }}
+        run: python -m mdk tulis --batas ${{ steps.mode.outputs.batas }}
 
       - name: Bangun situs statis
         env:
@@ -101,6 +146,8 @@ jobs:
           {
             echo "### Ringkasan penerbitan"
             echo ""
+            echo "- Mode: ${{ steps.mode.outputs.mode }} "
+            echo "  (batas ${{ steps.mode.outputs.batas }} artikel)"
             echo "- URL: ${{ steps.penerbitan.outputs.page_url }}"
             echo ""
             echo '```'
