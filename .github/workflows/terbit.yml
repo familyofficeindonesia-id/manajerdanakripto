@@ -32,6 +32,11 @@ on:
         description: "Jumlah maksimum artikel yang ditulis pada jalannya ini"
         required: false
         default: "10"
+      izinkan_basis_data_kosong:
+        description: "Mulai dari basis data kosong (HANYA bila semua cache benar-benar hilang)"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write     # untuk menyimpan kembali basis data artikel
@@ -93,11 +98,61 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Pulihkan basis data artikel
+        id: pulihkan
         uses: actions/cache/restore@v4
         with:
           path: data/mdk.sqlite3
           key: mdk-db-${{ github.run_id }}
           restore-keys: mdk-db-
+
+      # ---------------------------------------------------------------------
+      # PENGAMAN 1 — jangan pernah bekerja di atas basis data yang gagal pulih.
+      #
+      # Ini kelemahan yang menghapus seluruh arsip pada 30 Agustus 2026. Jalan
+      # 33276874408 menemui gangguan jaringan sesaat:
+      #
+      #   Failed to restore: GetCacheEntryDownloadURL ... ECONNRESET
+      #   Cache not found for input keys: mdk-db-33276874408, mdk-db-
+      #
+      # Cache-nya ADA, hanya gagal diunduh. Tetapi actions/cache/restore
+      # memperlakukan kegagalan unduh sebagai peringatan, bukan kesalahan, jadi
+      # jalan itu lanjut, membuat basis data kosong, dan menyimpannya sebagai
+      # cache terbaru. Sejak itu setiap jalan memulihkan yang kosong.
+      #
+      # Berhenti di sini jauh lebih murah daripada kehilangan arsip. Bila cache
+      # memang benar-benar habis (misalnya semua kedaluwarsa setelah tujuh hari
+      # tanpa jalan), jalankan alur ini secara manual dan centang
+      # `izinkan_basis_data_kosong`.
+      # ---------------------------------------------------------------------
+      - name: Pastikan basis data benar-benar pulih
+        run: |
+          BOLEH_KOSONG="${{ github.event.inputs.izinkan_basis_data_kosong }}"
+
+          if [ ! -s data/mdk.sqlite3 ]; then
+            if [ "$BOLEH_KOSONG" = "true" ]; then
+              echo "::warning::Basis data tidak ada, tetapi dimulai dari kosong atas permintaan."
+              echo "UKURAN_AWAL=0" >> "$GITHUB_ENV"
+              exit 0
+            fi
+            echo "::error::Basis data gagal dipulihkan dari cache."
+            echo "Cache kunci '${{ steps.pulihkan.outputs.cache-matched-key }}' tidak terbaca."
+            echo "Jalan dihentikan agar tidak menimpa cache lama dengan basis data kosong."
+            echo "Periksa Actions > Caches. Bila masih ada entri mdk-db- berukuran wajar,"
+            echo "cukup jalankan ulang alur ini; gangguan jaringan biasanya sesaat."
+            exit 1
+          fi
+
+          UKURAN=$(stat -c%s data/mdk.sqlite3)
+          echo "UKURAN_AWAL=$UKURAN" >> "$GITHUB_ENV"
+          echo "Basis data pulih dari '${{ steps.pulihkan.outputs.cache-matched-key }}' — $UKURAN byte"
+
+          # Basis data sehat berukuran ratusan KB. Yang tercemar hanya 3-23 KB.
+          if [ "$UKURAN" -lt 204800 ] && [ "$BOLEH_KOSONG" != "true" ]; then
+            echo "::error::Basis data hanya $UKURAN byte — jauh di bawah ukuran wajar."
+            echo "Kemungkinan besar cache ini tercemar. Hapus entri tersebut di"
+            echo "Actions > Caches, lalu jalankan ulang agar cache lama yang sehat terpakai."
+            exit 1
+          fi
 
       - name: Uji kesehatan konfigurasi
         env:
@@ -124,9 +179,40 @@ jobs:
       - name: Tulis berkas CNAME (domain kustom)
         run: echo "manajerdanakripto.com" > dist/CNAME
 
+      # ---------------------------------------------------------------------
+      # PENGAMAN 2 — jangan simpan basis data yang menyusut.
+      #
+      # `if: always()` pada langkah simpan adalah separuh kedua dari kegagalan
+      # 30 Agustus: ia menyimpan cache bahkan setelah langkah sebelumnya gagal.
+      # Sekarang penyimpanan hanya terjadi bila seluruh jalan sehat DAN ukuran
+      # basis data tidak turun drastis dibanding saat dipulihkan.
+      #
+      # Ambang 70% memberi ruang bagi penyusutan wajar (VACUUM, pembersihan
+      # berita basi) sambil tetap menghadang kehilangan besar.
+      # ---------------------------------------------------------------------
+      - name: Periksa kewajaran basis data sebelum disimpan
+        id: periksa_db
+        run: |
+          if [ ! -s data/mdk.sqlite3 ]; then
+            echo "::error::Basis data hilang di akhir jalan. Cache TIDAK disimpan."
+            exit 1
+          fi
+          UKURAN_AKHIR=$(stat -c%s data/mdk.sqlite3)
+          echo "Ukuran akhir: $UKURAN_AKHIR byte (awal: ${UKURAN_AWAL:-0} byte)"
+
+          if [ "${UKURAN_AWAL:-0}" -gt 0 ]; then
+            AMBANG=$(( UKURAN_AWAL * 70 / 100 ))
+            if [ "$UKURAN_AKHIR" -lt "$AMBANG" ]; then
+              echo "::error::Basis data menyusut dari $UKURAN_AWAL ke $UKURAN_AKHIR byte."
+              echo "Cache TIDAK disimpan agar salinan lama tetap utuh."
+              exit 1
+            fi
+          fi
+          echo "aman=ya" >> "$GITHUB_OUTPUT"
+
       - name: Simpan basis data artikel
+        if: steps.periksa_db.outputs.aman == 'ya'
         uses: actions/cache/save@v4
-        if: always()
         with:
           path: data/mdk.sqlite3
           key: mdk-db-${{ github.run_id }}
@@ -142,6 +228,37 @@ jobs:
       - name: Terbitkan ke GitHub Pages
         id: penerbitan
         uses: actions/deploy-pages@v4
+
+      # ---------------------------------------------------------------------
+      # PENGAMAN 3 — salinan cadangan di luar cache.
+      #
+      # Cache Actions bukan tempat penyimpanan permanen: entri yang tidak
+      # tersentuh selama tujuh hari dihapus otomatis, dan seluruh cache dapat
+      # dibersihkan sewaktu-waktu. Selama basis data hanya hidup di sana, satu
+      # kejadian buruk berarti kehilangan permanen.
+      #
+      # Langkah ini menyalinnya ke branch `cadangan-basis-data`, empat kali
+      # sehari pada jalan penuh saja. Branch itu bersifat orphan dan selalu
+      # ditimpa dengan satu komit tunggal, jadi repositori tidak menggelembung
+      # oleh riwayat berkas biner.
+      #
+      # Untuk memulihkan: unduh data/mdk.sqlite3 dari branch tersebut, lalu
+      # jalankan alur ini secara manual sesudah cache dibersihkan.
+      # ---------------------------------------------------------------------
+      - name: Cadangkan basis data ke branch terpisah
+        if: steps.mode.outputs.mode == 'penuh' && steps.periksa_db.outputs.aman == 'ya'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp data/mdk.sqlite3 /tmp/cadangan.sqlite3
+          git checkout --orphan cadangan-sementara
+          git rm -rf --cached . > /dev/null 2>&1 || true
+          mkdir -p data
+          cp /tmp/cadangan.sqlite3 data/mdk.sqlite3
+          git add -f data/mdk.sqlite3
+          git commit -q -m "Cadangan basis data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push --force -q origin cadangan-sementara:cadangan-basis-data
+          echo "Cadangan tersimpan di branch cadangan-basis-data"
 
       - name: Ringkasan jalannya alur
         env:
