@@ -37,6 +37,11 @@ on:
         type: boolean
         required: false
         default: false
+      hapus_penanda_kuota:
+        description: "Paksa mencoba menulis walau penanda kuota masih terpasang"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write     # untuk menyimpan kembali basis data artikel
@@ -164,12 +169,64 @@ jobs:
           PYTHONPATH: src
         run: python -m mdk ambil
 
+      # ---------------------------------------------------------------------
+      # PENGAMAN 4 — pemutus arus kuota Gemini.
+      #
+      # Kuota harian Gemini tingkat gratis habis jauh sebelum antrean habis:
+      # pada 31 Agustus 2026 kolam kandidat berisi 80 item, tetapi tiap jalan
+      # hanya sanggup menulis 1 artikel sebelum menabrak 429, lalu membakar 3
+      # request gagal sebelum berhenti sendiri.
+      #
+      # Dengan jadwal ~20 jalan per hari, itu sekitar 60 request terbuang setiap
+      # hari — diambil dari jatah yang sama dengan artikel asli. Gerbang ini
+      # membaca penanda yang dipasang saat 429 pertama, lalu melewati tahap
+      # tulis sampai jendela reset lewat. Langkah bangun dan terbit tetap jalan,
+      # jadi situs tetap diperbarui walau tidak ada artikel baru.
+      #
+      # Bila penanda salah terpasang, jalankan manual dan centang
+      # `hapus_penanda_kuota`.
+      # ---------------------------------------------------------------------
+      - name: Hapus penanda kuota atas permintaan
+        if: github.event.inputs.hapus_penanda_kuota == 'true'
+        env:
+          PYTHONPATH: src
+          MDK_BASIS_DATA: data/mdk.sqlite3
+        run: python -m mdk.kuota hapus
+
+      - name: Periksa status kuota Gemini
+        id: kuota
+        env:
+          PYTHONPATH: src
+          MDK_BASIS_DATA: data/mdk.sqlite3
+        run: python -m mdk.kuota periksa
+
+      - name: Lewati tahap tulis (kuota masih habis)
+        if: steps.kuota.outputs.boleh != 'true'
+        run: |
+          echo "::warning::Tahap tulis dilewati — penanda kuota Gemini masih terpasang."
+          echo "Antrean tetap terisi dan situs tetap dibangun ulang."
+
+      # Keluaran langkah tulis dilewatkan `tee` supaya bisa diperiksa setelahnya.
+      # Ini membuat pemutus arus bekerja tanpa perlu mengubah rewrite.py:
+      # pesan 429 yang sudah dicetak sendiri oleh rewrite.py yang dijadikan sinyal.
       - name: Tulis ulang menjadi artikel Bahasa Indonesia
+        if: steps.kuota.outputs.boleh == 'true'
         continue-on-error: true      # situs tetap terbit walau langkah ini gagal
         env:
           PYTHONPATH: src
+          MDK_BASIS_DATA: data/mdk.sqlite3
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python -m mdk tulis --batas ${{ steps.mode.outputs.batas }}
+        run: |
+          set +e
+          python -m mdk tulis --batas ${{ steps.mode.outputs.batas }} 2>&1 | tee /tmp/tulis.log
+          KODE=${PIPESTATUS[0]}
+
+          if grep -qiE '429|kuota harian habis|RESOURCE_EXHAUSTED|quota' /tmp/tulis.log; then
+            echo "::warning::Kuota Gemini habis pada jalan ini. Penanda dipasang."
+            python -m mdk.kuota tandai
+          fi
+
+          exit $KODE
 
       - name: Bangun situs statis
         env:
@@ -261,6 +318,7 @@ jobs:
           echo "Cadangan tersimpan di branch cadangan-basis-data"
 
       - name: Ringkasan jalannya alur
+        if: always()
         env:
           PYTHONPATH: src
         run: |
@@ -269,6 +327,7 @@ jobs:
             echo ""
             echo "- Mode: ${{ steps.mode.outputs.mode }} "
             echo "  (batas ${{ steps.mode.outputs.batas }} artikel)"
+            echo "- Kuota Gemini: ${{ steps.kuota.outputs.boleh == 'true' && 'tersedia' || 'habis — tahap tulis dilewati' }}"
             echo "- URL: ${{ steps.penerbitan.outputs.page_url }}"
             echo ""
             echo '```'
