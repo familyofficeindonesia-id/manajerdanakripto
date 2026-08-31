@@ -93,7 +93,15 @@ ai:
   maks_token: 8000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
-  jeda_antar_permintaan_detik: 5.0   # ±12 permintaan/menit, aman di tingkat gratis
+  # Batas RPM Gemini 3.7 Flash (yang saat ini ditunjuk oleh alias
+  # "gemini-flash-latest") pada tingkat gratis adalah 5 permintaan per menit.
+  # Jeda 12 detik = tepat 5/menit; 15 detik memberi margin untuk selisih waktu.
+  #
+  # Nilai lama 5.0 detik berarti 12 permintaan/menit — dua kali lipat batas.
+  # Kelebihannya ditolak 429, dan penolakan itu TETAP dihitung terhadap kuota
+  # harian, sehingga jatah RPD habis dalam hitungan menit tanpa menghasilkan
+  # satu pun artikel.
+  jeda_antar_permintaan_detik: 15.0
 
 # --- Pembuatan situs ----------------------------------------------------------
 build:
