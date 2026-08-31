@@ -22,6 +22,14 @@ from .entities import Registri
 from .models import Artikel
 from .utils import (hitung_kata, potong, sekarang_wib, sidik_jari, slugify)
 
+# Modul pemutus arus kuota bersifat opsional: bila belum diunggah, penulisan
+# tetap berjalan seperti sebelumnya. Ini disengaja agar rewrite.py tidak pernah
+# gagal diimpor hanya karena satu berkas pendamping belum ada.
+try:
+    from . import kuota as _kuota
+except ImportError:                                  # pragma: no cover
+    _kuota = None
+
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
 
@@ -405,6 +413,21 @@ class Penulis:
                     # alih-alih menunggu tiga kegagalan beruntun.
                     gagal_kuota_beruntun = MAKS_GAGAL_KUOTA_BERUNTUN
                     gagal_sibuk_beruntun = 0
+
+                    # Pasang penanda agar jalan-jalan berikutnya melewati tahap
+                    # tulis sepenuhnya sampai kuota reset. Tanpa ini, setiap
+                    # jalan berjadwal tetap membakar satu request hanya untuk
+                    # menemukan tembok yang sama.
+                    #
+                    # Penanda HANYA dipasang di cabang ini. Batas per menit juga
+                    # bermuatan kode 429, tetapi sifatnya sesaat dan tidak boleh
+                    # menghentikan penulisan berjam-jam.
+                    if _kuota is not None:
+                        try:
+                            _kuota.catat_habis(pesan)
+                        except Exception as galat:       # noqa: BLE001
+                            if verbose:
+                                print(f"  ! Penanda kuota gagal dipasang: {galat}")
                 elif "429" in pesan:
                     gagal_kuota_beruntun += 1
                     gagal_sibuk_beruntun = 0
