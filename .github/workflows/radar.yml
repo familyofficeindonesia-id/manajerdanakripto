@@ -1,0 +1,163 @@
+name: Radar — pantau sumber berita
+
+# GitHub Actions menjalankan cron dengan toleransi beberapa menit dan dapat
+# menunda saat beban tinggi. Untuk pemantauan yang benar-benar rapat, jalankan
+# `mdk radar jaga` pada server sendiri (lihat deploy/mdk-radar.service).
+#
+# -----------------------------------------------------------------------------
+# PERINGATAN — alur ini berbagi basis data dengan terbit.yml
+# -----------------------------------------------------------------------------
+# `data/mdk.sqlite3` dipakai bersama oleh radar dan terbit, dan keduanya
+# menyimpannya ke ruang kunci cache yang sama (`mdk-db-`). Konsekuensinya:
+#
+#   1. Keduanya TIDAK BOLEH berjalan bersamaan. Bila radar memulihkan basis
+#      data sementara terbit sedang menulis artikel, salinan lama milik radar
+#      akan menimpa hasil kerja terbit begitu radar menyimpan cache. Karena itu
+#      `concurrency.group` di bawah sengaja disamakan dengan milik terbit.yml.
+#
+#   2. Pengaman ukuran wajib ada di sini juga. Versi sebelumnya menyimpan cache
+#      dengan `if: always()` tanpa pemeriksaan apa pun — pola yang persis sama
+#      dengan yang menghapus seluruh arsip pada 30 Agustus 2026.
+#
+# Bila kelak radar dipindahkan ke basis datanya sendiri (mis. data/radar.sqlite3
+# dengan kunci `mdk-radar-`), kedua batasan di atas gugur dan alur ini boleh
+# kembali memakai grup konkurensi sendiri.
+# -----------------------------------------------------------------------------
+on:
+  schedule:
+    # Tiap 30 menit. Karena grup konkurensi disatukan dengan terbit, jalan yang
+    # bentrok akan mengantre, bukan berebut. Bila antrean terasa terlalu padat,
+    # longgarkan ke "*/60".
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Disamakan dengan terbit.yml. `cancel-in-progress` WAJIB false: bila true,
+# jalan radar akan membatalkan jalan terbit yang sedang menulis artikel di
+# tengah jalan, dan basis datanya berisiko tertinggal setengah jadi.
+concurrency:
+  group: terbit
+  cancel-in-progress: false
+
+jobs:
+  pantau:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Pulihkan riwayat radar
+        id: pulihkan
+        uses: actions/cache/restore@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
+          restore-keys: mdk-db-
+
+      # ---------------------------------------------------------------------
+      # PENGAMAN — sama seperti di terbit.yml.
+      #
+      # Radar memantau, bukan menerbitkan. Bila basis data tidak pulih dengan
+      # utuh, kehilangan satu putaran pemantauan sama sekali tidak sebanding
+      # dengan risiko menimpa arsip artikel. Jadi di sini kita berhenti diam-
+      # diam (exit 0) alih-alih menggagalkan alur: tidak ada yang perlu
+      # dikerjakan, dan tidak ada cache yang akan disimpan.
+      # ---------------------------------------------------------------------
+      - name: Pastikan basis data benar-benar pulih
+        id: periksa_awal
+        run: |
+          if [ ! -s data/mdk.sqlite3 ]; then
+            echo "::warning::Basis data tidak pulih dari cache. Putaran radar dilewati."
+            echo "lanjut=tidak" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          UKURAN=$(stat -c%s data/mdk.sqlite3)
+          echo "Basis data pulih dari '${{ steps.pulihkan.outputs.cache-matched-key }}' — $UKURAN byte"
+
+          if [ "$UKURAN" -lt 204800 ]; then
+            echo "::warning::Basis data hanya $UKURAN byte — di bawah ukuran wajar."
+            echo "Putaran radar dilewati agar cache sehat tidak tertimpa."
+            echo "lanjut=tidak" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "UKURAN_AWAL=$UKURAN" >> "$GITHUB_ENV"
+          echo "lanjut=ya" >> "$GITHUB_OUTPUT"
+
+      - name: Bangun daftar sumber bila belum ada
+        if: steps.periksa_awal.outputs.lanjut == 'ya'
+        env:
+          PYTHONPATH: src
+        run: |
+          test -f config/watchlist.yaml || python -m mdk radar bangun
+
+      - name: Satu putaran pemantauan
+        if: steps.periksa_awal.outputs.lanjut == 'ya'
+        env:
+          PYTHONPATH: src
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RADAR_WEBHOOK_URL: ${{ secrets.RADAR_WEBHOOK_URL }}
+          RADAR_WEBHOOK_GAYA: ${{ vars.RADAR_WEBHOOK_GAYA || 'generik' }}
+        run: python -m mdk radar pantau --teruskan
+
+      - name: Ringkasan
+        if: always() && steps.periksa_awal.outputs.lanjut == 'ya'
+        env:
+          PYTHONPATH: src
+        run: |
+          {
+            echo '### Radar'
+            echo '```'
+            python -m mdk radar status --batas 12
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ---------------------------------------------------------------------
+      # Penyimpanan cache TIDAK memakai `if: always()`.
+      #
+      # `if: always()` pada langkah simpan adalah separuh kedua dari kegagalan
+      # 30 Agustus: ia menyimpan cache bahkan setelah langkah sebelumnya gagal,
+      # sehingga basis data setengah jadi menjadi salinan "terbaru" yang lalu
+      # dipulihkan oleh semua jalan berikutnya.
+      #
+      # Ambang 70% sama dengan yang dipakai terbit.yml.
+      # ---------------------------------------------------------------------
+      - name: Periksa kewajaran basis data sebelum disimpan
+        id: periksa_akhir
+        if: steps.periksa_awal.outputs.lanjut == 'ya'
+        run: |
+          if [ ! -s data/mdk.sqlite3 ]; then
+            echo "::error::Basis data hilang di akhir putaran. Cache TIDAK disimpan."
+            exit 1
+          fi
+          UKURAN_AKHIR=$(stat -c%s data/mdk.sqlite3)
+          echo "Ukuran akhir: $UKURAN_AKHIR byte (awal: ${UKURAN_AWAL:-0} byte)"
+
+          if [ "${UKURAN_AWAL:-0}" -gt 0 ]; then
+            AMBANG=$(( UKURAN_AWAL * 70 / 100 ))
+            if [ "$UKURAN_AKHIR" -lt "$AMBANG" ]; then
+              echo "::error::Basis data menyusut dari $UKURAN_AWAL ke $UKURAN_AKHIR byte."
+              echo "Cache TIDAK disimpan agar salinan lama tetap utuh."
+              exit 1
+            fi
+          fi
+          echo "aman=ya" >> "$GITHUB_OUTPUT"
+
+      - name: Simpan riwayat radar
+        if: steps.periksa_akhir.outputs.aman == 'ya'
+        uses: actions/cache/save@v4
+        with:
+          path: data/mdk.sqlite3
+          key: mdk-db-${{ github.run_id }}
