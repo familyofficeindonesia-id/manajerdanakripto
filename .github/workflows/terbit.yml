@@ -206,9 +206,14 @@ jobs:
           echo "::warning::Tahap tulis dilewati — penanda kuota Gemini masih terpasang."
           echo "Antrean tetap terisi dan situs tetap dibangun ulang."
 
-      # Keluaran langkah tulis dilewatkan `tee` supaya bisa diperiksa setelahnya.
-      # Ini membuat pemutus arus bekerja tanpa perlu mengubah rewrite.py:
-      # pesan 429 yang sudah dicetak sendiri oleh rewrite.py yang dijadikan sinyal.
+      # Penanda kuota biasanya dipasang langsung oleh rewrite.py saat menangkap
+      # KuotaHabis. Grep di bawah hanya jaring pengaman, untuk keadaan ketika
+      # rewrite.py belum sempat menulis penanda (misalnya proses terbunuh oleh
+      # batas waktu tepat setelah menerima 429).
+      #
+      # Polanya sengaja SEMPIT — hanya frasa kuota harian. Kode 429 saja tidak
+      # cukup: batas per menit juga bermuatan 429, sifatnya sesaat, dan tidak
+      # boleh menghentikan penulisan berjam-jam.
       - name: Tulis ulang menjadi artikel Bahasa Indonesia
         if: steps.kuota.outputs.boleh == 'true'
         continue-on-error: true      # situs tetap terbit walau langkah ini gagal
@@ -221,8 +226,8 @@ jobs:
           python -m mdk tulis --batas ${{ steps.mode.outputs.batas }} 2>&1 | tee /tmp/tulis.log
           KODE=${PIPESTATUS[0]}
 
-          if grep -qiE '429|kuota harian habis|RESOURCE_EXHAUSTED|quota' /tmp/tulis.log; then
-            echo "::warning::Kuota Gemini habis pada jalan ini. Penanda dipasang."
+          if grep -qiE 'kuota harian habis|Kuota API habis' /tmp/tulis.log; then
+            echo "::warning::Kuota harian Gemini habis pada jalan ini."
             python -m mdk.kuota tandai
           fi
 
