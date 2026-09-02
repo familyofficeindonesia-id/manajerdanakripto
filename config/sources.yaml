@@ -267,15 +267,19 @@ umpan_umum:
     url: "https://feed.liputan6.com/rss/bisnis"
     bahasa: id
     bobot: 1.15
-  # Uji 28 Agu 2026: 50 entri terurai, tetapi entri TERBARU pun berumur 102 jam.
-  # Selama umpannya tidak diperbarui, semua entrinya akan ditolak saringan usia
-  # dan sumber ini tidak menyumbang apa pun. Dibiarkan hidup karena biayanya
-  # hanya satu permintaan; PANTAU pada uji berikutnya dan buang bila umur entri
-  # terbarunya masih di atas 36 jam.
-  - nama: "Tempo — Bisnis"
-    url: "https://rss.tempo.co/bisnis"
-    bahasa: id
-    bobot: 1.15
+  # DIBUANG 2 Sep 2026 — Tempo — Bisnis (https://rss.tempo.co/bisnis)
+  #
+  # Catatan uji 28 Agu memerintahkan pemantauan dan pembuangan bila umur entri
+  # terbaru masih di atas 36 jam. Uji 2 Sep: umpan tetap balas 200 dengan 50
+  # entri, tetapi entri TERBARU berumur 221 jam (sekitar sembilan hari) — naik
+  # dari 102 jam. Umpannya hidup, isinya yang tidak diperbarui.
+  #
+  # Tugas `cari` pada uji-umpan mencoba 23 alamat di tempo.co dan tidak
+  # menemukan satu pun umpan aktif, jadi tidak ada alamat pengganti untuk
+  # dipasang. Dibuang, bukan diganti.
+  #
+  # Bila kelak Tempo menghidupkan kembali umpannya, jalankan `cari tempo.co`
+  # dan pasang alamat yang ditemukan dengan bobot 1.15 seperti semula.
   - nama: "Republika"
     url: "https://www.republika.co.id/rss"
     bahasa: id
