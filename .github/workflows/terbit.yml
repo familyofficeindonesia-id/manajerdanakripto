@@ -214,6 +214,26 @@ jobs:
       # Polanya sengaja SEMPIT — hanya frasa kuota harian. Kode 429 saja tidak
       # cukup: batas per menit juga bermuatan 429, sifatnya sesaat, dan tidak
       # boleh menghentikan penulisan berjam-jam.
+      #
+      # ---------------------------------------------------------------------
+      # PERBAIKAN 2 September 2026 — jangan tambahkan pola apa pun di sini
+      # tanpa memeriksa rewrite.py lebih dulu.
+      #
+      # Versi sebelumnya memakai pola 'kuota harian habis|Kuota API habis'.
+      # Cabang kedua itu keliru: rewrite.py mencetak "Kuota API habis — N
+      # kegagalan beruntun" juga untuk 429 batas PER MENIT, karena cabang
+      # `elif "429" in pesan` menambah penghitung yang sama dengan kuota harian.
+      #
+      # Akibatnya tiga bentrokan RPM — sesaat dan sepenuhnya normal pada RPM 5 —
+      # memasang penanda kuota HARIAN, lalu memblokir seluruh penulisan sampai
+      # jendela reset berikutnya. Situs berhenti menerbitkan dua hari penuh
+      # (1-2 September) sementara antrean menumpuk sampai 648 item, dan setiap
+      # jalan berjadwal tetap hijau sehingga tidak ada yang tampak salah.
+      #
+      # Hanya frasa 'kuota harian habis' yang sah. Frasa itu berasal dari
+      # KuotaHabis di rewrite.py, yang hanya diangkat bila pesan galat Google
+      # benar-benar menyebut penanda harian (perday / per day / daily limit).
+      # ---------------------------------------------------------------------
       - name: Tulis ulang menjadi artikel Bahasa Indonesia
         if: steps.kuota.outputs.boleh == 'true'
         continue-on-error: true      # situs tetap terbit walau langkah ini gagal
@@ -226,7 +246,7 @@ jobs:
           python -m mdk tulis --batas ${{ steps.mode.outputs.batas }} 2>&1 | tee /tmp/tulis.log
           KODE=${PIPESTATUS[0]}
 
-          if grep -qiE 'kuota harian habis|Kuota API habis' /tmp/tulis.log; then
+          if grep -qiE 'kuota harian habis' /tmp/tulis.log; then
             echo "::warning::Kuota harian Gemini habis pada jalan ini."
             python -m mdk.kuota tandai
           fi
