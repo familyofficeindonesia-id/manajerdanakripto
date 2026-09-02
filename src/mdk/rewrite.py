@@ -43,7 +43,87 @@ class KuotaHabis(KesalahanPenulisan):
 
 # Penanda pada pesan galat 429 yang membedakan kuota HARIAN dari batas
 # permintaan per menit. Batas per menit layak ditunggu; kuota harian tidak.
+#
+# CATATAN 3 September 2026 — dipakai HANYA sebagai cadangan terakhir.
+# Versi sebelumnya mencocokkan penanda ini terhadap SELURUH badan respons 429.
+# Itu keliru: badan respons memuat blok QuotaFailure yang dapat menyebut metrik
+# harian walaupun yang benar-benar dilanggar adalah metrik per menit. Satu
+# kemunculan substring sudah cukup untuk memasang penanda harian dan mematikan
+# penerbitan sampai jendela reset berikutnya — persis yang terjadi pada jalan
+# #113, ketika badai percobaan ulang 503 pada artikel pertama menembus RPM 5
+# dan 429 per-menit yang menyusul disalahartikan sebagai kuota harian habis.
+#
+# Sekarang keputusan diambil dari `quotaId` di dalam struktur JSON-nya.
 PENANDA_KUOTA_HARIAN = ("perday", "per day", "requests per day", "daily limit")
+
+# Penanda pada `quotaId` yang menandakan metrik PER MENIT. Bila salah satu ini
+# muncul, 429 tersebut sesaat dan TIDAK boleh memasang penanda harian, berapa
+# pun banyaknya kata "per day" yang tercecer di bagian lain respons.
+PENANDA_KUOTA_MENIT = ("perminute", "per minute")
+
+
+def _baca_pelanggaran_kuota(teks: str) -> tuple[bool, str]:
+    """
+    Tentukan apakah 429 ini benar-benar kuota HARIAN.
+
+    Kembalikan (harian, keterangan). Sumber kebenarannya berurutan:
+
+      1. `error.details[].violations[].quotaId` — paling tepercaya. Google
+         menyebut metrik yang dilanggar secara eksplisit di sini.
+      2. `RetryInfo.retryDelay` — bila Google menyuruh mencoba lagi dalam
+         hitungan detik, yang dilanggar mustahil kuota harian.
+      3. Sapuan substring pada seluruh teks — cadangan terakhir bila JSON tidak
+         terbaca sama sekali.
+
+    Saat ragu, kembalikan False. Salah menyimpulkan "per menit" hanya membuang
+    beberapa percobaan ulang; salah menyimpulkan "harian" menghentikan seluruh
+    penerbitan berjam-jam. Asimetri itu yang menentukan arah default di sini.
+    """
+    try:
+        data = json.loads(teks)
+    except (json.JSONDecodeError, TypeError):
+        rendah = " ".join(str(teks).split()).lower()
+        if any(t in rendah for t in PENANDA_KUOTA_MENIT):
+            return False, "quotaId per menit (dari teks)"
+        if any(t in rendah for t in PENANDA_KUOTA_HARIAN):
+            return True, "penanda harian (dari teks, JSON tidak terbaca)"
+        return False, "tidak dapat dipastikan, dianggap per menit"
+
+    rincian = ((data.get("error") or {}).get("details") or [])
+    jeda_coba = ""
+    id_kuota: list[str] = []
+
+    for butir in rincian:
+        if not isinstance(butir, dict):
+            continue
+        jenis = str(butir.get("@type", ""))
+        if "QuotaFailure" in jenis:
+            for langgar in (butir.get("violations") or []):
+                if isinstance(langgar, dict):
+                    id_kuota.append(str(langgar.get("quotaId", "")))
+        elif "RetryInfo" in jenis:
+            jeda_coba = str(butir.get("retryDelay", ""))
+
+    # 1. quotaId — bukti paling langsung.
+    if id_kuota:
+        gabung = " ".join(id_kuota).lower()
+        if any(t in gabung for t in PENANDA_KUOTA_MENIT):
+            return False, f"quotaId per menit: {', '.join(id_kuota)}"
+        if any(t in gabung for t in PENANDA_KUOTA_HARIAN):
+            return True, f"quotaId harian: {', '.join(id_kuota)}"
+
+    # 2. retryDelay — kuota harian tidak pernah pulih dalam hitungan detik.
+    if jeda_coba:
+        angka = re.match(r"([\d.]+)s", jeda_coba.strip())
+        if angka:
+            try:
+                if float(angka.group(1)) <= 300:
+                    return False, f"retryDelay {jeda_coba} — terlalu pendek"
+            except ValueError:
+                pass
+
+    return False, "quotaId tidak disebutkan, dianggap per menit"
+
 
 # Berapa kegagalan kuota berturut-turut sebelum seluruh sisa antrean dilepas.
 # Tanpa ambang ini, satu jalan dapat menghabiskan belasan menit hanya untuk
@@ -221,14 +301,27 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             continue
 
         if tanggapan.status_code == 429:
-            rinci = " ".join(tanggapan.text.split()).lower()
+            mentah = tanggapan.text
+            rinci = " ".join(mentah.split()).lower()
+            harian, keterangan = _baca_pelanggaran_kuota(mentah)
+
+            # Badan respons 429 dicetak UTUH. Tanpa ini, `quotaId` tidak pernah
+            # tercatat di mana pun dan setiap penyelidikan kuota berhenti pada
+            # pesan terpotong yang tidak dapat disimpulkan.
+            print(f"  ! 429 diterima — {keterangan}")
+            print(f"    {rinci[:900]}")
+
             # Kuota harian habis: menunggu tidak akan menolong sama sekali.
-            if any(t in rinci for t in PENANDA_KUOTA_HARIAN):
+            if harian:
                 raise KuotaHabis(
-                    f"API 429 kuota harian habis: {rinci[:300]}")
+                    f"API 429 kuota harian habis ({keterangan}): {rinci[:300]}")
+
             if percobaan < 2:          # batas per menit — layak ditunggu
-                time.sleep(tunggu)
-                tunggu *= 2
+                # Batas per menit pulih dalam hitungan puluhan detik. Jeda 5
+                # detik terlalu pendek: ia hanya menghasilkan 429 berikutnya dan
+                # membakar jatah RPM yang justru sedang kita tunggu pulihnya.
+                time.sleep(max(tunggu, 20.0))
+                tunggu = max(tunggu, 20.0) * 2
                 continue
         break
 
