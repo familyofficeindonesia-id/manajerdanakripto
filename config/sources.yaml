@@ -211,8 +211,27 @@ umpan_umum:
   # lewat Google News dan mewarisi ketidakandalan tanggalnya. Bobot ditahan di
   # bawah lantai 0,90 dengan sengaja: ini satu-satunya umpan_umum yang
   # tanggalnya tidak dapat diperiksa, jadi ia harus kalah dari sumber langsung.
+  #
+  # KUERI DIPERBAIKI 2 Sep 2026. Bentuk lama:
+  #
+  #   q=crypto+fund+OR+bitcoin+ETF+site:reuters.com
+  #
+  # Operator OR di Google hanya mengikat satu kata di kiri dan kanannya, bukan
+  # dua frasa. Kueri itu karena itu TIDAK dibaca sebagai "crypto fund" ATAU
+  # "bitcoin ETF"; hasilnya artikel yang sekadar memuat kata "fund" ikut
+  # tertarik. Uji 2 Sep menunjukkan dua entri teratas adalah "US equity funds
+  # post biggest weekly outflow" dan "Morning Bid: Jensen to market" — berita
+  # saham dan makro biasa, tanpa kaitan aset digital, dan berumur 109 jam.
+  #
+  # Bentuk baru `site:reuters.com crypto` diuji berdampingan pada saat yang
+  # sama: entri teratas "Goldman Sachs, BofA and others plan to issue dollar
+  # stablecoin together in 2027" berumur di bawah 24 jam, disusul LSEG dan
+  # saham UK tertokenisasi bersama Kraken. Segar dan tepat sasaran.
+  #
+  # Bila umur entri terbaru kelak kembali menembus 100 jam pada uji-umpan,
+  # perlakukan seperti Tempo: buang. Bobot 0,85 membuat kehilangannya kecil.
   - nama: "Reuters via Google News"
-    url: "https://news.google.com/rss/search?q=crypto+fund+OR+bitcoin+ETF+site:reuters.com&hl=en-US&gl=US&ceid=US:en"
+    url: "https://news.google.com/rss/search?q=site:reuters.com+crypto&hl=en-US&gl=US&ceid=US:en"
     bahasa: en
     bobot: 0.85
 
