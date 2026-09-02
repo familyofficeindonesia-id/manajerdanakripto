@@ -163,9 +163,59 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
                 "tersisa": tersisa, "basi": basi}
 
     artikel, gagal = Penulis(kfg, reg).tulis_banyak(terpilih, verbose)
+
+    # ------------------------------------------------------------------
+    # Pemeriksaan duplikat KEDUA — sesama Bahasa Indonesia.
+    #
+    # Penyaringan di atas membandingkan judul MENTAH dari RSS (berbahasa
+    # Inggris) dengan judul artikel yang SUDAH TERBIT (berbahasa Indonesia).
+    # Perbandingan lintas bahasa itu praktis tidak pernah mencapai ambang:
+    # nama diri seperti Ethereum atau Bitcoin memang bertahan melewati
+    # penerjemahan, tetapi selebihnya berubah total, sehingga skornya
+    # mentok di kisaran 65-69 untuk peristiwa yang sama persis.
+    #
+    # Akibatnya dua penerbit yang memberitakan peristiwa sama dengan judul
+    # Inggris berbeda lolos berdua, lalu terbit sebagai dua artikel
+    # Indonesia yang nyaris kembar — misalnya "Tom Lee Soroti Peran
+    # Ethereum sebagai Lapisan Verifikasi AI" dan "Tom Lee Soroti Potensi
+    # Ethereum sebagai Lapisan Verifikasi AI" pada 19 Agustus 2026, yang
+    # mencetak kemiripan 94,7 begitu dibandingkan sesama Bahasa Indonesia.
+    #
+    # Menurunkan ambang bukan jalan keluar: pasangan lintas bahasa yang
+    # benar-benar duplikat berada di 65-69, sementara artikel Indonesia
+    # yang memang berbeda juga jatuh di kisaran 58-68. Tidak ada satu angka
+    # yang memisahkan keduanya. Karena itu pemeriksaan diulang di sini,
+    # ketika kedua sisi perbandingan sudah sama-sama Bahasa Indonesia.
+    #
+    # Biaya panggilan API untuk artikel duplikat memang sudah terlanjur
+    # keluar. Yang diselamatkan adalah slot penerbitannya — untuk situs
+    # yang terbit 1-3 artikel per hari, satu duplikat berarti sepertiga
+    # keluaran hari itu terbuang.
+    #
+    # Judul yang lolos ikut ditambahkan ke pembanding, sehingga dua artikel
+    # kembar yang ditulis dalam SATU jalan yang sama juga tersaring.
+    # ------------------------------------------------------------------
+    judul_terbit = list(riwayat)
+    disimpan = []
+    ulangan_pasca = 0
     for a in artikel:
+        if cari_duplikat(a.judul, judul_terbit):
+            # 'dilewati', bukan 'baru': artikelnya sudah ditulis dan memang
+            # duplikat, jadi menulis ulang di jalan berikutnya hanya akan
+            # membakar kuota untuk hasil yang sama.
+            simpan.tandai_mentah(a.id, "dilewati")
+            ulangan_pasca += 1
+            if verbose:
+                print(f"  [KEMBAR] {a.judul[:70]}")
+            continue
+        judul_terbit.append((a.id, a.judul))
         simpan.simpan_artikel(a)
         simpan.tandai_mentah(a.id, "diproses")
+        disimpan.append(a)
+
+    if verbose and ulangan_pasca:
+        print(f"  \u2717 {ulangan_pasca} artikel kembar tidak diterbitkan "
+              f"(judul Indonesia terlalu mirip dengan yang sudah tayang)")
     # Kegagalan sementara dikembalikan ke antrean, bukan dikubur.
     #
     # `rewrite.py` sudah membedakan server sibuk dari kuota habis dan bahkan
@@ -191,9 +241,10 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
         print(f"  ↩ {dikembalikan} berita dikembalikan ke antrean "
               f"(kegagalan sementara di sisi layanan, bukan isi beritanya)")
 
-    ringkas = {"ditulis": len(artikel), "gagal": dikubur,
+    ringkas = {"ditulis": len(disimpan), "gagal": dikubur,
                "dikembalikan": dikembalikan,
-               "dilewati": ulangan, "tersisa": tersisa, "basi": basi}
+               "dilewati": ulangan, "kembar": ulangan_pasca,
+               "tersisa": tersisa, "basi": basi}
     simpan.catat("tulis", str(ringkas))
     return ringkas
 
