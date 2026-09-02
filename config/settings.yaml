@@ -89,18 +89,41 @@ relevansi:
 
 # --- Model AI penulis ulang ---------------------------------------------------
 ai:
-  model: "gemini-flash-latest"
+  # ---------------------------------------------------------------------------
+  # JANGAN GANTI NILAI INI DENGAN ALIAS ("gemini-flash-latest" dan sejenisnya).
+  #
+  # Alias sudah tiga kali bergeser di bawah kaki kita, dan setiap pergeseran
+  # menghentikan penerbitan berhari-hari dengan gejala yang sulit dilacak:
+  #
+  #   3.7 Flash  → RPM turun ke 5, gelombang 503 tak berkesudahan
+  #   2.5 Flash  → sempat stabil
+  #   3.8 Flash  → RPD hanya 20; situs berhenti terbit 1-3 September 2026
+  #
+  # Kejadian 3 September: alias menunjuk gemini-3.8-flash, yang jatah gratisnya
+  # hanya 20 permintaan per HARI. Dengan ~24 jalan berjadwal, jatah itu habis
+  # sebelum tengah hari, lalu pemutus arus kuota memblokir sisa hari. Setiap
+  # jalan tetap hijau, sehingga tidak ada yang tampak rusak sama sekali.
+  #
+  # Nama versi eksplisit tidak pernah berubah sendiri. Menaikkan versi harus
+  # jadi keputusan sadar, didahului pengecekan RPD/RPM di
+  # https://aistudio.google.com/rate-limit untuk project 'manajerdanakripto'.
+  #
+  # Gemini 2.5 Flash pada tingkat gratis: 10 RPM · 250 RPD.
+  # Alternatif bila 250 RPD masih kurang: "gemini-2.5-flash-lite" (15 RPM,
+  # 1.000 RPD), dengan konsekuensi kualitas tulisan menurun.
+  # ---------------------------------------------------------------------------
+  model: "gemini-2.5-flash"
   maks_token: 8000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
-  # Batas RPM Gemini 3.7 Flash (yang saat ini ditunjuk oleh alias
-  # "gemini-flash-latest") pada tingkat gratis adalah 5 permintaan per menit.
-  # Jeda 12 detik = tepat 5/menit; 15 detik memberi margin untuk selisih waktu.
+  # Gemini 2.5 Flash pada tingkat gratis: 10 RPM. Jeda 15 detik = 4 permintaan
+  # per menit, jadi ada margin lebar — penting karena satu artikel dapat memakan
+  # lebih dari satu permintaan bila kena 503 dan dicoba ulang.
   #
-  # Nilai lama 5.0 detik berarti 12 permintaan/menit — dua kali lipat batas.
-  # Kelebihannya ditolak 429, dan penolakan itu TETAP dihitung terhadap kuota
-  # harian, sehingga jatah RPD habis dalam hitungan menit tanpa menghasilkan
-  # satu pun artikel.
+  # Nilai lama 5.0 detik berarti 12 permintaan/menit. Kelebihannya ditolak 429,
+  # dan penolakan itu TETAP dihitung terhadap kuota harian, sehingga jatah RPD
+  # habis tanpa menghasilkan satu pun artikel.
+  jeda_antar_permintaan_detik: 15.0
   jeda_antar_permintaan_detik: 15.0
 
 # --- Pembuatan situs ----------------------------------------------------------
