@@ -108,17 +108,31 @@ ai:
   # jadi keputusan sadar, didahului pengecekan RPD/RPM di
   # https://aistudio.google.com/rate-limit untuk project 'manajerdanakripto'.
   #
-  # Gemini 2.5 Flash pada tingkat gratis: 10 RPM · 250 RPD.
-  # Alternatif bila 250 RPD masih kurang: "gemini-2.5-flash-lite" (15 RPM,
-  # 1.000 RPD), dengan konsekuensi kualitas tulisan menurun.
+  # Angka RPM di bawah DIVERIFIKASI di halaman Rate Limit project
+  # 'manajerdanakripto', bukan disalin dari dokumentasi umum Google. Keduanya
+  # berbeda: dokumentasi menyebut 2.5 Flash 10 RPM, project ini 5 RPM.
+  #
+  # Terpakai per 3 September 2026 (puncak 7 hari):
+  #   Gemini 3.7 Flash      7 / 5   ← mentok
+  #   Gemini 3.8 Flash      4 / 5   ← mentok, RPD hanya 20
+  #   Gemini 2.5 Flash      0 / 5   ← belum tersentuh
+  #   Gemini 2.5 Flash Lite 0 / 10  ← belum tersentuh
+  #
+  # Alternatif bila RPD 2.5 Flash masih kurang: "gemini-2.5-flash-lite"
+  # (10 RPM, RPD lebih besar), dengan konsekuensi kualitas tulisan menurun.
   # ---------------------------------------------------------------------------
   model: "gemini-2.5-flash"
   maks_token: 8000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
-  # Gemini 2.5 Flash pada tingkat gratis: 10 RPM. Jeda 15 detik = 4 permintaan
-  # per menit, jadi ada margin lebar — penting karena satu artikel dapat memakan
-  # lebih dari satu permintaan bila kena 503 dan dicoba ulang.
+  # Gemini 2.5 Flash pada project 'manajerdanakripto': 5 RPM (diverifikasi
+  # langsung di halaman Rate Limit AI Studio pada 3 September 2026 — dokumentasi
+  # umum Google menyebut 10, tetapi batas nyata dihitung per project dan angka
+  # project inilah yang berlaku).
+  #
+  # Jeda 15 detik = 4 permintaan per menit, menyisakan margin satu permintaan.
+  # Margin itu penting karena satu artikel dapat memakan lebih dari satu
+  # permintaan bila kena 503 dan dicoba ulang.
   #
   # Nilai lama 5.0 detik berarti 12 permintaan/menit. Kelebihannya ditolak 429,
   # dan penolakan itu TETAP dihitung terhadap kuota harian, sehingga jatah RPD
