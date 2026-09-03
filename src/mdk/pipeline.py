@@ -29,7 +29,7 @@ from __future__ import annotations
 from .alat_kesegaran import alasan_tolak, masih_segar
 from .build import Pembangun
 from .config import muat_konfigurasi
-from .dedup import cari_duplikat
+from .dedup import AMBANG_LINTAS_BAHASA, AMBANG_SEBAHASA, cari_duplikat
 from .entities import registri
 from .ingest import Pengambil
 from .rewrite import Penulis, kegagalan_sementara
@@ -126,7 +126,23 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
         print(f"  Pembanding duplikat: {len(riwayat)} judul yang sudah terbit")
 
     # Buang duplikat lintas sumber sebelum memanggil model (hemat biaya API).
-    terpilih, judul_dipakai = [], list(riwayat)
+    #
+    # Dua pembanding, dua ambang. Versi sebelumnya menumpuk keduanya dalam satu
+    # daftar dengan satu ambang, sehingga ambang tinggi yang WAJIB dipakai untuk
+    # perbandingan lintas bahasa ikut melemahkan perbandingan sesama judul
+    # Inggris — padahal justru di situ duplikatnya paling mudah dikenali.
+    #
+    #   riwayat_terbit  : judul Indonesia yang sudah tayang. Lintas bahasa
+    #                     terhadap kandidat, jadi ambang 82.
+    #   judul_terpilih  : judul Inggris kandidat yang sudah dipilih pada jalan
+    #                     ini. Sebahasa, jadi ambang 72.
+    #
+    # Pada jalan #122, dua judul sumber Arthur Hayes tentang peristiwa yang sama
+    # mencetak 75,3 satu sama lain — lolos ambang 82, tertangkap ambang 72, dan
+    # tertangkapnya SEBELUM panggilan API keluar.
+    terpilih = []
+    riwayat_terbit = list(riwayat)
+    judul_terpilih: list[tuple[str, str]] = []
     ulangan = 0
     diperiksa = 0
     for baris in antre:
@@ -136,13 +152,17 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
             simpan.tandai_mentah(baris["id"], "dilewati")
             basi += 1
             continue
-        if cari_duplikat(baris["judul"], judul_dipakai):
+        kembar = (cari_duplikat(baris["judul"], riwayat_terbit,
+                                AMBANG_LINTAS_BAHASA)
+                  or cari_duplikat(baris["judul"], judul_terpilih,
+                                   AMBANG_SEBAHASA))
+        if kembar:
             simpan.tandai_mentah(baris["id"], "dilewati")
             ulangan += 1
             if verbose and ulangan <= 10:
                 print(f"  [ULANG] {baris['judul'][:70]}")
             continue
-        judul_dipakai.append((baris["id"], baris["judul"]))
+        judul_terpilih.append((baris["id"], baris["judul"]))
         terpilih.append(baris)
         if len(terpilih) >= batas:
             break
@@ -199,7 +219,11 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     disimpan = []
     ulangan_pasca = 0
     for a in artikel:
-        if cari_duplikat(a.judul, judul_terbit):
+        # AMBANG_SEBAHASA, bukan 82: kedua sisi perbandingan di sini sudah
+        # sama-sama Bahasa Indonesia. Pada jalan #122 pasangan duplikat mencetak
+        # 73,9 dan 79,5 — keduanya lolos ambang lama dan terbit berdampingan
+        # di beranda.
+        if cari_duplikat(a.judul, judul_terbit, AMBANG_SEBAHASA):
             # 'dilewati', bukan 'baru': artikelnya sudah ditulis dan memang
             # duplikat, jadi menulis ulang di jalan berikutnya hanya akan
             # membakar kuota untuk hasil yang sama.
