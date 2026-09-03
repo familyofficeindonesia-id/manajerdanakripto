@@ -64,6 +64,16 @@ editorial:
   # keamanan hak cipta yang dipaksakan oleh kode, bukan sekadar imbauan.
   maks_kata_kutipan: 14          # kutipan langsung maksimum 14 kata
   maks_kutipan_per_sumber: 1     # satu kutipan per sumber, selebihnya parafrase
+  # Pagar komposisi, bukan pagar duplikat. Jalan #122 menerbitkan enam artikel
+  # dan empat di antaranya tentang Arthur Hayes, berjajar di Sorotan Hari Ini.
+  # Tiga dari empat itu peristiwa yang memang berbeda, jadi dedup benar tidak
+  # membuangnya — yang kurang adalah batas berapa banyak satu tokoh boleh
+  # mengisi satu jalan.
+  #
+  # Berita yang tertahan TIDAK dibuang. Statusnya tetap 'baru' dan ia kembali
+  # menjadi kandidat pada jalan berikutnya. Nilai 0 mematikan pagar ini.
+  maks_artikel_per_tokoh: 2
+
   min_kata_artikel: 280
   maks_kata_artikel: 480
   wajib_tautan_sumber: true
