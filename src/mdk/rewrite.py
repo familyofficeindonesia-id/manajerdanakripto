@@ -41,6 +41,32 @@ class KuotaHabis(KesalahanPenulisan):
     """Kuota harian API tercapai. Percobaan berikutnya pasti gagal juga."""
 
 
+class ModelTidakTersedia(KesalahanPenulisan):
+    """Nama model ditolak layanan (404). Seluruh jalan pasti gagal juga.
+
+    CATATAN 4 September 2026 — kelas ini lahir dari pemadaman 3-4 September.
+    Google memensiunkan `gemini-2.5-flash` LEBIH CEPAT dari tanggal shutdown
+    resminya (16 Oktober 2026), dan menolak model itu untuk project yang belum
+    pernah memakainya dengan pesan "no longer available to new users". Halaman
+    Rate Limit tetap menampilkan barisnya dengan kuota utuh, sehingga dari sisi
+    dasbor tidak ada yang tampak rusak.
+
+    Kegagalan semacam ini BUKAN kegagalan berita, melainkan kegagalan
+    konfigurasi. Beritanya harus kembali ke antrean, bukan dikubur.
+    """
+
+
+# Penanda pada badan respons 404 yang menandakan nama model-nya yang ditolak,
+# bukan jalur URL yang salah ketik. Dipisahkan agar 404 karena sebab lain tetap
+# diperlakukan sebagai kegagalan biasa.
+_POLA_MODEL_HILANG = (
+    "is not found",
+    "no longer available",
+    "not supported for generatecontent",
+    "models/",
+)
+
+
 # Penanda pada pesan galat 429 yang membedakan kuota HARIAN dari batas
 # permintaan per menit. Batas per menit layak ditunggu; kuota harian tidak.
 #
@@ -148,8 +174,16 @@ STATUS_SIBUK = (500, 502, 503, 504)
 # Kegagalan PERMANEN berasal dari isi beritanya — model menilai tidak layak
 # tayang, metadata terlalu tipis untuk ditulis, keluaran bukan JSON yang sah.
 # Mengulang berita semacam itu hanya membakar kuota untuk hasil yang sama.
+#
+# 4 September 2026 — "api 404" ditambahkan. Sebelumnya 404 jatuh ke kategori
+# PERMANEN, sehingga setiap jalan mengubur dua berita layak hanya karena nama
+# model di settings.yaml sudah dipensiunkan Google. Dengan ~10 jalan berjadwal,
+# itu berarti 20 berita hilang per hari tanpa satu pun baris log yang menyebut
+# kata "hilang".
 _POLA_SEMENTARA = tuple(f"api {k}" for k in STATUS_SIBUK) + (
     "api 429",
+    "api 404",
+    "model tidak tersedia",
     "kuota",
     "dilewati",
     "timeout",
@@ -268,8 +302,14 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             "GEMINI_API_KEY belum disetel. Simpan kunci Google AI Studio sebagai "
             "secret repositori bernama GEMINI_API_KEY.")
 
-    model = str(kfg.ai.get("model", "gemini-2.5-flash"))
-    url = f"{API_URL}/{model}:generateContent"
+    # Rantai model: yang utama dulu, lalu cadangan berurutan. Cadangan HANYA
+    # dipakai bila model sebelumnya ditolak 404 — bukan saat 429, 503, atau
+    # kegagalan isi. Satu 404 tidak memotong kuota, jadi menelusuri rantai ini
+    # gratis; yang mahal justru berhenti terbit berhari-hari karena satu nama
+    # model dipensiunkan diam-diam.
+    utama = str(kfg.ai.get("model", "gemini-2.5-flash"))
+    cadangan = [str(m) for m in (kfg.ai.get("model_cadangan") or []) if str(m).strip()]
+    daftar_model = [utama] + [m for m in cadangan if m != utama]
     kepala = {"x-goog-api-key": kfg.kunci_api, "content-type": "application/json"}
 
     muatan: dict[str, Any] = {
@@ -282,72 +322,118 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
     }
 
     tanggapan = None
-    tunggu = 5.0
-    coba_sibuk = 0        # berapa kali sudah diulang karena 503
-    coba_menit = 0        # berapa kali sudah diulang karena 429 per menit
-    for percobaan in range(4):
-        tanggapan = requests.post(url, timeout=120, headers=kepala, json=muatan)
+    model = daftar_model[0]
+    model_ditolak: list[str] = []
 
-        # Sebagian model menolak thinkingConfig; coba sekali lagi tanpa itu.
-        # Pengulangan ini TIDAK dihitung sebagai percobaan ulang kegagalan:
-        # permintaan pertamanya cacat, bukan layanannya yang bermasalah.
-        if (tanggapan.status_code == 400
-                and "thinking" in tanggapan.text.lower()
-                and "thinkingConfig" in muatan["generationConfig"]):
-            muatan["generationConfig"].pop("thinkingConfig")
-            continue
+    for indeks_model, model in enumerate(daftar_model):
+        url = f"{API_URL}/{model}:generateContent"
+        tanggapan = None
+        tunggu = 5.0
+        coba_sibuk = 0    # berapa kali sudah diulang karena 503
+        coba_menit = 0    # berapa kali sudah diulang karena 429 per menit
+        for percobaan in range(4):
+            tanggapan = requests.post(url, timeout=120, headers=kepala, json=muatan)
 
-        # -------------------------------------------------------------------
-        # Server sibuk — dulu diulang sampai 4 kali. Itu masuk akal ketika RPD
-        # masih ratusan; sekarang jatah gratis project ini hanya 20 permintaan
-        # per HARI, dan setiap percobaan ulang tetap memotong jatah itu meski
-        # gagal. Satu artikel yang kena badai 503 sanggup menelan seperlima
-        # anggaran harian tanpa menghasilkan apa pun — persis yang terjadi pada
-        # jalan #113 pada 3 September 2026.
-        #
-        # Sekarang cukup satu kali ulang (2 percobaan total). Berita yang tetap
-        # gagal dikembalikan ke antrean dan dicoba lagi pada jalan berikutnya,
-        # jadi tidak ada yang hilang — hanya tertunda.
-        # -------------------------------------------------------------------
-        if tanggapan.status_code in STATUS_SIBUK and coba_sibuk < 1:
-            coba_sibuk += 1
-            time.sleep(tunggu)
-            tunggu *= 1.8
-            continue
-
-        if tanggapan.status_code == 429:
-            mentah = tanggapan.text
-            rinci = " ".join(mentah.split()).lower()
-            harian, keterangan = _baca_pelanggaran_kuota(mentah)
-
-            # Badan respons 429 dicetak UTUH. Tanpa ini, `quotaId` tidak pernah
-            # tercatat di mana pun dan setiap penyelidikan kuota berhenti pada
-            # pesan terpotong yang tidak dapat disimpulkan.
-            print(f"  ! 429 diterima — {keterangan}")
-            print(f"    {rinci[:900]}")
-
-            # Kuota harian habis: menunggu tidak akan menolong sama sekali.
-            if harian:
-                raise KuotaHabis(
-                    f"API 429 kuota harian habis ({keterangan}): {rinci[:300]}")
-
-            # Batas per menit juga memotong jatah harian setiap kali ditolak,
-            # jadi cukup satu kali ulang. Dengan jeda 15 detik antar permintaan
-            # (4/menit terhadap batas 5), bentrokan RPM semestinya jarang.
-            if coba_menit < 1:
-                coba_menit += 1
-                # Batas per menit pulih dalam hitungan puluhan detik. Jeda 5
-                # detik terlalu pendek: ia hanya menghasilkan 429 berikutnya dan
-                # membakar jatah RPM yang justru sedang kita tunggu pulihnya.
-                time.sleep(max(tunggu, 20.0))
-                tunggu = max(tunggu, 20.0) * 2
+            # Sebagian model menolak thinkingConfig; coba sekali lagi tanpa itu.
+            # Pengulangan ini TIDAK dihitung sebagai percobaan ulang kegagalan:
+            # permintaan pertamanya cacat, bukan layanannya yang bermasalah.
+            if (tanggapan.status_code == 400
+                    and "thinking" in tanggapan.text.lower()
+                    and "thinkingConfig" in muatan["generationConfig"]):
+                muatan["generationConfig"].pop("thinkingConfig")
                 continue
+
+            # ---------------------------------------------------------------
+            # Nama model ditolak. Mengulang tidak ada gunanya — jawabannya akan
+            # sama sampai settings.yaml diubah. Badan respons dicetak UTUH,
+            # karena justru pemotongan pesan inilah yang menyembunyikan sebab
+            # pemadaman 3-4 September: log hanya menyisakan "models/gemin" dan
+            # nama model yang sebenarnya dikirim tidak pernah terlihat.
+            # ---------------------------------------------------------------
+            if tanggapan.status_code == 404:
+                rinci = " ".join(tanggapan.text.split())
+                if any(p in rinci.lower() for p in _POLA_MODEL_HILANG):
+                    model_ditolak.append(model)
+                    print(f"  ! 404 — model '{model}' ditolak layanan")
+                    print(f"    {rinci[:900]}")
+                    if indeks_model + 1 < len(daftar_model):
+                        print(f"  → beralih ke model cadangan "
+                              f"'{daftar_model[indeks_model + 1]}'")
+                    break
+
+            # ---------------------------------------------------------------
+            # Server sibuk — dulu diulang sampai 4 kali. Itu masuk akal ketika
+            # RPD masih ratusan; sekarang jatah gratis project ini hanya 20
+            # permintaan per HARI, dan setiap percobaan ulang tetap memotong
+            # jatah itu meski gagal. Satu artikel yang kena badai 503 sanggup
+            # menelan seperlima anggaran harian tanpa menghasilkan apa pun —
+            # persis yang terjadi pada jalan #113 pada 3 September 2026.
+            #
+            # Sekarang cukup satu kali ulang (2 percobaan total). Berita yang
+            # tetap gagal dikembalikan ke antrean dan dicoba lagi pada jalan
+            # berikutnya, jadi tidak ada yang hilang — hanya tertunda.
+            # ---------------------------------------------------------------
+            if tanggapan.status_code in STATUS_SIBUK and coba_sibuk < 1:
+                coba_sibuk += 1
+                time.sleep(tunggu)
+                tunggu *= 1.8
+                continue
+
+            if tanggapan.status_code == 429:
+                mentah = tanggapan.text
+                rinci = " ".join(mentah.split()).lower()
+                harian, keterangan = _baca_pelanggaran_kuota(mentah)
+
+                # Badan respons 429 dicetak UTUH. Tanpa ini, `quotaId` tidak
+                # pernah tercatat di mana pun dan setiap penyelidikan kuota
+                # berhenti pada pesan terpotong yang tidak dapat disimpulkan.
+                print(f"  ! 429 diterima — {keterangan}")
+                print(f"    {rinci[:900]}")
+
+                # Kuota harian habis: menunggu tidak menolong sama sekali.
+                if harian:
+                    raise KuotaHabis(
+                        f"API 429 kuota harian habis ({keterangan}): {rinci[:300]}")
+
+                # Batas per menit juga memotong jatah harian setiap kali
+                # ditolak, jadi cukup satu kali ulang. Dengan jeda 15 detik
+                # antar permintaan (4/menit terhadap batas 5), bentrokan RPM
+                # semestinya jarang.
+                if coba_menit < 1:
+                    coba_menit += 1
+                    # Batas per menit pulih dalam hitungan puluhan detik. Jeda
+                    # 5 detik terlalu pendek: ia hanya menghasilkan 429
+                    # berikutnya dan membakar jatah RPM yang justru sedang kita
+                    # tunggu pulihnya.
+                    time.sleep(max(tunggu, 20.0))
+                    tunggu = max(tunggu, 20.0) * 2
+                    continue
+            break
+
+        # Model ini ditolak 404 — lanjut ke cadangan berikutnya bila ada.
+        if model in model_ditolak:
+            continue
         break
+
+    # Seluruh rantai model ditolak. Ini kegagalan KONFIGURASI, bukan kegagalan
+    # berita: naikkan sebagai jenis galat tersendiri supaya jalan ini berhenti
+    # segera dan seluruh antrean kembali utuh.
+    if model_ditolak and len(model_ditolak) == len(daftar_model):
+        rinci = "" if tanggapan is None else " ".join(tanggapan.text.split())[:400]
+        raise ModelTidakTersedia(
+            f"API 404 model tidak tersedia — seluruh rantai ditolak "
+            f"({', '.join(model_ditolak)}). Periksa nama model yang sah lewat "
+            f"ListModels, lalu perbarui `ai.model` di config/settings.yaml. "
+            f"Respons terakhir: {rinci}")
 
     if tanggapan is None or tanggapan.status_code != 200:
         kode = "tanpa tanggapan" if tanggapan is None else tanggapan.status_code
         rinci = "" if tanggapan is None else " ".join(tanggapan.text.split())[:600]
-        raise KesalahanPenulisan(f"API {kode}: {rinci}")
+        raise KesalahanPenulisan(f"API {kode} (model {model}): {rinci}")
+
+    if model_ditolak:
+        print(f"  ↳ ditulis memakai model cadangan '{model}' "
+              f"(utama '{utama}' ditolak 404)")
 
     data = tanggapan.json()
     kandidat = data.get("candidates") or []
@@ -511,10 +597,36 @@ class Penulis:
                     print(f"  [{i}/{len(baris_list)}] ✓ {artikel.judul[:70]}")
             except (KesalahanPenulisan, requests.RequestException,
                     json.JSONDecodeError) as e:
-                pesan = str(e)[:160]
+                # 4 September 2026 — batas pemotongan dilebarkan dari 160/70.
+                # Pesan 404 Google baru menyebut nama modelnya pada karakter
+                # ke-60-an; dengan batas lama, log hanya memuat "models/gemin"
+                # dan diagnosis mustahil dilakukan dari Actions saja.
+                pesan = str(e)[:400]
                 gagal.append((b["id"], pesan))
                 if verbose:
-                    print(f"  [{i}/{len(baris_list)}] ✗ {b['judul'][:50]} → {pesan[:70]}")
+                    print(f"  [{i}/{len(baris_list)}] ✗ {b['judul'][:50]} → {pesan[:240]}")
+
+                # Nama model ditolak layanan. Tidak ada gunanya mencoba berita
+                # berikutnya: semuanya akan menabrak 404 yang sama. Hentikan
+                # jalan ini SEKARANG dan kembalikan seluruh sisa ke antrean.
+                #
+                # Ini yang hilang pada 3-4 September 2026: setiap jalan tetap
+                # mencoba dua berita, gagal dua kali, lalu mengubur keduanya
+                # sebagai kegagalan permanen. Sepuluh jalan per hari berarti 20
+                # berita layak terbuang, dan ringkasan jalan tetap hijau.
+                if isinstance(e, ModelTidakTersedia):
+                    sisa = baris_list[i:]
+                    label = "API 404: dilewati, model tidak tersedia pada jalan ini"
+                    gagal[-1] = (b["id"], label)
+                    for lain in sisa:
+                        gagal.append((dict(lain)["id"], label))
+                    if verbose:
+                        print(f"\n  ⏹ Model tidak tersedia. Menghentikan jalan ini.")
+                        print(f"  {len(sisa) + 1} berita dikembalikan ke antrean "
+                              f"tanpa dikubur.")
+                        print(f"  → Perbaiki `ai.model` di config/settings.yaml, "
+                              f"lalu jalankan ulang.")
+                    return berhasil, gagal
 
                 # Bedakan kuota habis dari server sibuk — keduanya sementara,
                 # tetapi ambang menyerahnya tidak sama.
