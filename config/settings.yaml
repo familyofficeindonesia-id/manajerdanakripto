@@ -147,60 +147,62 @@ ai:
   # bila model sebelumnya ditolak 404. Satu 404 tidak memotong kuota.
   #
   # ---------------------------------------------------------------------------
-  # HASIL ListModels 4 September 2026 — PENTING UNTUK DIAGNOSIS BERIKUTNYA:
+  # RANTAI HIBRIDA — disusun dari halaman Rate Limit project 'manajerdanakripto'
+  # (diverifikasi 4 September 2026, bukan dari dokumentasi umum Google).
   #
-  #   "models/gemini-2.5-flash" TETAP TERCANTUM di ListModels, lengkap dengan
-  #   "generateContent" pada supportedGenerationMethods — dan tetap menolak
-  #   setiap panggilan dengan 404.
+  #   Model                  RPM   RPD    Kelas
+  #   gemini-3.7-flash        5     20    Flash penuh
+  #   gemini-3.6-flash        5     20    Flash penuh
+  #   gemini-3.5-flash        5     20    Flash penuh
+  #   gemini-3.8-flash        5     20    Flash penuh
+  #   gemini-3.5-flash-lite  15    500    Flash Lite
+  #   gemini-3.1-flash-lite  15    500    Flash Lite
   #
-  # Jadi ListModels TIDAK bisa dipakai untuk membuktikan sebuah model masih
-  # hidup. Ia hanya membuktikan nama model itu dikenal dan ejaannya benar.
-  # Satu-satunya bukti sebuah model masih melayani adalah panggilan yang
-  # berhasil. Inilah alasan `model_cadangan` di bawah harus tetap ada
-  # permanen, bukan sekadar tambalan sementara.
-  # ===========================================================================
-  # ---------------------------------------------------------------------------
-  # Terverifikasi ada di ListModels project 'manajerdanakripto' (4 Sep 2026),
-  # semuanya mendukung generateContent, konteks 1.048.576 token:
+  # TEMUAN YANG MEMBATALKAN ASUMSI LAMA: batas 20 RPD bukan sifat "tingkat
+  # gratis", melainkan sifat KELAS Flash penuh. Seluruh model Flash penuh —
+  # 2.5, 3, 3.5, 3.6, 3.7, 3.8 — berjatah 20 RPD tanpa kecuali. Yang longgar
+  # hanya Flash Lite generasi 3.1 dan 3.5, di 500 RPD.
   #
-  #   gemini-3.8-flash       versi 3.0                 RPD 20 (diverifikasi)
-  #   gemini-3.7-flash       versi 3.7-flash-08-2026   RPM 5  (diverifikasi)
-  #   gemini-3.6-flash       versi 3.6-flash-07-2026   BELUM DIPERIKSA
-  #   gemini-3.5-flash       versi 3.5-flash-05-2026   BELUM DIPERIKSA
-  #   gemini-3.5-flash-lite  versi 3.5-flash-lite-07-2026  BELUM DIPERIKSA
-  #   gemini-3.1-flash-lite  versi 3.1-flash-lite-05-2026  BELUM DIPERIKSA
+  # Catatan lama di berkas ini menduga "gemini-2.5-flash-lite" berjatah lebih
+  # besar. Itu KELIRU: 2.5 Flash Lite juga 20 RPD. Kelonggaran 500 RPD hanya
+  # ada di garis 3.1 dan 3.5.
   #
-  # 3.7 dipasang sebagai utama karena project ini PUNYA riwayat pemakaiannya,
-  # jadi bebas dari gerbang "new users", dan kualitasnya lebih tinggi daripada
-  # varian Lite. Kelemahannya RPM 5; itu sudah ditangani jeda 15 detik dan
-  # batas satu kali ulang saat 503.
+  # Penghitung RPD TERPISAH per model. Karena itu rantai ini memberi kira-kira
+  # 80 permintaan Flash penuh per hari (4 x 20), lalu 1.000 permintaan Flash
+  # Lite (2 x 500) sebagai jaring. Situs tidak lagi punya alasan untuk gelap.
   #
-  # 3.6 dan 3.5 ditaruh SEBELUM 3.8 dengan alasan yang perlu diuji, bukan
-  # diasumsikan: 3.8 diketahui hanya berjatah 20 RPD, dan generasi yang lebih
-  # tua BIASANYA berjatah lebih longgar — tetapi angka RPD 3.6 dan 3.5 pada
-  # project ini belum pernah dilihat siapa pun. Buka halaman Rate Limit dan
-  # catat angkanya sebelum menaikkan salah satunya jadi utama:
-  #   https://aistudio.google.com/rate-limit
+  # Urutannya sengaja menaruh SELURUH Flash penuh sebelum Flash Lite: kualitas
+  # tulisan didahulukan, dan Lite baru dipakai setelah 80 artikel pertama hari
+  # itu — angka yang jauh di atas target 10-18 artikel/hari.
   #
-  # "gemini-2.5-flash" dan "gemini-2.5-flash-lite" SENGAJA TIDAK dimasukkan.
-  # Keduanya seri 2.5 yang sedang dipensiunkan, dan project ini nol riwayat
-  # pemakaian pada keduanya — persis kombinasi yang memicu gerbang 404.
+  # "gemini-3-flash-preview" TIDAK dimasukkan meski halaman Rate Limit memuat
+  # baris "Gemini 3 Flash" berjatah 20 RPD. Nama API-nya bersufiks -preview,
+  # dan model preview berganti nama tanpa pemberitahuan.
   #
-  # Perhatikan juga bahwa "gemini-flash-latest" dan "gemini-flash-lite-latest"
-  # ikut muncul di ListModels. Keduanya tetap TERLARANG di sini; itu alias yang
-  # sudah tiga kali bergeser diam-diam, dan kemunculannya di daftar bukan
-  # jaminan apa-apa.
+  # Seri 2.5 juga tidak dimasukkan: sedang dipensiunkan, dan project ini nol
+  # riwayat pemakaian pada keduanya — kombinasi yang memicu gerbang 404.
+  #
+  # "gemini-flash-latest" dan "gemini-flash-lite-latest" tetap TERLARANG,
+  # meski keduanya muncul di ListModels. Itu alias, dan alias sudah tiga kali
+  # bergeser diam-diam di project ini.
+  #
+  # PERINGATAN untuk penyelidikan berikutnya: ListModels TIDAK membuktikan
+  # sebuah model masih hidup. "models/gemini-2.5-flash" tetap tercantum di sana
+  # lengkap dengan generateContent, dan tetap menolak setiap panggilan dengan
+  # 404. Satu-satunya bukti sebuah model melayani adalah panggilan berhasil.
   # ---------------------------------------------------------------------------
   model: "gemini-3.7-flash"
 
-  # Dicoba berurutan HANYA bila model sebelumnya ditolak 404 — bukan saat 429,
-  # 503, atau kegagalan isi. Satu 404 tidak memotong kuota, jadi menelusuri
-  # rantai ini gratis. Kosongkan daftar bila ingin perilaku lama (gagal keras
-  # begitu model utama hilang).
+  # Dicoba berurutan bila model sebelumnya gugur — karena 404 (nama
+  # dipensiunkan) ATAU karena kuota RPD hariannya tandas. Penanda kuota di
+  # kuota.py hanya dipasang bila SELURUH rantai ini habis.
   model_cadangan:
     - "gemini-3.6-flash"
     - "gemini-3.5-flash"
-    - "gemini-3.8-flash"      # RPD 20 — jaring pengaman terakhir, bukan pilihan
+    - "gemini-3.8-flash"
+    - "gemini-3.5-flash-lite"   # 500 RPD — jaring, kualitas lebih rendah
+    - "gemini-3.1-flash-lite"   # 500 RPD — jaring terakhir
+
   maks_token: 8000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
