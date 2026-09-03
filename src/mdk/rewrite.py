@@ -283,19 +283,34 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
 
     tanggapan = None
     tunggu = 5.0
+    coba_sibuk = 0        # berapa kali sudah diulang karena 503
+    coba_menit = 0        # berapa kali sudah diulang karena 429 per menit
     for percobaan in range(4):
         tanggapan = requests.post(url, timeout=120, headers=kepala, json=muatan)
 
         # Sebagian model menolak thinkingConfig; coba sekali lagi tanpa itu.
+        # Pengulangan ini TIDAK dihitung sebagai percobaan ulang kegagalan:
+        # permintaan pertamanya cacat, bukan layanannya yang bermasalah.
         if (tanggapan.status_code == 400
                 and "thinking" in tanggapan.text.lower()
                 and "thinkingConfig" in muatan["generationConfig"]):
             muatan["generationConfig"].pop("thinkingConfig")
             continue
 
-        # Server sibuk — tunggu sebentar lalu coba lagi. Ini penyebab kegagalan
-        # paling sering pada model bertanda "-latest", yang lalu lintasnya padat.
-        if tanggapan.status_code in STATUS_SIBUK and percobaan < 3:
+        # -------------------------------------------------------------------
+        # Server sibuk — dulu diulang sampai 4 kali. Itu masuk akal ketika RPD
+        # masih ratusan; sekarang jatah gratis project ini hanya 20 permintaan
+        # per HARI, dan setiap percobaan ulang tetap memotong jatah itu meski
+        # gagal. Satu artikel yang kena badai 503 sanggup menelan seperlima
+        # anggaran harian tanpa menghasilkan apa pun — persis yang terjadi pada
+        # jalan #113 pada 3 September 2026.
+        #
+        # Sekarang cukup satu kali ulang (2 percobaan total). Berita yang tetap
+        # gagal dikembalikan ke antrean dan dicoba lagi pada jalan berikutnya,
+        # jadi tidak ada yang hilang — hanya tertunda.
+        # -------------------------------------------------------------------
+        if tanggapan.status_code in STATUS_SIBUK and coba_sibuk < 1:
+            coba_sibuk += 1
             time.sleep(tunggu)
             tunggu *= 1.8
             continue
@@ -316,7 +331,11 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
                 raise KuotaHabis(
                     f"API 429 kuota harian habis ({keterangan}): {rinci[:300]}")
 
-            if percobaan < 2:          # batas per menit — layak ditunggu
+            # Batas per menit juga memotong jatah harian setiap kali ditolak,
+            # jadi cukup satu kali ulang. Dengan jeda 15 detik antar permintaan
+            # (4/menit terhadap batas 5), bentrokan RPM semestinya jarang.
+            if coba_menit < 1:
+                coba_menit += 1
                 # Batas per menit pulih dalam hitungan puluhan detik. Jeda 5
                 # detik terlalu pendek: ia hanya menghasilkan 429 berikutnya dan
                 # membakar jatah RPM yang justru sedang kita tunggu pulihnya.
