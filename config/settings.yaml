@@ -120,8 +120,47 @@ ai:
   #
   # Alternatif bila RPD 2.5 Flash masih kurang: "gemini-2.5-flash-lite"
   # (10 RPM, RPD lebih besar), dengan konsekuensi kualitas tulisan menurun.
+  #
+  # ===========================================================================
+  # PEMBARUAN 4 September 2026 — 2.5 Flash TERNYATA DITOLAK 404.
+  #
+  # Sejak reset kuota 3 September pukul 07:00 UTC, setiap panggilan ke
+  # "gemini-2.5-flash" mengembalikan:
+  #
+  #   404 NOT_FOUND — "This model models/gemini-2.5-flash is no longer
+  #   available to new users."
+  #
+  # Google memensiunkan seri 2.5 lebih cepat dari tanggal shutdown resminya
+  # (16 Oktober 2026), dan memblokirnya untuk project yang BELUM PERNAH
+  # memakainya. Tabel di atas justru menjelaskan sebabnya: baris
+  #
+  #   Gemini 2.5 Flash  0 / 5  ← belum tersentuh
+  #
+  # berarti project 'manajerdanakripto' punya nol riwayat pemakaian model itu,
+  # jadi tergolong "new user" dan langsung kena gerbang tersebut. Barisnya tetap
+  # tampil di halaman Rate Limit dengan kuota utuh, sehingga dari sisi dasbor
+  # tidak ada yang tampak rusak sama sekali.
+  #
+  # PELAJARAN: menyematkan versi eksplisit melindungi dari alias yang bergeser,
+  # tetapi TIDAK melindungi dari model yang dipensiunkan. Karena itu sekarang
+  # ada `model_cadangan` di bawah — rantai yang dicoba berurutan, dan HANYA
+  # bila model sebelumnya ditolak 404. Satu 404 tidak memotong kuota.
+  #
+  # SEBELUM MENJALANKAN: pastikan nama-nama di bawah benar-benar ada dan
+  # mendukung generateContent, dengan membuka di browser
+  #   https://generativelanguage.googleapis.com/v1beta/models?key=KUNCI_ANDA
+  # Nama model di bawah adalah dugaan berdasarkan riwayat pemakaian project ini
+  # (3.7 dan 3.8 pernah dipakai, jadi tidak kena gerbang "new users"), bukan
+  # hasil verifikasi ListModels.
+  # ===========================================================================
   # ---------------------------------------------------------------------------
-  model: "gemini-2.5-flash"
+  model: "gemini-3.7-flash"
+
+  # Dicoba berurutan HANYA bila model di atas ditolak 404. Kosongkan daftar ini
+  # bila ingin perilaku lama (gagal keras saat model utama hilang).
+  model_cadangan:
+    - "gemini-3.8-flash"      # RPD hanya 20 — cadangan, bukan pilihan utama
+    - "gemini-2.5-flash"      # sedang ditolak 404; disimpan bila Google memulihkan
   maks_token: 8000
   suhu: 0.3
   batas_artikel_per_jalankan: 40
@@ -137,7 +176,6 @@ ai:
   # Nilai lama 5.0 detik berarti 12 permintaan/menit. Kelebihannya ditolak 429,
   # dan penolakan itu TETAP dihitung terhadap kuota harian, sehingga jatah RPD
   # habis tanpa menghasilkan satu pun artikel.
-  jeda_antar_permintaan_detik: 15.0
   jeda_antar_permintaan_detik: 15.0
 
 # --- Pembuatan situs ----------------------------------------------------------
