@@ -56,6 +56,18 @@ class ModelTidakTersedia(KesalahanPenulisan):
     """
 
 
+# Model yang sudah gugur dalam PROSES ini, beserta sebabnya ("404" atau
+# "kuota"). Tanpa ingatan ini, setiap artikel berikutnya akan menabrak ulang
+# model yang sama — dan itu bukan sekadar lambat: setiap 429 TETAP dipotong dari
+# jatah harian model tersebut, sehingga menanyakan ulang model yang sudah habis
+# justru membakar kuota model lain yang masih tersisa.
+#
+# Cakupannya sengaja hanya satu proses. Kuota harian pulih pada 07:00 UTC dan
+# setiap jalan GitHub Actions adalah proses baru, jadi tidak ada keadaan basi
+# yang perlu dibersihkan.
+_MODEL_GUGUR: dict[str, str] = {}
+
+
 # Penanda pada badan respons 404 yang menandakan nama model-nya yang ditolak,
 # bukan jalur URL yang salah ketik. Dipisahkan agar 404 karena sebab lain tetap
 # diperlakukan sebagai kegagalan biasa.
@@ -302,15 +314,37 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             "GEMINI_API_KEY belum disetel. Simpan kunci Google AI Studio sebagai "
             "secret repositori bernama GEMINI_API_KEY.")
 
-    # Rantai model: yang utama dulu, lalu cadangan berurutan. Cadangan HANYA
-    # dipakai bila model sebelumnya ditolak 404 — bukan saat 429, 503, atau
-    # kegagalan isi. Satu 404 tidak memotong kuota, jadi menelusuri rantai ini
-    # gratis; yang mahal justru berhenti terbit berhari-hari karena satu nama
-    # model dipensiunkan diam-diam.
-    utama = str(kfg.ai.get("model", "gemini-2.5-flash"))
+    # -----------------------------------------------------------------------
+    # RANTAI MODEL — dua sebab peralihan, bukan satu.
+    #
+    #   404 kuota tidak terpakai  → nama model dipensiunkan Google.
+    #   429 kuota harian habis    → jatah RPD model itu tandas untuk hari ini.
+    #
+    # Sebelum 4 September 2026, sebab kedua langsung melempar KuotaHabis dan
+    # memasang penanda yang mematikan penerbitan sampai reset 07:00 UTC. Itu
+    # masuk akal ketika hanya ada satu model. Halaman Rate Limit project
+    # 'manajerdanakripto' menunjukkan kenyataan yang berbeda:
+    #
+    #   SETIAP model Flash penuh berjatah 20 RPD, dengan PENGHITUNG TERPISAH.
+    #   Gemini 3.5 dan 3.1 Flash Lite berjatah 500 RPD, juga terpisah.
+    #
+    # Jadi kuota 3.7 Flash yang habis bukan alasan berhenti terbit — masih ada
+    # empat model Flash penuh lain, lalu dua Flash Lite berjatah 500. Penanda
+    # kuota kini HANYA dipasang bila SELURUH rantai tandas.
+    # -----------------------------------------------------------------------
+    utama = str(kfg.ai.get("model", "gemini-3.7-flash"))
     cadangan = [str(m) for m in (kfg.ai.get("model_cadangan") or []) if str(m).strip()]
     daftar_model = [utama] + [m for m in cadangan if m != utama]
+    tersedia = [m for m in daftar_model if m not in _MODEL_GUGUR]
     kepala = {"x-goog-api-key": kfg.kunci_api, "content-type": "application/json"}
+
+    if not tersedia:
+        sebab = ", ".join(f"{m} ({s})" for m, s in _MODEL_GUGUR.items())
+        if "kuota" in _MODEL_GUGUR.values():
+            raise KuotaHabis(
+                f"Seluruh rantai model tandas untuk hari ini — {sebab}")
+        raise ModelTidakTersedia(
+            f"Seluruh rantai model ditolak 404 — {sebab}")
 
     muatan: dict[str, Any] = {
         "system_instruction": {"parts": [{"text": sistem}]},
@@ -322,10 +356,10 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
     }
 
     tanggapan = None
-    model = daftar_model[0]
-    model_ditolak: list[str] = []
+    model = tersedia[0]
+    gugur_kini: list[str] = []          # model yang gugur pada panggilan ini
 
-    for indeks_model, model in enumerate(daftar_model):
+    for indeks_model, model in enumerate(tersedia):
         url = f"{API_URL}/{model}:generateContent"
         tanggapan = None
         tunggu = 5.0
@@ -353,12 +387,12 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             if tanggapan.status_code == 404:
                 rinci = " ".join(tanggapan.text.split())
                 if any(p in rinci.lower() for p in _POLA_MODEL_HILANG):
-                    model_ditolak.append(model)
+                    _MODEL_GUGUR[model] = "404"
+                    gugur_kini.append(model)
                     print(f"  ! 404 — model '{model}' ditolak layanan")
                     print(f"    {rinci[:900]}")
-                    if indeks_model + 1 < len(daftar_model):
-                        print(f"  → beralih ke model cadangan "
-                              f"'{daftar_model[indeks_model + 1]}'")
+                    if indeks_model + 1 < len(tersedia):
+                        print(f"  → beralih ke '{tersedia[indeks_model + 1]}'")
                     break
 
             # ---------------------------------------------------------------
@@ -390,10 +424,17 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
                 print(f"  ! 429 diterima — {keterangan}")
                 print(f"    {rinci[:900]}")
 
-                # Kuota harian habis: menunggu tidak menolong sama sekali.
+                # Kuota harian model INI habis. Menunggu tidak menolong, tetapi
+                # berhenti terbit juga tidak perlu: model berikutnya di rantai
+                # punya penghitung RPD sendiri. Catat, lalu turun.
                 if harian:
-                    raise KuotaHabis(
-                        f"API 429 kuota harian habis ({keterangan}): {rinci[:300]}")
+                    _MODEL_GUGUR[model] = "kuota"
+                    gugur_kini.append(model)
+                    print(f"  ! kuota harian '{model}' habis ({keterangan})")
+                    if indeks_model + 1 < len(tersedia):
+                        print(f"  → turun ke '{tersedia[indeks_model + 1]}' "
+                              f"(jatah RPD terpisah)")
+                    break
 
                 # Batas per menit juga memotong jatah harian setiap kali
                 # ditolak, jadi cukup satu kali ulang. Dengan jeda 15 detik
@@ -410,30 +451,35 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
                     continue
             break
 
-        # Model ini ditolak 404 — lanjut ke cadangan berikutnya bila ada.
-        if model in model_ditolak:
+        # Model ini gugur (404 atau kuota) — lanjut ke berikutnya bila ada.
+        if model in gugur_kini:
             continue
         break
 
-    # Seluruh rantai model ditolak. Ini kegagalan KONFIGURASI, bukan kegagalan
-    # berita: naikkan sebagai jenis galat tersendiri supaya jalan ini berhenti
-    # segera dan seluruh antrean kembali utuh.
-    if model_ditolak and len(model_ditolak) == len(daftar_model):
+    # Seluruh rantai gugur pada panggilan ini. Jenis galat yang dilempar
+    # menentukan nasib antrean dan penanda kuota, jadi harus dibedakan.
+    if gugur_kini and len(gugur_kini) == len(tersedia):
+        sebab = ", ".join(f"{m} ({_MODEL_GUGUR[m]})" for m in gugur_kini)
+        if any(_MODEL_GUGUR[m] == "kuota" for m in gugur_kini):
+            # Setidaknya satu model tandas karena kuota. Inilah SATU-SATUNYA
+            # keadaan yang layak memasang penanda kuota harian: tidak ada lagi
+            # jatah tersisa di mana pun sepanjang rantai.
+            raise KuotaHabis(
+                f"API 429 kuota harian habis di seluruh rantai — {sebab}")
         rinci = "" if tanggapan is None else " ".join(tanggapan.text.split())[:400]
         raise ModelTidakTersedia(
-            f"API 404 model tidak tersedia — seluruh rantai ditolak "
-            f"({', '.join(model_ditolak)}). Periksa nama model yang sah lewat "
-            f"ListModels, lalu perbarui `ai.model` di config/settings.yaml. "
-            f"Respons terakhir: {rinci}")
+            f"API 404 model tidak tersedia — seluruh rantai ditolak ({sebab}). "
+            f"Periksa nama model yang sah lewat ListModels, lalu perbarui "
+            f"`ai.model` di config/settings.yaml. Respons terakhir: {rinci}")
 
     if tanggapan is None or tanggapan.status_code != 200:
         kode = "tanpa tanggapan" if tanggapan is None else tanggapan.status_code
         rinci = "" if tanggapan is None else " ".join(tanggapan.text.split())[:600]
         raise KesalahanPenulisan(f"API {kode} (model {model}): {rinci}")
 
-    if model_ditolak:
-        print(f"  ↳ ditulis memakai model cadangan '{model}' "
-              f"(utama '{utama}' ditolak 404)")
+    if model != utama:
+        print(f"  ↳ ditulis memakai '{model}' — '{utama}' gugur "
+              f"({_MODEL_GUGUR.get(utama, 'tidak dipakai')})")
 
     data = tanggapan.json()
     kandidat = data.get("candidates") or []
