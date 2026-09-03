@@ -26,6 +26,8 @@ hanya beberapa milidetik pembacaan SQLite.
 """
 from __future__ import annotations
 
+import json
+
 from .alat_kesegaran import alasan_tolak, masih_segar
 from .build import Pembangun
 from .config import muat_konfigurasi
@@ -64,6 +66,43 @@ KANDIDAT_PER_ARTIKEL = 12
 # Berapa banyak judul artikel terbit yang dijadikan pembanding duplikat.
 # Semakin besar, semakin jauh ke belakang pengulangan dapat dikenali.
 RIWAYAT_JUDUL_MAKS = 400
+
+# Berapa artikel paling banyak boleh terbit tentang SATU tokoh dalam satu jalan.
+#
+# Jalan #122 (4 September 2026) menerbitkan enam artikel; empat di antaranya
+# tentang Arthur Hayes, berjajar di Sorotan Hari Ini. Dedup tidak salah — tiga
+# dari empat itu memang peristiwa berbeda (proyeksi Ethereum 10.000, target
+# Ether 2026, prediksi Bitcoin US$1 juta). Yang tidak ada adalah pagar
+# KOMPOSISI: satu tokoh yang sedang ramai diberitakan menghasilkan banyak item
+# berskor tinggi sekaligus, karena namanya ada di judul, dan mereka menduduki
+# puncak antrean bersama-sama.
+#
+# Nilai 0 mematikan pagar ini sepenuhnya.
+MAKS_ARTIKEL_PER_TOKOH = 2
+
+
+def _tokoh_utama(baris) -> str:
+    """Slug tokoh berskor tertinggi pada satu baris antrean.
+
+    Kolom `mentah.entitas` berisi JSON daftar slug yang SUDAH diurutkan menurun
+    berdasarkan skor oleh `Registri.tandai()`, jadi elemen pertama adalah subjek
+    utama berita. Tidak perlu memindai ulang nama tokoh terhadap judul.
+
+    Mengembalikan "" bila tidak ada entitas terdeteksi — berita semacam itu
+    tidak dikenai pagar komposisi.
+    """
+    try:
+        mentah = baris["entitas"]
+    except (KeyError, IndexError, TypeError):
+        return ""
+    if isinstance(mentah, str):
+        try:
+            daftar = json.loads(mentah or "[]")
+        except (json.JSONDecodeError, TypeError):
+            return ""
+    else:
+        daftar = list(mentah or [])
+    return str(daftar[0]) if daftar else ""
 
 
 def tahap_ambil(sertakan_entitas: bool = True, verbose: bool = True) -> dict:
@@ -143,7 +182,11 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     terpilih = []
     riwayat_terbit = list(riwayat)
     judul_terpilih: list[tuple[str, str]] = []
+    hitung_tokoh: dict[str, int] = {}
+    maks_tokoh = int(kfg.editorial.get("maks_artikel_per_tokoh",
+                                       MAKS_ARTIKEL_PER_TOKOH))
     ulangan = 0
+    ditunda = 0
     diperiksa = 0
     for baris in antre:
         diperiksa += 1
@@ -162,7 +205,25 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
             if verbose and ulangan <= 10:
                 print(f"  [ULANG] {baris['judul'][:70]}")
             continue
+        # Pagar komposisi. PENTING: item yang tertahan di sini TIDAK ditandai
+        # 'dilewati'. Beritanya sah dan bukan pengulangan — ia hanya tidak muat
+        # pada jalan ini. Statusnya dibiarkan 'baru' supaya kembali menjadi
+        # kandidat di jalan berikutnya, ketika penghitung sudah nol lagi.
+        #
+        # Karena perulangan tetap menyisir seluruh kolam 120 kandidat, jatah
+        # tulis yang tersisa terisi oleh tokoh lain — itulah gunanya pagar ini:
+        # bukan menerbitkan lebih sedikit, melainkan menerbitkan lebih beragam.
+        tokoh = _tokoh_utama(baris)
+        if tokoh and maks_tokoh > 0 and hitung_tokoh.get(tokoh, 0) >= maks_tokoh:
+            ditunda += 1
+            if verbose and ditunda <= 8:
+                print(f"  [TUNDA] {baris['judul'][:60]} — "
+                      f"kuota tokoh '{tokoh}' ({maks_tokoh}) sudah penuh")
+            continue
+
         judul_terpilih.append((baris["id"], baris["judul"]))
+        if tokoh:
+            hitung_tokoh[tokoh] = hitung_tokoh.get(tokoh, 0) + 1
         terpilih.append(baris)
         if len(terpilih) >= batas:
             break
@@ -175,12 +236,17 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     if verbose:
         if ulangan > 10:
             print(f"  ... dan {ulangan - 10} pengulangan lainnya")
+        if ditunda > 8:
+            print(f"  ... dan {ditunda - 8} penundaan tokoh lainnya")
+        if ditunda:
+            print(f"  ⏸ {ditunda} berita ditunda ke jalan berikutnya "
+                  f"(kuota {maks_tokoh} artikel per tokoh; TIDAK dibuang)")
         print(f"▸ Tahap 2/3 — Menulis ulang {len(terpilih)} berita "
-              f"({ulangan} pengulangan dibuang, "
+              f"({ulangan} pengulangan dibuang, {ditunda} ditunda, "
               f"{tersisa} tersisa di antrean untuk jalan berikutnya)")
     if not terpilih:
         return {"ditulis": 0, "gagal": 0, "dilewati": ulangan,
-                "tersisa": tersisa, "basi": basi}
+                "ditunda": ditunda, "tersisa": tersisa, "basi": basi}
 
     artikel, gagal = Penulis(kfg, reg).tulis_banyak(terpilih, verbose)
 
@@ -268,7 +334,7 @@ def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     ringkas = {"ditulis": len(disimpan), "gagal": dikubur,
                "dikembalikan": dikembalikan,
                "dilewati": ulangan, "kembar": ulangan_pasca,
-               "tersisa": tersisa, "basi": basi}
+               "ditunda": ditunda, "tersisa": tersisa, "basi": basi}
     simpan.catat("tulis", str(ringkas))
     return ringkas
 
