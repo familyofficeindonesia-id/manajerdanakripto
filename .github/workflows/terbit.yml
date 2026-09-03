@@ -1,22 +1,31 @@
 name: Ambil berita dan terbitkan situs
 
 # =============================================================================
-# JADWAL — dua irama berbeda
+# JADWAL — dirancang terhadap anggaran 20 permintaan per hari
 # -----------------------------------------------------------------------------
 # Jadwal dinyatakan dalam UTC. WIB = UTC+7.
 #
-#   RINGAN  — setiap jam, menit :20
-#     Hanya membaca umpan RSS langsung penerbit (kueri_entitas dimatikan).
-#     Cepat, hemat, dan aman dijalankan 24x sehari. Menulis maksimal 3 artikel
-#     per jalan, sehingga terbitan MENETES sepanjang hari alih-alih menumpuk
-#     tiga kali sehari lalu sepi berjam-jam.
+# Sejak awal September 2026 jatah gratis project 'manajerdanakripto' dipangkas
+# menjadi 20 RPD untuk SELURUH model text-out (bukan hanya model terbaru).
+# Sebelumnya project ini rutin melewati 200-300 permintaan sehari tanpa masalah.
 #
-#   PENUH   — 4x sehari (01:50, 07:50, 13:50, 19:50 UTC
-#             = 08.50, 14.50, 20.50, 02.50 WIB)
-#     Menyertakan kueri entitas ke Google News. Langkah ini mengirim ratusan
-#     permintaan (64+ tokoh x 2 alias x 2 template), jadi TIDAK boleh dijalankan
-#     tiap jam — Google akan membatasi atau memblokir alamat IP runner.
-#     Menulis maksimal 8 artikel per jalan.
+# Konsekuensinya jadwal harus dihitung, bukan dikira-kira:
+#
+#   RINGAN  — tiap 3 jam, menit :20  → 8 jalan x 2 artikel = 16 permintaan
+#   PENUH   — 2x sehari, menit :50   → 2 jalan x 2 artikel =  4 permintaan
+#                                       ---------------------------------
+#                                       maksimum teoretis   = 20 permintaan
+#
+# Angka itu plafon, bukan target: sebagian besar jalan tidak menemukan dua
+# berita yang lolos ambang usia 24 jam, jadi pemakaian nyata lebih rendah dan
+# menyisakan ruang untuk percobaan ulang.
+#
+# Menjalankan 24 jalan per jam seperti sebelumnya tidak lagi masuk akal — jatah
+# habis sebelum tengah hari dan sisa jalan pulang dengan tangan kosong.
+#
+# PENUH menyertakan kueri entitas ke Google News (290 kueri). Itu tidak memakai
+# kuota Gemini sama sekali, tetapi membebani IP runner, jadi tetap dibatasi dua
+# kali sehari.
 #
 # Catatan: cron GitHub Actions sering telat 5-20 menit pada jam sibuk dan
 # sesekali dilewati sama sekali. Menit :20 dan :50 dipilih karena beban
@@ -24,14 +33,14 @@ name: Ambil berita dan terbitkan situs
 # =============================================================================
 on:
   schedule:
-    - cron: "20 * * * *"
-    - cron: "50 1,7,13,19 * * *"
+    - cron: "20 */3 * * *"
+    - cron: "50 1,13 * * *"
   workflow_dispatch:
     inputs:
       batas:
-        description: "Jumlah maksimum artikel yang ditulis pada jalannya ini"
+        description: "Jumlah maksimum artikel yang ditulis pada jalannya ini (jatah harian hanya 20 permintaan)"
         required: false
-        default: "10"
+        default: "5"
       izinkan_basis_data_kosong:
         description: "Mulai dari basis data kosong (HANYA bila semua cache benar-benar hilang)"
         type: boolean
@@ -72,13 +81,13 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             MODE=penuh
-            BATAS="${{ github.event.inputs.batas || 10 }}"
-          elif [ "${{ github.event.schedule }}" = "50 1,7,13,19 * * *" ]; then
+            BATAS="${{ github.event.inputs.batas || 5 }}"
+          elif [ "${{ github.event.schedule }}" = "50 1,13 * * *" ]; then
             MODE=penuh
-            BATAS=8
+            BATAS=2
           else
             MODE=ringan
-            BATAS=3
+            BATAS=2
           fi
           echo "mode=$MODE"   >> "$GITHUB_OUTPUT"
           echo "batas=$BATAS" >> "$GITHUB_OUTPUT"
