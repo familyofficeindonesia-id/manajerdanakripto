@@ -2,6 +2,28 @@ name: Bersihkan Berita Basi
 
 # Dijalankan manual dari tab Actions. Basis data diambil dari cache
 # (sama seperti terbit.yml), dibersihkan, lalu disimpan kembali ke cache.
+#
+# CATATAN PERUBAHAN — cadangan sebelum menghapus
+# ----------------------------------------------
+# Versi sebelumnya menyalin basis data ke /tmp/mdk-sebelum.sqlite3 tetapi tidak
+# pernah memakainya lagi, dan /tmp ikut lenyap begitu runner selesai. Cadangan
+# .bak yang dibuat oleh bersihkan_berita_lama.py pun langsung dihapus oleh
+# `rm -f data/*.bak`. Akibatnya, sekali `cocok-hapus` menyapu lebih banyak baris
+# dari yang diperkirakan, cache sudah tertimpa dan tidak ada jalan pulang.
+#
+# Sekarang, sebelum satu baris pun dihapus:
+#   1. Basis data diunggah sebagai artefak jalannya (retensi 30 hari).
+#   2. Basis data didorong ke branch yatim `cadangan-basis-data` sebagai
+#      `mdk-sebelum-bersih.sqlite3` — terpisah dari cadangan milik terbit.yml,
+#      jadi keduanya tidak saling menimpa.
+# Bila salah satu gagal, penghapusan TIDAK dijalankan. Itu memang maksudnya:
+# lebih baik batal membersihkan daripada membersihkan tanpa jaring pengaman.
+#
+# CATATAN PERUBAHAN — penjaga ukuran
+# ----------------------------------
+# Sebelum cache disimpan, ukuran basis data akhir dibandingkan dengan salinan
+# pra-hapus. Bila menyusut di bawah 70%, cache tidak disimpan. Pola yang sama
+# dipakai terbit.yml setelah insiden cache kosong menimpa 1000+ KB data artikel.
 on:
   workflow_dispatch:
     inputs:
@@ -26,7 +48,7 @@ on:
         description: 'Mode cocok-*: hanya hapus yang JUGA lebih tua dari batas jam'
         type: boolean
         required: true
-        default: true
+        default: false
       jam:
         description: 'Hapus berita lebih tua dari berapa jam'
         required: true
@@ -37,8 +59,10 @@ on:
         required: true
         default: false
 
+# contents: write diperlukan untuk mendorong cadangan ke branch
+# `cadangan-basis-data`. Sebelumnya cukup `read`.
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -50,6 +74,11 @@ jobs:
   bersihkan:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
+    # Dipakai berulang oleh langkah-langkah di bawah. Semua mode yang benar-benar
+    # mengubah basis data ada di sini; mode *-lihat, laporan, dan skema tidak.
+    env:
+      MODE_HAPUS: ${{ contains(fromJSON('["hapus","cocok-hapus","selisih-hapus"]'), inputs.mode) }}
 
     steps:
       - name: Ambil repositori
@@ -79,8 +108,73 @@ jobs:
             echo "Jalankan terbit.yml lebih dulu, atau cache sudah kedaluwarsa."
             exit 1
           fi
-          echo "Ukuran basis data: $(du -h data/mdk.sqlite3 | cut -f1)"
-          cp data/mdk.sqlite3 /tmp/mdk-sebelum.sqlite3
+
+          UKURAN=$(stat -c%s data/mdk.sqlite3)
+          echo "Ukuran basis data: $(du -h data/mdk.sqlite3 | cut -f1) ($UKURAN bita)"
+
+          # Penjaga yang sama dengan terbit.yml: basis data di bawah 200 KB
+          # hampir pasti hasil pemulihan cache yang gagal, bukan basis data asli.
+          if [ "$UKURAN" -lt 204800 ]; then
+            echo "GAGAL: basis data hanya $UKURAN bita (< 200 KB)."
+            echo "Kemungkinan pemulihan cache gagal. Dihentikan sebelum apa pun diubah."
+            exit 1
+          fi
+
+          mkdir -p /tmp/cadangan-mdk
+          cp data/mdk.sqlite3 /tmp/cadangan-mdk/mdk-sebelum-bersih.sqlite3
+          echo "UKURAN_AWAL=$UKURAN" >> "$GITHUB_ENV"
+
+      # ------------------------------------------------------------------
+      # Cadangan pra-hapus. Dua lapis, dan keduanya WAJIB berhasil sebelum
+      # langkah penghapusan mana pun berjalan.
+      # ------------------------------------------------------------------
+      - name: Cadangan 1 — unggah sebagai artefak jalannya
+        if: ${{ env.MODE_HAPUS == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mdk-sebelum-bersih-${{ github.run_id }}
+          path: /tmp/cadangan-mdk/mdk-sebelum-bersih.sqlite3
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Cadangan 2 — dorong ke branch cadangan-basis-data
+        if: ${{ env.MODE_HAPUS == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          KERJA=/tmp/cadangan-branch
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf "$KERJA"
+
+          # Branch sudah ada pada pemasangan normal (dibuat terbit.yml).
+          # Cabang baru dibuat hanya bila benar-benar belum ada.
+          if git clone --depth 1 --branch cadangan-basis-data \
+               --single-branch "$REMOTE" "$KERJA" 2>/dev/null; then
+            echo "Branch cadangan-basis-data ditemukan."
+          else
+            echo "Branch cadangan-basis-data belum ada — dibuat sebagai branch yatim."
+            mkdir -p "$KERJA"
+            cd "$KERJA"
+            git init -q
+            git checkout -q --orphan cadangan-basis-data
+            git remote add origin "$REMOTE"
+            cd - >/dev/null
+          fi
+
+          cd "$KERJA"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Nama berkas SENGAJA berbeda dari cadangan milik terbit.yml supaya
+          # keduanya hidup berdampingan tanpa saling menimpa.
+          cp /tmp/cadangan-mdk/mdk-sebelum-bersih.sqlite3 .
+          git add mdk-sebelum-bersih.sqlite3
+          git commit -q -m "cadangan pra-bersih: mode ${{ inputs.mode }}, jalan ${{ github.run_id }}" \
+            || echo "Tidak ada perubahan untuk dicatat (basis data identik)."
+          git push -q origin HEAD:cadangan-basis-data
+
+          echo "Cadangan terdorong ke branch cadangan-basis-data."
 
       - name: Tampilkan struktur tabel
         if: ${{ inputs.mode == 'skema' }}
@@ -137,7 +231,7 @@ jobs:
           rm -f data/*.bak
 
       - name: Bangun ulang situs
-        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' || inputs.mode == 'selisih-hapus' }}
+        if: ${{ env.MODE_HAPUS == 'true' }}
         env:
           PYTHONPATH: src
         run: |
@@ -150,23 +244,38 @@ jobs:
             exit 1
           fi
 
+      # Penjaga ukuran. SQLite tidak mengecil sendiri setelah DELETE tanpa VACUUM,
+      # jadi penyusutan berarti ada yang tidak beres — bukan sekadar baris hilang.
+      - name: Periksa ukuran basis data akhir
+        if: ${{ env.MODE_HAPUS == 'true' }}
+        run: |
+          UKURAN_AKHIR=$(stat -c%s data/mdk.sqlite3)
+          BATAS=$(( UKURAN_AWAL * 70 / 100 ))
+          echo "Sebelum: $UKURAN_AWAL bita · sesudah: $UKURAN_AKHIR bita · batas: $BATAS bita"
+          if [ "$UKURAN_AKHIR" -lt "$BATAS" ]; then
+            echo "GAGAL: basis data menyusut di bawah 70% ukuran semula."
+            echo "Cache TIDAK disimpan. Pulihkan dari artefak jalannya atau dari"
+            echo "branch cadangan-basis-data (berkas mdk-sebelum-bersih.sqlite3)."
+            exit 1
+          fi
+
       - name: Simpan basis data artikel
-        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' || inputs.mode == 'selisih-hapus' }}
+        if: ${{ env.MODE_HAPUS == 'true' }}
         uses: actions/cache/save@v4
         with:
           path: data/mdk.sqlite3
           key: mdk-db-${{ github.run_id }}
 
       - name: Siapkan GitHub Pages
-        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' || inputs.mode == 'selisih-hapus' }}
+        if: ${{ env.MODE_HAPUS == 'true' }}
         uses: actions/configure-pages@v5
 
       - name: Unggah artefak situs
-        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' || inputs.mode == 'selisih-hapus' }}
+        if: ${{ env.MODE_HAPUS == 'true' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
       - name: Terbitkan ke GitHub Pages
-        if: ${{ inputs.mode == 'hapus' || inputs.mode == 'cocok-hapus' || inputs.mode == 'selisih-hapus' }}
+        if: ${{ env.MODE_HAPUS == 'true' }}
         uses: actions/deploy-pages@v4
