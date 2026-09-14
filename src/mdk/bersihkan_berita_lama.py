@@ -295,9 +295,20 @@ def proses_cocok(kon, tabel, teks, hapus, tabel_diminta=None, batas_jam=0):
     for rowid, judul, k, tanggal in kena[:30]:
         cap = tanggal.strftime("%Y-%m-%d %H:%M") if tanggal else "tanpa tanggal"
         umur = f"{umur_jam(tanggal) / 24:>5.1f} hari" if tanggal else "        ?"
-        print(f"    [COCOK] {cap} · {umur} · {judul[:56]}")
+        print(f"    [COCOK] {cap} · {umur} · [{k}] · {judul[:50]}")
     if len(kena) > 30:
         print(f"    ... dan {len(kena) - 30} lainnya")
+
+    # Rekap per kolom. Inilah yang menentukan apakah pencocokan mengenai
+    # sasaran: cocok di 'url' atau 'penerbit' berarti baris itu memang
+    # terbitan yang dimaksud, sedangkan cocok di kolom isi artikel sangat
+    # mungkin positif palsu — kata yang kebetulan muncul di badan berita.
+    rekap: dict[str, int] = {}
+    for _, _, k, _ in kena:
+        rekap[k] = rekap.get(k, 0) + 1
+    urut = sorted(rekap.items(), key=lambda x: -x[1])
+    print(f"    Kolom yang cocok: "
+          f"{', '.join(f'{k}={n}' for k, n in urut)}")
 
     if not hapus:
         print(f"    -> {len(kena)} baris AKAN dihapus (mode laporan)")
