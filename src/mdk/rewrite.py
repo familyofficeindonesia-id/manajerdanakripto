@@ -176,6 +176,26 @@ MAKS_GAGAL_SIBUK_BERUNTUN = 8
 # Status yang menandakan server sibuk, bukan kesalahan permintaan.
 STATUS_SIBUK = (500, 502, 503, 504)
 
+# Berapa model BERBEDA yang boleh dijajal ketika 5xx beruntun.
+#
+# 15 September 2026 — sebelum tanggal ini jawabannya nol. 503 hanya diulang
+# sekali pada model yang SAMA, lalu `panggil_model` menyerah tanpa pernah
+# menyentuh satu pun model cadangan: peralihan model hanya dipicu oleh 404 dan
+# 429-kuota-harian. Jalan pagi 15 September berhenti persis di situ — dua berita
+# gagal dengan "API 503 (model gemini-3.7-flash)" sementara lima model lain
+# menganggur dengan jatah utuh.
+#
+# Pagunya sengaja tidak sepanjang rantai. Bila tiga model berbeda sama-sama
+# menolak dengan 5xx, yang sibuk bukan satu model melainkan layanannya, dan
+# menjajal tiga sisanya hanya membakar jatah tanpa mengubah hasil.
+MAKS_MODEL_SIBUK = 3
+
+# Jeda sebelum berpindah model karena 5xx. Batas tingkat gratis adalah 5
+# permintaan per menit; menembak enam model beruntun tanpa jeda memicu 429
+# per-menit yang TETAP dipotong dari jatah harian — kegagalan yang sama seperti
+# badai percobaan ulang pada jalan #113.
+JEDA_PINDAH_MODEL = 8.0
+
 # Penanda pada pesan galat yang menandakan kegagalan SEMENTARA.
 #
 # Pembedaan ini menentukan nasib sebuah berita. Kegagalan sementara berasal dari
@@ -358,6 +378,7 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
     tanggapan = None
     model = tersedia[0]
     gugur_kini: list[str] = []          # model yang gugur pada panggilan ini
+    sibuk_kini: list[str] = []          # model yang menolak dengan 5xx di sini
 
     for indeks_model, model in enumerate(tersedia):
         url = f"{API_URL}/{model}:generateContent"
@@ -407,11 +428,30 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             # tetap gagal dikembalikan ke antrean dan dicoba lagi pada jalan
             # berikutnya, jadi tidak ada yang hilang — hanya tertunda.
             # ---------------------------------------------------------------
-            if tanggapan.status_code in STATUS_SIBUK and coba_sibuk < 1:
-                coba_sibuk += 1
-                time.sleep(tunggu)
-                tunggu *= 1.8
-                continue
+            if tanggapan.status_code in STATUS_SIBUK:
+                # Ulangi model yang SAMA hanya pada model pertama rantai, dan
+                # hanya sekali. Pada model cadangan, kepadatan sudah terbukti;
+                # satu tembakan per model cukup untuk menguji apakah backend-nya
+                # lebih lapang, dan setiap tembakan ekstra memotong RPD.
+                anggaran_sibuk = 1 if indeks_model == 0 else 0
+                if coba_sibuk < anggaran_sibuk:
+                    coba_sibuk += 1
+                    time.sleep(tunggu)
+                    tunggu *= 1.8
+                    continue
+
+                # Model ini sibuk dan sudah diberi kesempatannya. Turun ke model
+                # berikutnya: 5xx bersifat per-model — setiap model punya
+                # kapasitas backend sendiri, sama seperti jatah RPD-nya sendiri.
+                # Inilah yang hilang sebelum 15 September 2026.
+                sibuk_kini.append(model)
+                print(f"  ! {tanggapan.status_code} — '{model}' sibuk "
+                      f"(percobaan {coba_sibuk + 1})")
+                if (indeks_model + 1 < len(tersedia)
+                        and len(sibuk_kini) < MAKS_MODEL_SIBUK):
+                    print(f"  → beralih ke '{tersedia[indeks_model + 1]}' "
+                          f"(kapasitas backend terpisah)")
+                break
 
             if tanggapan.status_code == 429:
                 mentah = tanggapan.text
@@ -454,6 +494,15 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
         # Model ini gugur (404 atau kuota) — lanjut ke berikutnya bila ada.
         if model in gugur_kini:
             continue
+
+        # Model ini sibuk (5xx). Lanjut selama pagu MAKS_MODEL_SIBUK belum
+        # tersentuh; bila sudah, hentikan dan biarkan berita kembali ke antrean.
+        if model in sibuk_kini:
+            if len(sibuk_kini) >= MAKS_MODEL_SIBUK:
+                break
+            if indeks_model + 1 < len(tersedia):
+                time.sleep(JEDA_PINDAH_MODEL)
+            continue
         break
 
     # Seluruh rantai gugur pada panggilan ini. Jenis galat yang dilempar
@@ -471,6 +520,28 @@ def panggil_model(kfg: Konfigurasi, sistem: str, pengguna: str) -> str:
             f"API 404 model tidak tersedia — seluruh rantai ditolak ({sebab}). "
             f"Periksa nama model yang sah lewat ListModels, lalu perbarui "
             f"`ai.model` di config/settings.yaml. Respons terakhir: {rinci}")
+
+    # Rantai berhenti karena KEPADATAN, bukan karena jatah habis. Pembedaan ini
+    # wajib: KuotaHabis memasang penanda harian yang mematikan tahap tulis
+    # sampai reset 07:00 UTC, dan memasangnya karena server sibuk berarti
+    # membuang sisa hari demi gangguan yang biasanya lewat dalam hitungan menit.
+    #
+    # Karena itu pula cabang ini diletakkan SETELAH pemeriksaan gugur_kini di
+    # atas: campuran "satu model kuota habis, sisanya sibuk" tidak boleh
+    # memasang penanda harian — sisanya belum tentu tandas, hanya sedang padat.
+    #
+    # Pesannya sengaja memuat "API 5xx": `kegagalan_sementara()` membacanya untuk
+    # mengembalikan berita ke antrean, dan `tulis_banyak()` membacanya untuk
+    # menghitung ambang MAKS_GAGAL_SIBUK_BERUNTUN.
+    if sibuk_kini and (len(sibuk_kini) >= MAKS_MODEL_SIBUK
+                       or len(sibuk_kini) + len(gugur_kini) >= len(tersedia)):
+        kode = 503 if tanggapan is None else tanggapan.status_code
+        if kode not in STATUS_SIBUK:
+            kode = 503
+        raise KesalahanPenulisan(
+            f"API {kode} layanan sibuk di {len(sibuk_kini)} model "
+            f"({', '.join(sibuk_kini)}) — berita kembali ke antrean untuk "
+            f"jalan berikutnya, tidak dikubur dan tidak memasang penanda kuota.")
 
     if tanggapan is None or tanggapan.status_code != 200:
         kode = "tanpa tanggapan" if tanggapan is None else tanggapan.status_code
