@@ -86,6 +86,22 @@ class Pengambil:
         self.tolak_tanpa_tanggal = 0
         self.tolak_basi = 0
         self.tolak_penerbit = 0
+        # Rincian SIAPA yang terblokir, bukan sekadar berapa banyak.
+        #
+        # 15 September 2026 — jalan manual mencatat "penerbit diblokir: 240"
+        # terhadap daftar blokir berisi dua domain saja. Angka itu tidak dapat
+        # ditafsirkan: ia sama saja bunyinya baik ketika 240 item memang berasal
+        # dari yellow.com, maupun ketika pencocokan nama salah menjaring media
+        # yang sah. Tanpa rincian ini, satu-satunya cara membedakannya adalah
+        # menebak.
+        #
+        # Strukturnya bersarang: pola blokir -> {nama penerbit: jumlah}.
+        # Polanya saja tidak cukup menjawab pertanyaannya. "Pola yellow.com
+        # memicu 238 kali" masih sama bunyinya entah yang tertangkap memang
+        # Yellow.com atau sebuah media sah bernama, misalnya, "Yellow Finance"
+        # yang kebetulan cocok lewat jalur nama_inti. Nama penerbitnyalah yang
+        # membedakan keduanya, jadi nama itu yang dicatat.
+        self.tolak_penerbit_rinci: dict[str, dict[str, int]] = {}
 
     # ------------------------------------------------------------- daftar ----
     def daftar_umpan(self, sertakan_entitas: bool = True) -> list[dict]:
@@ -111,16 +127,21 @@ class Pengambil:
         return umpan
 
     # ----------------------------------------------------------- blokir ------
-    def _diblokir(self, tautan: str, penerbit: str) -> bool:
-        """Periksa daftar penerbit diblokir terhadap domain DAN nama penerbit.
+    def _diblokir(self, tautan: str, penerbit: str) -> str | None:
+        """Kembalikan POLA blokir yang cocok, atau None bila entri lolos.
 
         Untuk item yang datang lewat Google News, domain tautan selalu
         `news.google.com`, sehingga pemeriksaan domain saja tidak pernah
         mengenali penerbit aslinya. Nama penerbit diambil dari `entri.source`
         dan itulah yang memuat nama media sebenarnya.
+
+        15 September 2026 — dahulu mengembalikan bool. Sekarang mengembalikan
+        pola yang cocok supaya pemanggilnya dapat mencatat SEBAB penolakan,
+        bukan hanya jumlahnya. Nilai kembaliannya tetap falsy saat lolos, jadi
+        pemakaian dalam konteks `if` tidak berubah maknanya.
         """
         if not self.diblokir:
-            return False
+            return None
 
         domain = (domain_penerbit(tautan) or "").lower()
         nama = (penerbit or "").lower().strip()
@@ -132,10 +153,10 @@ class Pengambil:
             if not blok_inti:
                 continue
             if domain and (blok == domain or domain.endswith("." + blok)):
-                return True
+                return blok
             if nama and (blok == nama or blok_inti == nama_inti):
-                return True
-        return False
+                return blok
+        return None
 
     # ---------------------------------------------------------- kesegaran ----
     def _lolos_usia(self, entri, judul: str) -> str | None:
@@ -176,8 +197,17 @@ class Pengambil:
                 continue
             kanonik = kanonikalisasi_url(tautan)
             penerbit = _penerbit_entri(entri, umpan["nama"])
-            if self._diblokir(tautan, penerbit):
+            pola_blokir = self._diblokir(tautan, penerbit)
+            if pola_blokir:
                 self.tolak_penerbit += 1
+                # Dicatat SEBELUM pemeriksaan duplikat, sama seperti
+                # penyaringannya sendiri. Artinya satu artikel yang muncul di
+                # banyak kueri Google News terhitung berkali-kali — itu memang
+                # sifat angkanya, dan rincian ini yang membuat sifat tersebut
+                # terbaca alih-alih disalahtafsirkan sebagai jumlah artikel.
+                per_nama = self.tolak_penerbit_rinci.setdefault(pola_blokir, {})
+                nama_tercatat = (penerbit or "(tanpa nama)").strip()[:60]
+                per_nama[nama_tercatat] = per_nama.get(nama_tercatat, 0) + 1
                 continue
             if self.simpan.sudah_ada(kanonik):
                 continue
@@ -205,6 +235,38 @@ class Pengambil:
                 bobot_sumber=float(umpan.get("bobot", 1.0)), entitas=tanda["entitas"],
                 organisasi=tanda["organisasi"], skor=skor))
         return hasil
+
+    # ------------------------------------------------- rincian blokir --------
+    def _cetak_rincian_blokir(self) -> None:
+        """Cetak SIAPA yang terblokir, bukan hanya berapa banyak.
+
+        Baris ringkasan lama hanya memuat satu angka. Angka itu tidak dapat
+        ditafsirkan tanpa mengetahui nama yang tertangkap: daftar blokir berisi
+        dua domain dapat menghasilkan ratusan penolakan secara sah, karena
+        pemeriksaan blokir berjalan SEBELUM pemeriksaan duplikat sehingga satu
+        artikel yang muncul di puluhan kueri Google News dihitung berulang.
+
+        Yang dicari saat membaca keluaran ini: nama media yang jelas sah. Bila
+        muncul, jalur `nama_inti` di `_diblokir` menjaring terlalu longgar —
+        ia memotong nama pada titik TERAKHIR, sehingga "Bitcoin.com News"
+        menyusut menjadi "bitcoin" dan akan cocok dengan pola blokir mana pun
+        yang segmen pertamanya "bitcoin".
+        """
+        if not self.tolak_penerbit_rinci:
+            return
+        print("  Rincian blokir (pola → penerbit yang tertangkap):")
+        urut_pola = sorted(self.tolak_penerbit_rinci.items(),
+                           key=lambda x: -sum(x[1].values()))
+        for pola, per_nama in urut_pola:
+            jumlah = sum(per_nama.values())
+            print(f"    · {pola}: {jumlah} penolakan, "
+                  f"{len(per_nama)} nama penerbit")
+            urut_nama = sorted(per_nama.items(), key=lambda x: -x[1])
+            for nama, n in urut_nama[:8]:
+                print(f"        {n:>5}x  {nama}")
+            if len(urut_nama) > 8:
+                sisa = sum(n for _, n in urut_nama[8:])
+                print(f"        {sisa:>5}x  (+{len(urut_nama) - 8} nama lain)")
 
     # ---------------------------------------------------------- jalankan -----
     def jalankan(self, sertakan_entitas: bool = True, verbose: bool = True) -> dict:
@@ -240,10 +302,12 @@ class Pengambil:
         ringkas = {"umpan": len(umpan), "terbaca": total, "disimpan": disimpan,
                    "dibuang": dibuang, "tolak_basi": self.tolak_basi,
                    "tolak_tanpa_tanggal": self.tolak_tanpa_tanggal,
-                   "tolak_penerbit": self.tolak_penerbit}
+                   "tolak_penerbit": self.tolak_penerbit,
+                   "tolak_penerbit_rinci": self.tolak_penerbit_rinci}
         if verbose:
             print(f"  ✗ Ditolak — usia: {self.tolak_basi} · "
                   f"tanpa tanggal: {self.tolak_tanpa_tanggal} · "
                   f"penerbit diblokir: {self.tolak_penerbit}")
+            self._cetak_rincian_blokir()
         self.simpan.catat("ingest", str(ringkas))
         return ringkas
