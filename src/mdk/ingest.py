@@ -57,6 +57,52 @@ PENERBIT_DIBLOKIR_TETAP = {
 TOLERANSI_DEPAN_JAM = 3
 
 
+def daftar_blokir(kfg) -> set[str]:
+    """Gabungan daftar blokir konfigurasi dan daftar tetap di modul ini.
+
+    Dipisahkan dari `Pengambil` supaya tahap lain — khususnya penulisan di
+    `pipeline.py` — memakai daftar yang SAMA PERSIS. Sebelum 15 September 2026
+    daftar ini hanya hidup di dalam `Pengambil`, sehingga blokir hanya berlaku
+    pada detik item dipetik dari umpan dan tidak pernah berlaku lagi sesudahnya.
+    """
+    blok = {d.lower().strip() for d in kfg.sumber.get("penerbit_diblokir", []) if d}
+    return blok | {d.lower().strip() for d in PENERBIT_DIBLOKIR_TETAP}
+
+
+def cocok_blokir(tautan: str, penerbit: str, diblokir: set[str]) -> str | None:
+    """Kembalikan POLA blokir yang cocok, atau None bila lolos.
+
+    Memeriksa domain tautan DAN nama penerbit. Untuk item yang datang lewat
+    Google News, domain tautan selalu `news.google.com`, sehingga pemeriksaan
+    domain saja tidak pernah mengenali penerbit aslinya. Nama penerbit diambil
+    dari `entri.source` dan itulah yang memuat nama media sebenarnya.
+
+    CATATAN 15 September 2026 — dahulu ini adalah metode `Pengambil._diblokir`
+    dan hanya dipanggil dari `ambil_umpan`. Akibatnya blokir bersifat sekali
+    lewat: baris yang sudah telanjur tersimpan di tabel `mentah` tidak pernah
+    diperiksa ulang, dan antrean yang bergulir antar-jalan menyimpannya tanpa
+    batas waktu. Dua artikel Yellow.com terbit pada 15 September 2026 lewat
+    jalur itu — satu di antaranya berasal dari Juni 2024.
+    """
+    if not diblokir:
+        return None
+
+    domain = (domain_penerbit(tautan) or "").lower()
+    nama = (penerbit or "").lower().strip()
+    # Bentuk tanpa akhiran domain, agar "Yellow.com" cocok dengan "yellow".
+    nama_inti = nama.rsplit(".", 1)[0] if "." in nama else nama
+
+    for blok in diblokir:
+        blok_inti = blok.rsplit(".", 1)[0] if "." in blok else blok
+        if not blok_inti:
+            continue
+        if domain and (blok == domain or domain.endswith("." + blok)):
+            return blok
+        if nama and (blok == nama or blok_inti == nama_inti):
+            return blok
+    return None
+
+
 def _penerbit_entri(entri, cadangan: str) -> str:
     sumber = entri.get("source") or {}
     if isinstance(sumber, dict) and sumber.get("title"):
@@ -76,9 +122,7 @@ class Pengambil:
     def __init__(self, kfg: Konfigurasi, reg: Registri, simpan: Penyimpanan):
         self.kfg, self.reg, self.simpan = kfg, reg, simpan
         self.opsi = kfg.sumber.get("pengaturan_pengambilan", {})
-        self.diblokir = {d.lower().strip() for d in
-                         kfg.sumber.get("penerbit_diblokir", []) if d}
-        self.diblokir |= {d.lower().strip() for d in PENERBIT_DIBLOKIR_TETAP}
+        self.diblokir = daftar_blokir(kfg)
         diminta = int(kfg.relevansi.get("usia_maksimum_jam", BATAS_JAM_BAWAAN))
         self.batas_jam = min(diminta, BATAS_JAM_MAKS)
         self.batas_dipangkas = diminta if diminta > BATAS_JAM_MAKS else 0
@@ -128,35 +172,15 @@ class Pengambil:
 
     # ----------------------------------------------------------- blokir ------
     def _diblokir(self, tautan: str, penerbit: str) -> str | None:
-        """Kembalikan POLA blokir yang cocok, atau None bila entri lolos.
+        """Pembungkus tipis atas `cocok_blokir` di tingkat modul.
 
-        Untuk item yang datang lewat Google News, domain tautan selalu
-        `news.google.com`, sehingga pemeriksaan domain saja tidak pernah
-        mengenali penerbit aslinya. Nama penerbit diambil dari `entri.source`
-        dan itulah yang memuat nama media sebenarnya.
-
-        15 September 2026 — dahulu mengembalikan bool. Sekarang mengembalikan
-        pola yang cocok supaya pemanggilnya dapat mencatat SEBAB penolakan,
-        bukan hanya jumlahnya. Nilai kembaliannya tetap falsy saat lolos, jadi
-        pemakaian dalam konteks `if` tidak berubah maknanya.
+        Logikanya sengaja TIDAK disalin di sini. Pemeriksaan yang sama juga
+        dijalankan pada tahap penulisan di `pipeline.py`; bila keduanya memegang
+        salinan sendiri, keduanya akan menyimpang cepat atau lambat dan salah
+        satunya menjadi pintu belakang tanpa ada yang menyadari.
         """
-        if not self.diblokir:
-            return None
+        return cocok_blokir(tautan, penerbit, self.diblokir)
 
-        domain = (domain_penerbit(tautan) or "").lower()
-        nama = (penerbit or "").lower().strip()
-        # Bentuk tanpa akhiran domain, agar "Yellow.com" cocok dengan "yellow".
-        nama_inti = nama.rsplit(".", 1)[0] if "." in nama else nama
-
-        for blok in self.diblokir:
-            blok_inti = blok.rsplit(".", 1)[0] if "." in blok else blok
-            if not blok_inti:
-                continue
-            if domain and (blok == domain or domain.endswith("." + blok)):
-                return blok
-            if nama and (blok == nama or blok_inti == nama_inti):
-                return blok
-        return None
 
     # ---------------------------------------------------------- kesegaran ----
     def _lolos_usia(self, entri, judul: str) -> str | None:
