@@ -33,7 +33,7 @@ from .build import Pembangun
 from .config import muat_konfigurasi
 from .dedup import AMBANG_LINTAS_BAHASA, AMBANG_SEBAHASA, cari_duplikat
 from .entities import registri
-from .ingest import Pengambil
+from .ingest import Pengambil, cocok_blokir, daftar_blokir
 from .rewrite import Penulis, kegagalan_sementara
 from .store import buka
 
@@ -139,12 +139,85 @@ def _kuras_antrean_basi(simpan, verbose: bool = True) -> int:
     return dibuang
 
 
+def _kuras_penerbit_diblokir(simpan, kfg, verbose: bool = True) -> tuple[int, int]:
+    """Buang penerbit yang diblokir dari ANTREAN dan dari artikel yang sudah terbit.
+
+    Kenapa pemeriksaan ini ada dua kali, di sini dan di `ingest.py`
+    ------------------------------------------------------------
+    Sampai 15 September 2026 blokir penerbit hanya berjalan sekali, pada detik
+    item dipetik dari umpan. Itu tampak cukup, dan untuk item BARU memang cukup:
+    jalan hari itu menangkap 242 item Yellow.com tanpa satu pun meleset.
+
+    Yang tidak tertangani adalah baris yang sudah telanjur berada di tabel
+    `mentah`. Antrean bergulir dari jalan ke jalan tanpa batas waktu, dan tidak
+    ada apa pun yang memeriksanya ulang — sehingga baris yang masuk SEBELUM
+    sebuah penerbit diblokir akan terus menjadi kandidat selamanya. Pada
+    15 September 2026 dua di antaranya terbit; satu berasal dari Juni 2024.
+
+    Gerbang usia tidak menolong di sini. Yellow.com menerbitkan ulang artikel
+    lama dengan tanggal baru, dan tanggal palsu itu diteruskan Google News apa
+    adanya, jadi baik pagar 24 jam maupun 48 jam membaca tanggal yang sudah
+    dipalsukan. Daftar blokir adalah SATU-SATUNYA pertahanan terhadap penerbit
+    semacam itu, dan pertahanan yang hanya berlaku sekali bukanlah pertahanan.
+
+    Artikel terbit ikut disapu karena penerbit yang diblokir tidak pernah layak
+    tayang: membiarkannya berarti menyimpan berita yang tanggalnya tidak dapat
+    dipercaya di situs yang seluruh nilainya bertumpu pada kejujuran tanggal.
+    """
+    diblokir = daftar_blokir(kfg)
+    if not diblokir:
+        return 0, 0
+
+    # --- antrean ---
+    dari_antrean = 0
+    rinci: dict[str, int] = {}
+    for baris in simpan.mentah_menunggu(PERIKSA_ANTREAN_MAKS):
+        pola = cocok_blokir(baris["url"], baris["penerbit"], diblokir)
+        if pola is None:
+            continue
+        simpan.tandai_mentah(baris["id"], "dilewati")
+        dari_antrean += 1
+        rinci[pola] = rinci.get(pola, 0) + 1
+        if verbose and dari_antrean <= 15:
+            print(f"  [BLOKIR] {baris['judul'][:66]} — {baris['penerbit']}")
+
+    # --- artikel yang sudah terbit ---
+    dari_terbit = 0
+    for a in simpan.artikel("terbit"):
+        pola = cocok_blokir(getattr(a, "sumber_url", "") or "",
+                            getattr(a, "sumber_nama", "") or "", diblokir)
+        if pola is None:
+            continue
+        simpan.hapus_artikel(a.id)
+        dari_terbit += 1
+        rinci[pola] = rinci.get(pola, 0) + 1
+        if verbose:
+            print(f"  [CABUT] {a.judul[:66]} — {a.sumber_nama}")
+
+    if verbose and (dari_antrean or dari_terbit):
+        if dari_antrean > 15:
+            print(f"  ... dan {dari_antrean - 15} item antrean lainnya")
+        print(f"  ✗ Penerbit diblokir: {dari_antrean} dikeluarkan dari antrean, "
+              f"{dari_terbit} artikel dicabut dari situs")
+        for pola, n in sorted(rinci.items(), key=lambda x: -x[1]):
+            print(f"      {n:>5}x  {pola}")
+        simpan.catat("tulis", f"penerbit diblokir — antrean: {dari_antrean}, "
+                              f"artikel dicabut: {dari_terbit}")
+    return dari_antrean, dari_terbit
+
+
 def tahap_tulis(batas: int | None = None, verbose: bool = True) -> dict:
     kfg, reg = muat_konfigurasi(), registri()
     simpan = buka(kfg)
     batas = batas or int(kfg.ai.get("batas_artikel_per_jalankan", 40))
 
-    # Gerbang kesegaran — dijalankan lebih dahulu, sebelum biaya API keluar.
+    # Gerbang penerbit — dijalankan PALING AWAL, sebelum gerbang kesegaran.
+    # Urutannya penting: penerbit yang memalsukan tanggal lolos dari gerbang
+    # kesegaran secara definisi, jadi ia harus disingkirkan lebih dulu agar
+    # tidak ikut terhitung sebagai kandidat yang "masih segar".
+    _kuras_penerbit_diblokir(simpan, kfg, verbose)
+
+    # Gerbang kesegaran — dijalankan sebelum biaya API keluar.
     basi = _kuras_antrean_basi(simpan, verbose)
 
     # Kolam kandidat: cukup besar agar pengulangan yang gugur tidak memakan
